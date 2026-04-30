@@ -722,7 +722,7 @@
     </div>
   </div>
 
-  <div class="systems-stage" id="systemsStage">
+    <div class="systems-stage" id="systemsStage">
     <div class="systems-intro">
       <div class="systems-kicker">stage / lighting / sound</div>
       <h2>舞台灯光与音响全链路设计</h2>
@@ -788,6 +788,36 @@
             <div class="speaker s3"><div class="edge"></div></div>
             <div class="signal-run"></div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="title" style="margin-top: 44px; position: relative; left: auto; top: auto; transform: none; width: min(1200px, 92vw); text-align: center;">
+      <div class="eyebrow">代码能力展示</div>
+      <h1>把代码，做成可运行的结果</h1>
+      <p>动画比静态图更能说明能力。</p>
+      <div class="eyebrow" style="margin-top:12px; margin-bottom:0; opacity:.9;">代码能力展示</div>
+      <div style="margin-top: 18px; padding: 18px; border: 1px solid rgba(255,255,255,.10); border-radius: 24px; background: rgba(255,255,255,.03); text-align: left; overflow: hidden;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px; color: rgba(255,255,255,.78); font-size: 13px; letter-spacing: .08em;">
+          <div style="display:flex; align-items:center; gap: 10px;"><span style="width:10px; height:10px; border-radius:50%; background: rgba(255,255,255,.16); display:inline-block;"></span><span>main.ts</span></div>
+          <div>typescript</div>
+        </div>
+        <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 18px; line-height: 1.9; color: rgba(255,255,255,.98); white-space: pre-wrap;">
+// main.ts
+import { createDemo } from './lib'
+
+const demo = createDemo({
+  mode: 'black-white',
+  motion: 'precise',
+  speed: 'smooth',
+  preview: true,
+  ship: true
+})
+        </div>
+        <div style="margin-top: 14px; color: rgba(255,255,255,.58); font-size: 14px; line-height: 1.8;">
+          terminal: <span style="color: rgba(255,255,255,.94);">pnpm dev -- --host</span><br>
+          preview: <span style="color: rgba(255,255,255,.94);">localhost:3000</span><br>
+          result: <span style="color: rgba(255,255,255,.94);">把代码，做成可运行的结果</span>
         </div>
       </div>
     </div>
