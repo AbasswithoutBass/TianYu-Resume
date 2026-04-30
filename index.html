@@ -130,19 +130,22 @@
     .code {
       position: relative; margin-left: 62px; white-space: pre-wrap; word-break: break-word; min-height: 100%;
     }
-    .line { display:block; min-height: 2.0em; }
+    .line {
+      display:flex; align-items:center; min-height: 44px; white-space: pre;
+    }
     .kw { color: #fff; font-weight: 900; }
     .str { color: rgba(255,255,255,.92); }
     .com { color: rgba(255,255,255,.48); }
     .cursor {
-      display:inline-block; width: 12px; height: 1.15em; margin-left: 2px; vertical-align: -0.15em;
+      display:inline-block; width: 12px; height: 24px; margin-left: 4px; vertical-align: middle;
       background: rgba(255,255,255,1); border-radius: 2px; box-shadow: 0 0 24px rgba(255,255,255,.24);
       animation: blink 0.9s steps(1) infinite;
+      flex: 0 0 auto;
     }
     .active-line {
-      position:absolute; left: 62px; right: 0; height: 32px; border-radius: 10px; pointer-events:none;
+      position:absolute; left: 62px; right: 0; height: 44px; border-radius: 10px; pointer-events:none;
       background: rgba(255,255,255,.10); outline: 1px solid rgba(255,255,255,.08);
-      opacity: 0; transition: opacity 120ms ease, transform 120ms ease;
+      opacity: 0; transition: opacity 180ms ease, transform 180ms ease;
     }
     @keyframes blink { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
 
@@ -184,11 +187,32 @@
     .nav-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
 
     .preview-body { padding: 14px; position: relative; height: calc(100% - 46px); }
-    .page {
+    .page-viewport {
       position: relative; height: 100%; border-radius: 22px; overflow:hidden;
       border: 1px solid rgba(255,255,255,.08);
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+    }
+    .page-screen {
+      position: absolute; inset: 0;
       padding: 16px;
+      opacity: 0;
+      transform: translateX(12%) scale(.985);
+      transition: opacity .72s ease, transform .72s cubic-bezier(.2,.8,.2,1);
+      pointer-events: none;
+    }
+    .page-screen.prev {
+      opacity: 0;
+      transform: translateX(-12%) scale(.98);
+    }
+    .page-screen.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+      z-index: 2;
+    }
+    .page-screen.next {
+      opacity: 0;
+      transform: translateX(16%) scale(.98);
     }
     .nav {
       display:flex; align-items:center; justify-content:space-between; gap: 12px; padding-bottom: 14px; margin-bottom: 14px;
@@ -214,17 +238,30 @@
     .card { min-height: 74px; padding: 12px; }
     .label { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.42); }
     .value { margin-top: 8px; font-size: 13px; color: rgba(255,255,255,.92); line-height: 1.45; }
-    .focus {
-      position:absolute; width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.95);
-      box-shadow: 0 0 0 12px rgba(255,255,255,.07); transform: translate(-50%, -50%); opacity: 0; pointer-events: none;
+    .page-top {
+      display:flex; align-items:center; justify-content:space-between; gap: 12px;
+      margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,.08);
     }
-    .focus::after {
-      content:''; position:absolute; left:50%; top:50%; width: 7px; height: 7px; border-radius: 50%; background: #fff; transform: translate(-50%,-50%);
+    .page-tag {
+      display:flex; align-items:center; gap: 8px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+      color: rgba(255,255,255,.68);
     }
-    .scan {
-      position:absolute; left:0; right:0; height:2px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
-      transform: translateY(-40px); opacity: 0; pointer-events:none;
+    .page-chip {
+      padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.08);
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.58);
     }
+    .page-hero { display:grid; grid-template-columns: 1.1fr .9fr; gap: 14px; }
+    .page-copy, .page-grid, .page-callout {
+      border-radius: 20px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); overflow: hidden;
+    }
+    .page-copy { padding: 18px; min-height: 180px; position: relative; }
+    .page-grid { padding: 16px; display:grid; gap: 10px; }
+    .page-callout { padding: 18px; min-height: 180px; display:grid; align-content: space-between; }
+    .page-card { min-height: 58px; border-radius: 16px; padding: 12px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.06); }
+    .page-card strong { display:block; margin-top: 4px; color:#fff; font-size: 15px; }
+    .page-list { display:grid; gap: 10px; }
+    .page-list .page-row { display:flex; align-items:center; justify-content:space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.07); font-size: 13px; color: rgba(255,255,255,.74); }
+    .page-list .page-row:last-child { border-bottom: 0; }
 
     .footer {
       position: absolute; left: 50%; bottom: 4.8vh; transform: translateX(-50%); width: min(1040px, 92vw);
@@ -670,27 +707,70 @@
                 <div class="nav-btns"><div class="nav-btn"></div><div class="nav-btn"></div><div class="nav-btn"></div></div>
               </div>
               <div class="preview-body">
-                <div class="page" id="heroCard">
-                  <div class="nav">
-                    <div class="brand"><span class="mark"></span><span>Hermes</span></div>
-                    <div class="links"><span>Work</span><span>Skills</span><span>Contact</span></div>
-                    <div class="cta">Open Demo</div>
-                  </div>
-                  <div class="hero">
-                    <div class="copy">
-                      <div class="kicker">programming / motion</div>
-                      <div class="headline">把代码，做成可运行的结果</div>
-                      <div class="desc">动画比静态图更能说明能力。</div>
-                      <div class="buttons"><div class="btn primary">Run</div><div class="btn">Inspect</div></div>
-                      <div class="focus" id="previewCursor"></div>
+                <div class="page-viewport" id="heroCard">
+                  <section class="page-screen prev" id="pagePrev">
+                    <div class="page-top">
+                      <div class="page-tag"><span class="page-chip">01</span><span>Code</span></div>
+                      <div class="page-chip" id="prevChip">main.ts</div>
                     </div>
-                    <div class="stats">
-                      <div class="stat"><span>render</span><strong id="score">03</strong></div>
-                      <div class="stat"><span>fps</span><strong>60</strong></div>
-                      <div class="stat"><span>status</span><strong>ready</strong></div>
+                    <div class="page-hero">
+                      <div class="page-copy">
+                        <div class="kicker">programming / motion</div>
+                        <div class="headline">把代码，做成可运行的结果</div>
+                        <div class="desc">动画比静态图更能说明能力。</div>
+                        <div class="buttons"><div class="btn primary">Run</div><div class="btn">Inspect</div></div>
+                      </div>
+                      <div class="page-grid">
+                        <div class="page-card"><span class="label">render</span><strong>03</strong></div>
+                        <div class="page-card"><span class="label">fps</span><strong>60</strong></div>
+                        <div class="page-card"><span class="label">status</span><strong>ready</strong></div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="modules"></div>
+                  </section>
+                  <section class="page-screen active" id="pageCurrent">
+                    <div class="page-top">
+                      <div class="page-tag"><span class="page-chip">02</span><span>Portfolio</span></div>
+                      <div class="page-chip">Apple layout</div>
+                    </div>
+                    <div class="page-hero">
+                      <div class="page-copy">
+                        <div class="kicker">career / showcase</div>
+                        <div class="headline">简历不是信息堆砌，而是能力展示</div>
+                        <div class="desc">让用人方一眼看到审美、节奏、结构和完成度。</div>
+                        <div class="buttons"><div class="btn primary">View CV</div><div class="btn">Contact</div></div>
+                      </div>
+                      <div class="page-callout">
+                        <div>
+                          <div class="label">highlights</div>
+                          <div class="value">Apple 风极简 / 动效丰富 / 视觉克制</div>
+                        </div>
+                        <div class="page-list">
+                          <div class="page-row"><span>Work</span><span>stage, audio, dev</span></div>
+                          <div class="page-row"><span>Style</span><span>black & white</span></div>
+                          <div class="page-row"><span>Goal</span><span>useful + premium</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                  <section class="page-screen next" id="pageNext">
+                    <div class="page-top">
+                      <div class="page-tag"><span class="page-chip">03</span><span>Stage</span></div>
+                      <div class="page-chip">lighting / sound</div>
+                    </div>
+                    <div class="page-hero">
+                      <div class="page-copy">
+                        <div class="kicker">stage / systems</div>
+                        <div class="headline">把灯光、音响、现场感做成一套链路</div>
+                        <div class="desc">不是只会做页面，而是能把展示系统完整搭起来。</div>
+                        <div class="buttons"><div class="btn primary">Open Stage</div><div class="btn">System</div></div>
+                      </div>
+                      <div class="page-grid">
+                        <div class="page-card"><span class="label">lights</span><strong>motion sync</strong></div>
+                        <div class="page-card"><span class="label">audio</span><strong>signal flow</strong></div>
+                        <div class="page-card"><span class="label">scene</span><strong>page switch</strong></div>
+                      </div>
+                    </div>
+                  </section>
                 </div>
               </div>
               <div class="scan" id="scanline"></div>
@@ -773,8 +853,10 @@
     const out2 = document.getElementById('out2');
     const out3 = document.getElementById('out3');
     const pill = document.getElementById('pill');
-    const previewCursor = document.getElementById('previewCursor');
     const heroCard = document.getElementById('heroCard');
+    const pagePrev = document.getElementById('pagePrev');
+    const pageCurrent = document.getElementById('pageCurrent');
+    const pageNext = document.getElementById('pageNext');
     const score = document.getElementById('score');
     const scanline = document.getElementById('scanline');
     const address = document.getElementById('address');
@@ -828,16 +910,39 @@
       pill.style.opacity = p > 0.45 ? '1' : '0';
       pill.style.transform = `translateY(${(1 - clamp((p - 0.45)/0.15)) * 8}px)`;
     }
+    function setPageState(el, state, x, scale, opacity) {
+      if (!el) return;
+      el.className = `page-screen ${state}`;
+      el.style.transform = `translateX(${x}) scale(${scale})`;
+      el.style.opacity = opacity;
+    }
+
     function renderPreview(progress) {
       const p = ease(progress);
-      previewCursor.style.opacity = p > 0.08 ? '1' : '0';
-      previewCursor.style.left = `${28 + 28 * Math.sin(p * Math.PI * 1.2)}%`;
-      previewCursor.style.top = `${26 + 18 * Math.sin(p * Math.PI * 1.0)}%`;
-      heroCard.style.boxShadow = `0 0 ${24 * clamp((p - 0.12)/0.2)}px rgba(255,255,255,.12), inset 0 1px 0 rgba(255,255,255,.04)`;
-      score.textContent = String(Math.min(99, 3 + Math.floor(p * 18))).padStart(2, '0');
-      address.textContent = p < 0.22 ? 'localhost:3000' : p < 0.44 ? 'Loading preview ...' : 'localhost:3000';
-      scanline.style.opacity = p > 0.42 ? String(0.35 * clamp((p - 0.42)/0.16)) : '0';
-      scanline.style.transform = `translateY(${40 + clamp((p - 0.42)/0.18) * 160}px)`;
+      const phase = p < 0.34 ? 0 : p < 0.67 ? 1 : 2;
+      const local = phase === 0 ? p / 0.34 : phase === 1 ? (p - 0.34) / 0.33 : (p - 0.67) / 0.33;
+      const cut = phase === 0 ? 0 : phase === 1 ? 1 : 2;
+
+      if (phase === 0) {
+        setPageState(pagePrev, 'active', '0%', '1', '1');
+        setPageState(pageCurrent, 'next', '14%', '.985', '0');
+        setPageState(pageNext, 'next', '16%', '.98', '0');
+        address.textContent = 'Code → Portfolio';
+      } else if (phase === 1) {
+        setPageState(pagePrev, 'prev', '-12%', '.98', '0');
+        setPageState(pageCurrent, 'active', '0%', '1', '1');
+        setPageState(pageNext, 'next', '16%', '.98', '0');
+        address.textContent = 'Portfolio';
+      } else {
+        setPageState(pagePrev, 'prev', '-12%', '.98', '0');
+        setPageState(pageCurrent, 'prev', '-14%', '.985', '0');
+        setPageState(pageNext, 'active', '0%', '1', '1');
+        address.textContent = 'Portfolio → Stage';
+      }
+
+      heroCard.style.boxShadow = `0 0 ${20 + Math.round(18 * local)}px rgba(255,255,255,.10), inset 0 1px 0 rgba(255,255,255,.04)`;
+      scanline.style.opacity = phase === 0 ? String(0.12 + 0.18 * local) : phase === 1 ? String(0.2 + 0.15 * local) : String(0.08 + 0.2 * local);
+      scanline.style.transform = `translateY(${44 + phase * 34 + local * 86}px)`;
     }
     function renderAll(t) {
       if (t < 0.42) {
@@ -881,13 +986,6 @@
     if (document.documentElement.scrollHeight <= window.innerHeight) {
       setTimeout(triggerVocal, 1200);
     }
-    window.addEventListener('pointermove', (e) => {
-      const x = (e.clientX / innerWidth) * 100;
-      const y = (e.clientY / innerHeight) * 100;
-      previewCursor.style.opacity = '1';
-      previewCursor.style.left = x + '%';
-      previewCursor.style.top = y + '%';
-    });
   </script>
 </body>
 </html>
