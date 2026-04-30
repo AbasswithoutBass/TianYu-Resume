@@ -313,50 +313,55 @@
       opacity: .6;
     }
     .moving-head {
-      position: absolute; top: 12.5%; width: 18px; height: 28px; border-radius: 8px;
-      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.18));
+      position: absolute; top: 12.2%; width: 24px; height: 34px; border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.22));
       box-shadow: 0 0 18px rgba(255,255,255,.16);
       transform-origin: 50% 0%;
-      animation: headSweep 6.8s infinite ease-in-out;
+      animation: headSweep 7.2s infinite ease-in-out;
+    }
+    .moving-head::before {
+      content: ""; position: absolute; inset: 4px 5px 14px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(0,0,0,.38), rgba(255,255,255,.08));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
     }
     .moving-head::after {
       content: ""; position: absolute; left: 50%; top: 100%; transform: translateX(-50%);
-      width: 5px; height: 14px; background: rgba(255,255,255,.75);
+      width: 4px; height: 12px; border-radius: 999px; background: rgba(255,255,255,.85);
     }
     .mh1 { left: 18%; animation-delay: 0s; }
-    .mh2 { left: 32%; animation-delay: .5s; }
-    .mh3 { left: 50%; animation-delay: 1s; }
-    .mh4 { left: 68%; animation-delay: 1.5s; }
-    .mh5 { left: 82%; animation-delay: 2s; }
+    .mh2 { left: 32%; animation-delay: .55s; }
+    .mh3 { left: 50%; animation-delay: 1.1s; }
+    .mh4 { left: 68%; animation-delay: 1.65s; }
+    .mh5 { left: 82%; animation-delay: 2.2s; }
     .beam-fan, .beam-fan::before, .beam-fan::after {
-      content: ""; position: absolute; left: 50%; bottom: 14%;
-      transform-origin: bottom center;
-      border-radius: 50% 50% 0 0;
+      content: ""; position: absolute; left: 50%; bottom: 12%;
+      transform-origin: top center;
       clip-path: polygon(50% 0, 0 100%, 100% 100%);
       opacity: 0;
       animation: beamGlow 5.8s infinite ease-in-out;
     }
     .beam-fan {
-      width: 220px; height: 380px;
-      background: linear-gradient(180deg, rgba(255,255,255,.46), rgba(255,255,255,0) 70%);
+      width: 182px; height: 392px; margin-left: -91px;
+      background: linear-gradient(180deg, rgba(255,255,255,.50), rgba(255,255,255,0) 72%);
       filter: blur(2px);
-      margin-left: -110px;
+      transform: rotate(var(--rot,0deg));
     }
     .beam-fan::before {
-      width: 160px; height: 330px; margin-left: -80px;
-      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0) 70%);
+      width: 126px; height: 338px; margin-left: -63px;
+      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0) 74%);
       animation-delay: .7s;
     }
     .beam-fan::after {
-      width: 92px; height: 280px; margin-left: -46px;
-      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 72%);
+      width: 74px; height: 286px; margin-left: -37px;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 76%);
       animation-delay: 1.4s;
     }
-    .beam-leftA { transform: translateX(-160px) rotate(-22deg); }
-    .beam-leftB { transform: translateX(-100px) rotate(-11deg); }
-    .beam-center { transform: translateX(-50%) rotate(0deg); }
-    .beam-rightB { transform: translateX(10px) rotate(11deg); }
-    .beam-rightA { transform: translateX(90px) rotate(22deg); }
+    .beam-leftA { --rot: -26deg; }
+    .beam-leftB { --rot: -13deg; }
+    .beam-center { --rot: 0deg; }
+    .beam-rightB { --rot: 13deg; }
+    .beam-rightA { --rot: 26deg; }
     .haze {
       position: absolute; inset: 0;
       background:
@@ -424,9 +429,15 @@
       background: #fff;
       box-shadow: 0 0 26px rgba(255,255,255,.45);
       top: var(--knob, 62%);
-      animation: faderSlide 4.8s infinite ease-in-out;
+      animation: faderSlide var(--speed, 4.8s) infinite ease-in-out;
+      animation-delay: var(--delay, 0s);
     }
-    .f1 { --knob: 72%; } .f2 { --knob: 48%; } .f3 { --knob: 61%; } .f4 { --knob: 35%; } .f5 { --knob: 56%; } .f6 { --knob: 42%; }
+    .f1 { --knob: 76%; --delay: 0s; --speed: 4.4s; }
+    .f2 { --knob: 44%; --delay: .22s; --speed: 5.0s; }
+    .f3 { --knob: 67%; --delay: .38s; --speed: 4.7s; }
+    .f4 { --knob: 31%; --delay: .58s; --speed: 5.4s; }
+    .f5 { --knob: 58%; --delay: .12s; --speed: 4.9s; }
+    .f6 { --knob: 39%; --delay: .46s; --speed: 5.2s; }
     .wave-panel {
       position: absolute; left: 20px; right: 20px; top: 72px; height: 120px;
       border-radius: 24px;
@@ -445,6 +456,7 @@
     }
     .speaker-bank {
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 74px 18px 18px;
+      position: relative;
     }
     .speaker {
       position: relative; border-radius: 22px; background: rgba(255,255,255,.05);
@@ -467,10 +479,28 @@
     .speaker.s1::after { width: 16%; bottom: 12%; }
     .speaker.s2::before, .speaker.s3::before { width: 48%; top: 19%; }
     .speaker.s2::after, .speaker.s3::after { width: 20%; bottom: 12%; }
+    .sound-rings {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .sound-rings span {
+      position: absolute;
+      left: 12%; top: 50%;
+      width: 130%; height: 130%;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.16);
+      transform: translateY(-50%) scale(.34);
+      opacity: 0;
+      animation: ringSpread 3.9s infinite ease-out;
+    }
+    .sound-rings span:nth-child(2) { animation-delay: .55s; }
+    .sound-rings span:nth-child(3) { animation-delay: 1.1s; }
     .signal-run {
       position: absolute; left: 20px; right: 20px; bottom: 18px; height: 4px;
       background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.26), rgba(255,255,255,0));
       overflow: hidden;
+      z-index: 1;
     }
     .signal-run::before {
       content: ""; position: absolute; inset: 0;
@@ -518,6 +548,12 @@
       20% { opacity: 1; }
       50% { transform: translateX(20%); opacity: 1; }
       100% { transform: translateX(120%); opacity: 0; }
+    }
+    @keyframes ringSpread {
+      0% { opacity: 0; transform: translateY(-50%) scale(.28); }
+      20% { opacity: .65; }
+      70% { opacity: .22; }
+      100% { opacity: 0; transform: translateY(-50%) scale(1.08); }
     }
 
   </style>
@@ -676,6 +712,9 @@
             </div>
           </div>
           <div class="speaker-bank">
+            <div class="sound-rings">
+              <span></span><span></span><span></span>
+            </div>
             <div class="speaker s1"><div class="edge"></div></div>
             <div class="speaker s2"><div class="edge"></div></div>
             <div class="speaker s3"><div class="edge"></div></div>
