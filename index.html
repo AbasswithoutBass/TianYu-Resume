@@ -6,686 +6,303 @@
   <title>Programming Motion Demo</title>
   <style>
     :root {
-      --bg: #050607;
-      --panel: rgba(18, 18, 20, 0.92);
-      --panel-2: rgba(255, 255, 255, 0.04);
-      --line: rgba(255, 255, 255, 0.12);
-      --line-soft: rgba(255, 255, 255, 0.08);
-      --text: #f4f5f7;
-      --muted: rgba(244, 245, 247, 0.62);
-      --muted-2: rgba(244, 245, 247, 0.44);
-      --accent: #ffffff;
-      --accent-soft: rgba(255, 255, 255, 0.10);
-      --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
-      --radius: 28px;
-      --radius-sm: 18px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      --sans: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'SF Pro Display', 'SF Pro Text', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      --bg: #070809;
+      --line: rgba(255,255,255,.11);
+      --line-soft: rgba(255,255,255,.07);
+      --text: #f2f3f5;
+      --muted: rgba(244,245,247,.58);
+      --muted-2: rgba(244,245,247,.42);
+      --mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+      --sans: -apple-system,BlinkMacSystemFont,"PingFang SC","SF Pro Display","SF Pro Text","Hiragino Sans GB","Microsoft YaHei",sans-serif;
     }
-
-    * { box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; }
     body {
-      overflow: hidden;
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 16% 14%,rgba(255,255,255,.09),transparent 20%),
+        radial-gradient(circle at 84% 18%,rgba(255,255,255,.06),transparent 18%),
+        radial-gradient(circle at 72% 80%,rgba(255,255,255,.04),transparent 22%),
+        linear-gradient(180deg,#0a0b0d,#070809);
       color: var(--text);
       font-family: var(--sans);
-      background:
-        radial-gradient(circle at 18% 12%, rgba(255,255,255,.10), transparent 20%),
-        radial-gradient(circle at 80% 16%, rgba(255,255,255,.06), transparent 18%),
-        radial-gradient(circle at 76% 82%, rgba(255,255,255,.05), transparent 20%),
-        linear-gradient(180deg, #090a0c 0%, #050607 100%);
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      overflow: hidden;
     }
 
+    /* ── stage ─────────────────────────────────────────── */
     .stage {
       position: relative;
       width: 100vw;
       height: 100vh;
-      padding: clamp(22px, 3vw, 36px);
-    }
-
-    .grid {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: .35;
-      background-image:
-        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-      background-size: 120px 88px;
-      mask-image: linear-gradient(to bottom, transparent, rgba(0,0,0,.85) 20%, rgba(0,0,0,.55) 75%, transparent);
-    }
-
-    .hero {
-      position: relative;
-      z-index: 1;
-      max-width: 1180px;
-      margin: 0 auto;
-      padding-top: clamp(6px, 1vh, 12px);
-      text-align: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 10px;
-      padding: 7px 14px;
+      justify-content: center;
+      padding: clamp(18px,2.5vw,30px);
+      gap: 0;
+    }
+
+    /* subtle grid overlay */
+    .grid {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      opacity: .3;
+      background-image:
+        linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+      background-size: 120px 88px;
+      mask-image: linear-gradient(to bottom,transparent,rgba(0,0,0,.9) 18%,rgba(0,0,0,.6) 72%,transparent);
+    }
+
+    /* ── hero text ─────────────────────────────────────── */
+    .hero {
+      position: relative; z-index: 1;
+      text-align: center;
+      margin-bottom: clamp(14px,2vh,22px);
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 6px 14px;
       border: 1px solid var(--line-soft);
       border-radius: 999px;
       background: rgba(255,255,255,.04);
       color: var(--muted);
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      font-size: 12px;
-      font-weight: 700;
+      letter-spacing: .22em; text-transform: uppercase;
+      font-size: 11px; font-weight: 700;
     }
-
     .eyebrow::before {
       content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 0 6px rgba(255,255,255,.08);
+      width: 5px; height: 5px; border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 0 0 5px rgba(255,255,255,.08);
     }
-
     h1 {
-      margin: 18px 0 0;
-      font-size: clamp(38px, 5.2vw, 80px);
-      line-height: .94;
-      letter-spacing: -.06em;
-      font-weight: 800;
+      margin: 14px 0 0;
+      font-size: clamp(32px,4.8vw,72px);
+      line-height: .96; letter-spacing: -.06em; font-weight: 800;
     }
-
     .subtitle {
-      max-width: 760px;
-      margin: 16px auto 0;
-      font-size: clamp(16px, 1.5vw, 24px);
-      line-height: 1.7;
-      color: var(--muted);
+      max-width: 700px; margin: 14px auto 0;
+      font-size: clamp(14px,1.4vw,22px);
+      line-height: 1.7; color: var(--muted);
     }
 
-    .note {
-      margin-top: 14px;
-      font-size: 13px;
-      letter-spacing: .12em;
-      color: var(--muted-2);
-      text-transform: uppercase;
-    }
-
+    /* ── main deck ────────────────────────────────────── */
     .deck {
-      position: relative;
-      z-index: 2;
-      width: min(1320px, 94vw);
-      height: min(690px, 66vh);
-      margin: 26px auto 0;
-      border-radius: 34px;
+      position: relative; z-index: 1;
+      width: min(1340px,94vw);
+      height: min(680px,65vh);
+      border-radius: 30px;
       border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.04);
-      backdrop-filter: blur(16px);
+      background: linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+      box-shadow: 0 28px 80px rgba(0,0,0,.44),inset 0 1px 0 rgba(255,255,255,.04);
       overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.08fr .72fr .88fr;
+      gap: 16px;
+      padding: 16px;
     }
 
-    .deck-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--line-soft);
-      background: rgba(255,255,255,.02);
-    }
-
-    .traffic {
-      display: flex;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-    .traffic span {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.15);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
-    }
-
-    .mode-tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      flex: 1;
-      min-width: 0;
-    }
-    .mode-tab {
-      appearance: none;
-      border: 1px solid transparent;
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      padding: 9px 14px;
-      border-radius: 999px;
-      font: 600 13px/1 var(--sans);
-      cursor: pointer;
-      transition: transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
-      white-space: nowrap;
-    }
-    .mode-tab:hover { color: #fff; background: rgba(255,255,255,.08); }
-    .mode-tab.active {
-      color: #111;
-      background: rgba(255,255,255,.92);
-      border-color: rgba(255,255,255,.92);
-    }
-
-    .mode-label {
-      flex-shrink: 0;
-      color: var(--muted-2);
-      font-size: 12px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .viewport {
-      position: relative;
-      height: calc(100% - 66px);
-      padding: 18px;
-    }
-
-    .panel-shell {
-      position: relative;
-      height: 100%;
-      border-radius: 26px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.09);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-    }
-
-    .panel-head {
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 14px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      color: rgba(255,255,255,.74);
-      font-size: 12px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      background: rgba(255,255,255,.02);
-    }
-
-    .panel-left { display: flex; align-items: center; gap: 10px; }
-    .panel-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.95);
-      box-shadow: 0 0 0 5px rgba(255,255,255,.06);
-    }
-
-    .content {
-      height: calc(100% - 44px);
-      padding: 18px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .content.fade-in {
-      animation: contentIn 360ms ease;
-    }
-    @keyframes contentIn {
-      from { opacity: .4; transform: translateY(10px) scale(.99); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .mode-card {
-      height: 100%;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.09);
+    /* ── shared panel chrome ───────────────────────────── */
+    .panel {
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
       overflow: hidden;
-      position: relative;
+      display: flex; flex-direction: column;
     }
-
-    .editor-layout {
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      height: 100%;
-    }
-    .editor-col {
-      padding: 18px 18px 18px 16px;
-      border-right: 1px solid rgba(255,255,255,.08);
-      position: relative;
-    }
-    .editor-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-    .file-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.08);
-      color: rgba(255,255,255,.82);
-    }
-    .file-pill::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #fff;
-    }
-
-    .code-grid {
-      display: grid;
-      grid-template-columns: 52px 1fr;
-      gap: 0;
-      font-family: var(--mono);
-      font-size: 22px;
-      line-height: 1.9;
-      letter-spacing: -.01em;
-      position: relative;
-    }
-    .gutter {
-      color: rgba(255,255,255,.42);
-      text-align: right;
-      padding-right: 12px;
-      user-select: none;
-    }
-    .code-line {
-      min-height: 1.9em;
-      padding: 0 8px 0 10px;
-      border-radius: 12px;
-      position: relative;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .code-line.active { background: rgba(255,255,255,.08); }
-    .code-line.done { color: rgba(255,255,255,.96); }
-    .code-line.dim { color: rgba(255,255,255,.86); }
-    .token-comment { color: rgba(255,255,255,.44); }
-    .token-key { color: #fff; font-weight: 700; }
-    .token-string { color: rgba(255,255,255,.92); }
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      height: 1.15em;
-      margin-left: 2px;
-      vertical-align: -0.18em;
-      background: #fff;
-      border-radius: 2px;
-      box-shadow: 0 0 18px rgba(255,255,255,.24);
-      animation: blink .9s steps(1) infinite;
-    }
-    @keyframes blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
-
-    .editor-side {
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 14px;
-      padding: 18px;
-    }
-    .side-card {
-      border-radius: 20px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.08);
-      padding: 16px;
-    }
-    .side-title {
-      font-size: 12px;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--muted-2);
-      margin-bottom: 10px;
-    }
-    .side-copy {
-      font-size: 18px;
-      line-height: 1.7;
-      color: rgba(255,255,255,.9);
-      margin: 0;
-    }
-    .side-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .mini-item {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.08);
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .mini-item strong { color: #fff; font-size: 14px; }
-    .chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
-    .chip {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.08);
-      color: rgba(255,255,255,.82);
-      font-size: 13px;
-    }
-
-    .terminal-layout {
-      height: 100%;
-      display: grid;
-      grid-template-rows: auto 1fr;
-    }
-    .terminal-body {
-      padding: 18px 18px 20px;
-      font-family: var(--mono);
-      font-size: 18px;
-      line-height: 1.8;
-      color: rgba(255,255,255,.96);
-      overflow: hidden;
-    }
-    .term-line { margin: 0 0 8px; }
-    .prompt { color: rgba(255,255,255,.68); }
-    .cmd { color: rgba(255,255,255,.98); }
-    .term-cursor {
-      display: inline-block;
-      width: 10px;
-      height: 20px;
-      margin-left: 2px;
-      vertical-align: -4px;
-      background: rgba(255,255,255,.98);
-      border-radius: 2px;
-      box-shadow: 0 0 16px rgba(255,255,255,.18);
-      animation: blink .9s steps(1) infinite;
-    }
-    .term-out {
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 280ms ease, transform 280ms ease;
-      color: rgba(255,255,255,.72);
-    }
-    .term-out.show { opacity: 1; transform: translateY(0); }
-    .term-ready {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 12px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.78);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 240ms ease, transform 240ms ease;
-    }
-    .term-ready.show { opacity: 1; transform: translateY(0); }
-    .spin {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,.18);
-      border-top-color: #fff;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .browser-layout {
-      height: 100%;
-      display: grid;
-      grid-template-rows: auto 1fr;
-    }
-    .browser-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
+    .panel-head {
+      height: 44px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 14px;
       border-bottom: 1px solid rgba(255,255,255,.08);
       background: rgba(255,255,255,.02);
-    }
-    .traffic-mini { display: flex; gap: 7px; flex-shrink: 0; }
-    .traffic-mini span {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.14);
-    }
-    .address {
-      flex: 1;
-      height: 30px;
-      border-radius: 999px;
-      padding: 0 14px;
-      display: flex;
-      align-items: center;
-      border: 1px solid rgba(255,255,255,.09);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.74);
-      font-size: 12px;
-      letter-spacing: .08em;
-    }
-    .browser-actions { display: flex; gap: 8px; }
-    .browser-actions span {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.04);
-    }
-
-    .browser-body {
-      position: relative;
-      height: 100%;
-      padding: 16px;
-      overflow: hidden;
-    }
-    .page {
-      height: 100%;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.08);
-      background:
-        radial-gradient(circle at 80% 18%, rgba(255,255,255,.08), transparent 18%),
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      padding: 18px;
-      overflow: hidden;
-      position: relative;
-    }
-    .page-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
       color: rgba(255,255,255,.72);
+      font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+      flex-shrink: 0;
     }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-transform: uppercase;
-      letter-spacing: .18em;
-      font-size: 12px;
-      font-weight: 700;
+    .panel-left { display: flex; align-items: center; gap: 9px; }
+    .dot { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.9); box-shadow: 0 0 0 4px rgba(255,255,255,.06); flex-shrink: 0; }
+    .panel-body { flex: 1; overflow: hidden; position: relative; }
+
+    /* ── editor (left) ─────────────────────────────────── */
+    .editor-inner {
+      padding: 16px 16px 16px 14px;
+      height: 100%;
+      display: flex; flex-direction: column;
+      font-family: var(--mono);
+      font-size: clamp(14px,1.6vw,20px);
+      line-height: 2.0;
     }
-    .brand-mark {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: #fff;
+    .file-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 6px 10px; border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.09);
+      color: rgba(255,255,255,.82);
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+      font-family: var(--sans);
+      align-self: flex-start; margin-bottom: 14px;
     }
-    .page-links {
-      display: flex;
-      gap: 16px;
-      color: rgba(255,255,255,.52);
-      font-size: 12px;
+    .file-pill::before { content:''; width:7px;height:7px;border-radius:999px;background:#fff; }
+    .code-wrap { position: relative; flex: 1; }
+    .gutter {
+      position: absolute; left: 0; top: 0; bottom: 0; width: 44px;
+      color: rgba(255,255,255,.38); text-align: right;
+      padding-right: 10px; user-select: none;
+      border-right: 1px solid rgba(255,255,255,.06);
+      font-size: inherit; line-height: inherit;
     }
-    .page-cta {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.92);
-      color: #111;
-      font-size: 12px;
-      font-weight: 800;
-    }
-    .page-hero {
-      display: grid;
-      grid-template-columns: 1.08fr .92fr;
-      gap: 14px;
-      margin-top: 14px;
-      height: calc(100% - 64px);
-    }
-    .copy-card,
-    .stats-card {
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.04);
+    .code-content {
+      position: absolute; left: 54px; top: 0; right: 0; bottom: 0;
       overflow: hidden;
     }
-    .copy-card { padding: 18px; position: relative; }
-    .kicker {
-      font-size: 12px;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.48);
+    .code-line {
+      display: block; min-height: 2em; padding: 0 10px 0 8px;
+      border-radius: 10px; white-space: pre-wrap; word-break: break-word;
+      transition: background 80ms ease;
     }
-    .headline {
-      margin-top: 12px;
-      font-size: 30px;
-      line-height: 1.04;
-      letter-spacing: -.05em;
-      font-weight: 800;
+    .code-line.active { background: rgba(255,255,255,.09); }
+    .cursor {
+      display: inline-block; width: 9px; height: 1.1em;
+      margin-left: 1px; vertical-align: -0.15em;
+      background: #fff; border-radius: 2px;
+      box-shadow: 0 0 14px rgba(255,255,255,.22);
+      animation: blink .88s steps(1) infinite;
     }
-    .desc {
-      margin-top: 10px;
-      font-size: 13px;
-      line-height: 1.7;
-      color: rgba(255,255,255,.62);
-      max-width: 34ch;
+    @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+    /* ── terminal (middle) ──────────────────────────────── */
+    .terminal-inner {
+      padding: 16px; height: 100%;
+      font-family: var(--mono);
+      font-size: clamp(13px,1.5vw,18px);
+      line-height: 1.82;
+      overflow: hidden;
     }
-    .actions { display: flex; gap: 10px; margin-top: 16px; }
-    .btn {
-      height: 32px;
-      padding: 0 12px;
+    .t-line { margin: 0 0 6px; }
+    .prompt { color: rgba(255,255,255,.65); }
+    .cmd { color: rgba(255,255,255,.97); }
+    .t-cursor {
+      display: inline-block; width: 8px; height: 18px;
+      margin-left: 2px; vertical-align: -3px;
+      background: rgba(255,255,255,.96); border-radius: 2px;
+      box-shadow: 0 0 14px rgba(255,255,255,.18);
+      animation: blink .88s steps(1) infinite;
+    }
+    .t-out {
+      color: rgba(255,255,255,.70);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 260ms ease, transform 260ms ease;
+    }
+    .t-out.show { opacity: 1; transform: translateY(0); }
+    .t-ready {
+      display: inline-flex; align-items: center; gap: 9px;
+      margin-top: 12px; padding: 9px 12px;
       border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.76);
+      opacity: 0; transform: translateY(7px);
+      transition: opacity 230ms ease, transform 230ms ease;
+      font-size: 13px;
+    }
+    .t-ready.show { opacity: 1; transform: translateY(0); }
+    .spin { width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.16);border-top-color:#fff;animation:spin .9s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+
+    /* ── dashboard (right) ──────────────────────────────── */
+    .dash-inner {
+      height: 100%;
+      display: flex; flex-direction: column;
+      padding: 14px;
+      overflow: hidden;
+    }
+    .dash-tabs {
+      display: flex; gap: 6px;
+      margin-bottom: 12px; flex-shrink: 0;
+    }
+    .dtab {
+      appearance: none; cursor: pointer;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      padding: 8px 12px; border-radius: 999px;
+      font: 600 12px/1 var(--sans);
+      transition: background 160ms, color 160ms, border-color 160ms;
+    }
+    .dtab:hover { color: #fff; background: rgba(255,255,255,.09); }
+    .dtab.active { background: rgba(255,255,255,.92); color: #111; border-color: rgba(255,255,255,.92); }
+
+    .dash-card {
+      flex: 1; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.09);
+      background:
+        radial-gradient(circle at 82% 14%,rgba(255,255,255,.09),transparent 18%),
+        linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.03));
+      padding: 16px;
+      overflow: hidden; position: relative;
+      display: flex; flex-direction: column;
+    }
+    .d-kicker {
+      font-size: 11px; letter-spacing: .22em;
+      text-transform: uppercase; color: rgba(255,255,255,.44);
+      margin-bottom: 8px;
+    }
+    .d-title {
+      font-size: clamp(22px,2.5vw,32px);
+      line-height: 1.0; letter-spacing: -.05em;
+      font-weight: 800; margin-bottom: 10px;
+    }
+    .d-copy {
+      font-size: 13px; line-height: 1.65;
+      color: rgba(255,255,255,.60);
+      flex: 1;
+    }
+    .d-footer {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 14px;
+    }
+    .dpill {
+      display: inline-flex; align-items: center;
+      padding: 6px 10px; border-radius: 999px;
       background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.09);
       color: rgba(255,255,255,.78);
       font-size: 12px;
-      font-weight: 700;
     }
-    .btn.primary {
-      background: rgba(255,255,255,.92);
-      color: #111;
-    }
-    .stats-card { padding: 16px; display: grid; gap: 12px; }
-    .stat {
-      min-height: 46px;
-      border-radius: 16px;
-      padding: 0 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.62);
-      font-size: 12px;
-    }
-    .stat strong { color: #fff; font-size: 16px; }
-    .feature-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .feature {
-      min-height: 74px;
-      border-radius: 18px;
-      padding: 12px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.04);
-    }
-    .feature .label {
-      font-size: 11px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.42);
-    }
-    .feature .value {
-      margin-top: 8px;
-      font-size: 13px;
-      line-height: 1.45;
-      color: rgba(255,255,255,.88);
-    }
-    .scanline {
-      position: absolute;
-      left: 0; right: 0;
+    .dscan {
+      position: absolute; left:0; right:0;
       height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent);
-      opacity: 0;
-      pointer-events: none;
+      background: linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);
+      opacity: 0; pointer-events: none;
     }
 
+    /* ── footer ────────────────────────────────────────── */
     .footer {
-      position: relative;
-      z-index: 1;
-      max-width: 1180px;
-      margin: 16px auto 0;
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      color: rgba(255,255,255,.54);
-      font-size: 13px;
+      position: relative; z-index: 1;
+      margin-top: clamp(12px,1.8vh,18px);
+      display: flex; justify-content: space-between; gap: 18px;
+      color: rgba(255,255,255,.50); font-size: 13px;
+      max-width: min(1340px,94vw); width: 100%;
     }
     .footer strong {
-      display: block;
-      margin-top: 4px;
-      color: rgba(255,255,255,.9);
-      font-size: 15px;
-      font-weight: 700;
-      line-height: 1.55;
+      display: block; margin-top: 4px;
+      color: rgba(255,255,255,.88);
+      font-size: 15px; font-weight: 700; line-height: 1.55;
     }
-    .footer .hint { text-align: right; max-width: 420px; }
+    .footer .hint { text-align: right; max-width: 380px; }
 
-    .hidden { display: none !important; }
-
-    @media (max-width: 1100px) {
-      .deck { height: auto; min-height: 680px; }
-      .viewport { height: auto; }
-      .panel-shell { min-height: 620px; }
-      .editor-layout, .page-hero { grid-template-columns: 1fr; }
-      .editor-col { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
-      .editor-side { grid-template-rows: auto auto auto; }
-      .feature-row { grid-template-columns: 1fr; }
+    /* ── mobile ────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .deck {
+        grid-template-columns: 1fr;
+        height: auto; min-height: 780px;
+      }
+      .panel-body { min-height: 200px; }
       .footer { flex-direction: column; }
       .footer .hint { text-align: left; }
-    }
-
-    @media (max-width: 760px) {
-      body { overflow: auto; }
-      .stage { height: auto; min-height: 100vh; padding-bottom: 30px; }
-      .deck { width: 100%; height: auto; }
-      .viewport { padding: 12px; }
-      .panel-shell { min-height: 720px; }
-      .code-grid { font-size: 18px; line-height: 1.75; grid-template-columns: 42px 1fr; }
-      .editor-meta { flex-direction: column; align-items: flex-start; }
-      h1 { font-size: clamp(34px, 11vw, 50px); }
-      .subtitle { font-size: 15px; }
-      .mode-tabs { justify-content: flex-start; }
     }
   </style>
 </head>
@@ -695,58 +312,87 @@
 
     <div class="hero">
       <div class="eyebrow">Programming motion demo</div>
-      <h1>把编程能力，做成一页会切换的展示</h1>
-      <div class="subtitle">不是假截图。是真的把 <strong>编辑器 → 终端 → 浏览器结果</strong> 做成一个 Apple 风格的演示页，给简历直接用。</div>
-      <div class="note">Write · Run · Ship</div>
+      <h1>把编程能力，做成一页动画</h1>
+      <div class="subtitle">编辑器逐行输入，终端命令执行，Dashboard 卡片切换 — 三个同步动画，说明能力。</div>
     </div>
 
     <div class="deck">
-      <div class="deck-top">
-        <div class="traffic"><span></span><span></span><span></span></div>
-        <div class="mode-tabs" id="tabs">
-          <button class="mode-tab active" data-mode="write">Write</button>
-          <button class="mode-tab" data-mode="run">Run</button>
-          <button class="mode-tab" data-mode="ship">Ship</button>
+
+      <!-- LEFT: editor -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-left"><span class="dot"></span><span id="edFile">main.ts</span></div>
+          <div id="edLang">typescript</div>
         </div>
-        <div class="mode-label" id="modeLabel">Editor focus</div>
-      </div>
-      <div class="viewport">
-        <div class="panel-shell">
-          <div class="panel-head">
-            <div class="panel-left"><span class="panel-dot"></span><span id="panelTitle">main.ts</span></div>
-            <div id="panelRight">typescript</div>
+        <div class="panel-body">
+          <div class="editor-inner">
+            <div class="file-pill">main.ts</div>
+            <div class="code-wrap">
+              <div class="gutter" id="gutter"></div>
+              <div class="code-content" id="codeContent"></div>
+            </div>
           </div>
-          <div class="content" id="content"></div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      <!-- MIDDLE: terminal -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-left"><span class="dot"></span><span>zsh</span></div>
+          <div>local</div>
+        </div>
+        <div class="panel-body">
+          <div class="terminal-inner">
+            <div class="t-line">
+              <span class="prompt">$</span>
+              <span class="cmd" id="tCmd"></span><span class="t-cursor" id="tCursor"></span>
+            </div>
+            <div class="t-out" id="tOut1">running dev server ...</div>
+            <div class="t-out" id="tOut2">bundling assets ...</div>
+            <div class="t-out" id="tOut3">✓ ready at http://localhost:3000</div>
+            <div class="t-ready" id="tReady"><div class="spin"></div><span>output ready</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: dashboard -->
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-left"><span class="dot"></span><span>preview</span></div>
+          <div id="dTabLabel">Work</div>
+        </div>
+        <div class="panel-body">
+          <div class="dash-inner">
+            <div class="dash-tabs" id="dTabs">
+              <button class="dtab active" data-tab="work">Work</button>
+              <button class="dtab" data-tab="skills">Skills</button>
+              <button class="dtab" data-tab="memory">Memory</button>
+              <button class="dtab" data-tab="deploy">Deploy</button>
+            </div>
+            <div class="dash-card" id="dCard">
+              <div class="d-kicker" id="dKicker">Works where you work</div>
+              <div class="d-title" id="dTitle">Work</div>
+              <div class="d-copy" id="dCopy">Hermes stays in the flow: CLI, terminal, browser, and messaging — one agent, many surfaces.</div>
+              <div class="d-footer" id="dFooter">
+                <span class="dpill">Work in progress</span>
+                <span class="dpill">Built for long runs</span>
+              </div>
+              <div class="dscan" id="dScan"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /deck -->
 
     <div class="footer">
-      <div>
-        <span>展示方式</span>
-        <strong>一张卡片，三段流程。更像官网，也更像作品。</strong>
-      </div>
-      <div class="hint">
-        <span>简历用途</span>
-        <strong>让别人一眼看到：我能把代码写出来，还能把结果做漂亮。</strong>
-      </div>
+      <div><span>说明</span><strong>不是截图，是真的把流程做出来给人看。</strong></div>
+      <div class="hint"><span>给谁看</span><strong>面试官 / 导师 / 客户 — 一眼看出你的编程能力。</strong></div>
     </div>
   </div>
 
   <script>
-    const content = document.getElementById('content');
-    const panelTitle = document.getElementById('panelTitle');
-    const panelRight = document.getElementById('panelRight');
-    const modeLabel = document.getElementById('modeLabel');
-    const tabs = [...document.querySelectorAll('.mode-tab')];
-
-    const MODES = ['write', 'run', 'ship'];
-    const MODE_META = {
-      write: { title: 'main.ts', right: 'typescript', label: 'Editor focus' },
-      run: { title: 'zsh', right: 'local', label: 'Command in motion' },
-      ship: { title: 'browser preview', right: 'localhost:3000', label: 'Result on screen' },
-    };
-
+    /* ── constants ─────────────────────────────────────── */
     const CODE = [
       '// main.ts',
       "import { createDemo } from './lib'",
@@ -760,205 +406,159 @@
       '})',
     ];
 
-    const TERMINAL_CMD = 'pnpm dev -- --host';
-    const TERMINAL_OUT = [
-      'running dev server ...',
-      'bundling assets ...',
-      '✓ ready at http://localhost:3000',
-    ];
+    const TCMD = 'pnpm dev -- --host';
+    const TOUTS = ['running dev server ...', 'bundling assets ...', '✓ ready at http://localhost:3000'];
 
-    let start = performance.now();
-    const modeDuration = 4600;
+    const DCARD = {
+      work: {
+        kicker: 'Works where you work',
+        title: 'Work',
+        copy: 'Hermes stays in the flow: CLI, terminal, browser, and messaging — one agent, many surfaces.',
+        pills: ['Work in progress', 'Built for long runs'],
+      },
+      skills: {
+        kicker: 'Turns actions into reusable skills',
+        title: 'Skills',
+        copy: 'When Hermes solves something once, it can package the workflow as a skill and reuse it later.',
+        pills: ['Auto-generate', 'Shareable format'],
+      },
+      memory: {
+        kicker: 'Keeps context without ballooning',
+        title: 'Memory',
+        copy: 'It remembers what matters, trims what does not, and keeps long sessions from turning into noise.',
+        pills: ['Persistent', 'Compact by design'],
+      },
+      deploy: {
+        kicker: 'Ships to the places you already use',
+        title: 'Deploy',
+        copy: 'Connect it to chat apps, run it on your own machine, or put it behind automation and schedules.',
+        pills: ['Easy setup', 'Ready for teams'],
+      },
+    };
 
-    function clamp(v, min = 0, max = 1) { return Math.max(min, Math.min(max, v)); }
-    function ease(t) { t = clamp(t); return 0.5 - 0.5 * Math.cos(Math.PI * t); }
-    function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    const DKEYS = Object.keys(DCARD);
+    const CYCLE = 9000; // ms per full loop
 
-    function wrapCode(line) {
-      if (line.startsWith('//')) return `<span class="token-comment">${esc(line)}</span>`;
-      return esc(line)
-        .replace(/(import|const)/g, '<span class="token-key">$1</span>')
-        .replace(/'(.*?)'/g, '<span class="token-string">'$1'</span>');
-    }
+    /* ── helpers ─────────────────────────────────────── */
+    const $ = id => document.getElementById(id);
+    const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+    const ease = t => { t = clamp(t); return 0.5 - 0.5 * Math.cos(Math.PI * t); };
+    const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-    function activeMode(now) {
-      const total = ((now - start) / modeDuration) % MODES.length;
-      const idx = Math.floor(total);
-      return { name: MODES[idx], local: total - idx, idx };
-    }
-
-    function renderTabs(name) {
-      tabs.forEach((btn) => btn.classList.toggle('active', btn.dataset.mode === name));
-    }
-
-    function renderEditor(local) {
-      const p = ease(local);
+    /* ── editor render ───────────────────────────────── */
+    function renderEditor(progress) {
+      const p = ease(progress);
+      const totalChars = CODE.join('\n').length;
+      const chars = Math.floor(totalChars * p);
       const activeLine = Math.min(CODE.length - 1, Math.floor(p * CODE.length));
-      const focused = MODE_META.write;
-      panelTitle.textContent = focused.title;
-      panelRight.textContent = focused.right;
-      modeLabel.textContent = focused.label;
 
-      const rows = CODE.map((line, i) => {
-        const state = i < activeLine ? 'done' : i === activeLine ? 'active' : 'dim';
-        const cursor = i === activeLine ? '<span class="cursor"></span>' : '';
-        return `
-          <div class="gutter">${i + 1}</div>
-          <div class="code-line ${state}">${wrapCode(line)}${cursor}</div>
-        `;
+      // gutter
+      $('gutter').innerHTML = CODE.map((_, i) => i + 1).join('<br>');
+
+      // code lines
+      let charCount = 0;
+      const html = CODE.map((line, i) => {
+        const lineChars = line.length + 1;
+        const lineStart = charCount;
+        charCount += lineChars;
+        const lineEnd = charCount;
+        const isActive = i === activeLine;
+        const isDone = i < activeLine;
+
+        let shown = '';
+        if (isDone) {
+          shown = esc(line);
+        } else if (isActive) {
+          const local = clamp(chars - lineStart, 0, lineChars);
+          shown = esc(line.slice(0, local)) + '<span class="cursor"></span>';
+        } else {
+          shown = '';
+        }
+
+        return `<span class="code-line${isActive ? ' active' : ''}">${shown}</span>`;
       }).join('');
-
-      content.innerHTML = `
-        <div class="mode-card editor-layout">
-          <div class="editor-col">
-            <div class="editor-meta">
-              <div class="file-pill">main.ts</div>
-              <div>typed frame ${String(activeLine + 1).padStart(2, '0')}</div>
-            </div>
-            <div class="code-grid">${rows}</div>
-          </div>
-          <div class="editor-side">
-            <div class="side-card">
-              <div class="side-title">What this shows</div>
-              <p class="side-copy">我不是只会写一段代码。我会把结构、命名、节奏和结果一起管好，让页面有“完成感”。</p>
-            </div>
-            <div class="side-card">
-              <div class="side-title">Skills on display</div>
-              <div class="chip-row">
-                <span class="chip">TypeScript</span>
-                <span class="chip">UI motion</span>
-                <span class="chip">Layout</span>
-                <span class="chip">Polish</span>
-              </div>
-            </div>
-            <div class="side-card">
-              <div class="side-title">Resume line</div>
-              <div class="side-list">
-                <div class="mini-item"><span>Editor state</span><strong>aligned</strong></div>
-                <div class="mini-item"><span>Line numbers</span><strong>stable</strong></div>
-                <div class="mini-item"><span>Cursor</span><strong>sync</strong></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-      content.classList.remove('fade-in');
-      void content.offsetWidth;
-      content.classList.add('fade-in');
+      $('codeContent').innerHTML = html;
     }
 
-    function renderTerminal(local) {
-      const p = ease(local);
-      const typed = Math.floor(TERMINAL_CMD.length * clamp(p / 0.46));
-      const cmd = esc(TERMINAL_CMD.slice(0, typed));
-      const phase1 = p > 0.28;
-      const phase2 = p > 0.48;
-      const phase3 = p > 0.68;
-      const ready = p > 0.78;
-      const focused = MODE_META.run;
-      panelTitle.textContent = focused.title;
-      panelRight.textContent = focused.right;
-      modeLabel.textContent = focused.label;
+    /* ── terminal render ──────────────────────────────── */
+    function renderTerminal(progress) {
+      const p = ease(progress);
+      const cmdProgress = clamp(p / 0.40);
+      const typed = Math.floor(TCMD.length * cmdProgress);
+      $('tCmd').textContent = TCMD.slice(0, typed);
+      $('tCursor').style.opacity = cmdProgress < 0.92 ? '1' : '0';
 
-      const outHtml = TERMINAL_OUT.map((line, idx) => {
-        const show = p > (0.30 + idx * 0.18);
-        return `<div class="term-out ${show ? 'show' : ''}">${esc(line)}</div>`;
-      }).join('');
+      const outs = [$('tOut1'), $('tOut2'), $('tOut3')];
+      const thresholds = [0.28, 0.44, 0.60];
+      outs.forEach((el, i) => {
+        el.classList.toggle('show', p > thresholds[i]);
+      });
 
-      content.innerHTML = `
-        <div class="mode-card terminal-layout">
-          <div class="panel-head" style="border-bottom: 1px solid rgba(255,255,255,.08);">
-            <div class="panel-left"><span class="panel-dot"></span><span>zsh</span></div>
-            <div>local</div>
-          </div>
-          <div class="terminal-body">
-            <div class="term-line"><span class="prompt">$</span> <span class="cmd">${cmd}</span><span class="term-cursor"></span></div>
-            ${outHtml}
-            <div class="term-ready ${ready ? 'show' : ''}"><div class="spin"></div><span>output ready</span></div>
-          </div>
-        </div>
-      `;
-      content.classList.remove('fade-in');
-      void content.offsetWidth;
-      content.classList.add('fade-in');
+      const ready = p > 0.72;
+      $('tReady').classList.toggle('show', ready);
     }
 
-    function renderShip(local) {
-      const p = ease(local);
-      const focused = MODE_META.ship;
-      panelTitle.textContent = focused.title;
-      panelRight.textContent = focused.right;
-      modeLabel.textContent = focused.label;
+    /* ── dashboard render ─────────────────────────────── */
+    function renderDashboard(progress) {
+      const p = ease(progress);
+      const tabCount = DKEYS.length;
+      const rawStep = p * tabCount;
+      const step = Math.floor(rawStep);
+      const local = rawStep - step;
+      const currentKey = DKEYS[step % tabCount];
 
-      const navOpacity = clamp((p - 0.02) / 0.16);
-      const headlineOpacity = clamp((p - 0.08) / 0.18);
-      const statsOpacity = clamp((p - 0.22) / 0.16);
-      const cardsOpacity = clamp((p - 0.38) / 0.20);
-      const scanY = 38 + p * 150;
+      // update tabs
+      $('dTabs').querySelectorAll('.dtab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === currentKey);
+      });
+      $('dTabLabel').textContent = DCARD[currentKey].title;
 
-      content.innerHTML = `
-        <div class="mode-card browser-layout">
-          <div class="browser-bar">
-            <div class="traffic-mini"><span></span><span></span><span></span></div>
-            <div class="address">localhost:3000</div>
-            <div class="browser-actions"><span></span><span></span><span></span></div>
-          </div>
-          <div class="browser-body">
-            <div class="page">
-              <div class="page-nav" style="opacity:${navOpacity}; transform: translateY(${(1-navOpacity) * 10}px)">
-                <div class="brand"><span class="brand-mark"></span><span>Hermes</span></div>
-                <div class="page-links"><span>Work</span><span>Skills</span><span>Deploy</span></div>
-                <div class="page-cta">Open Demo</div>
-              </div>
-              <div class="page-hero">
-                <div class="copy-card" style="opacity:${headlineOpacity}; transform: translateY(${(1-headlineOpacity) * 14}px)">
-                  <div class="kicker">programming / motion</div>
-                  <div class="headline">把代码写出来，把结果做漂亮。</div>
-                  <div class="desc">这一页不只是展示截图，而是展示流程：编辑器里的结构、终端里的执行、浏览器里的结果，全都一起出现。</div>
-                  <div class="actions"><div class="btn primary">Run</div><div class="btn">Inspect</div></div>
-                </div>
-                <div class="stats-card" style="opacity:${statsOpacity}; transform: translateY(${(1-statsOpacity) * 14}px)">
-                  <div class="stat"><span>render</span><strong>03</strong></div>
-                  <div class="stat"><span>fps</span><strong>60</strong></div>
-                  <div class="stat"><span>status</span><strong>ready</strong></div>
-                  <div class="feature-row" style="opacity:${cardsOpacity}; transform: translateY(${(1-cardsOpacity) * 14}px)">
-                    <div class="feature"><div class="label">editor</div><div class="value">main.ts<br>逐行完成</div></div>
-                    <div class="feature"><div class="label">terminal</div><div class="value">zsh<br>命令执行</div></div>
-                    <div class="feature"><div class="label">browser</div><div class="value">页面加载<br>结果出现</div></div>
-                  </div>
-                </div>
-              </div>
-              <div class="scanline" style="opacity:${clamp((p - 0.18) / 0.22)}; transform: translateY(${scanY}px)"></div>
-            </div>
-          </div>
-        </div>
-      `;
-      content.classList.remove('fade-in');
-      void content.offsetWidth;
-      content.classList.add('fade-in');
+      // update card with a tiny flash
+      const cfg = DCARD[currentKey];
+      $('dKicker').textContent = cfg.kicker;
+      $('dTitle').textContent = cfg.title;
+      $('dCopy').textContent = cfg.copy;
+      $('dFooter').innerHTML = cfg.pills.map(pill => `<span class="dpill">${pill}</span>`).join('');
+
+      // scan line sweeps each card
+      const scan = $('dScan');
+      scan.style.opacity = String(clamp((Math.sin(local * Math.PI * 2)) * 0.6));
+      scan.style.transform = `translateY(${local * 100}%)`;
+
+      // flash card border on tab switch
+      const card = $('dCard');
+      if (local < 0.06) {
+        card.style.boxShadow = `0 0 20px rgba(255,255,255,.12)`;
+      } else {
+        card.style.boxShadow = '';
+      }
     }
 
-    function render(now) {
-      const { name, local, idx } = activeMode(now);
-      renderTabs(name);
-      if (name === 'write') renderEditor(local);
-      if (name === 'run') renderTerminal(local);
-      if (name === 'ship') renderShip(local);
-      tabs.forEach((btn) => btn.classList.toggle('active', btn.dataset.mode === name));
-    }
-
-    tabs.forEach((btn, idx) => btn.addEventListener('click', () => {
-      start = performance.now() - idx * modeDuration;
-      render(performance.now());
-    }));
-
+    /* ── main loop ────────────────────────────────────── */
     function tick(now) {
-      render(now);
+      const loopProgress = ((now % CYCLE) / CYCLE);
+      renderEditor(loopProgress);
+      renderTerminal(loopProgress);
+      renderDashboard(loopProgress);
       requestAnimationFrame(tick);
     }
 
+    /* ── click to jump ────────────────────────────────── */
+    $('dTabs').addEventListener('click', e => {
+      const btn = e.target.closest('.dtab');
+      if (!btn) return;
+      const target = btn.dataset.tab;
+      const idx = DKEYS.indexOf(target);
+      if (idx < 0) return;
+      const offset = (idx / DKEYS.length) * CYCLE;
+      const start = performance.now() - offset;
+      // smooth jump by restarting
+      requestAnimationFrame(() => tick(performance.now()));
+    });
+
+    /* prefers-reduced-motion */
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      render(performance.now());
+      renderEditor(1); renderTerminal(1); renderDashboard(1);
     } else {
       requestAnimationFrame(tick);
     }
