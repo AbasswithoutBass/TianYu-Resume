@@ -354,8 +354,9 @@
     }
     .light-unit .beam-fan {
       position: absolute; left: 50%; top: calc(12.2% + 32px);
-      width: 182px; height: 392px; margin-left: -91px;
-      background: linear-gradient(180deg, rgba(255,255,255,.56), rgba(255,255,255,0) 72%);
+      width: 220px; height: 392px; margin-left: -110px;
+      background: linear-gradient(180deg, rgba(255,255,255,.52), rgba(255,255,255,.18) 18%, rgba(255,255,255,0) 82%);
+      clip-path: polygon(50% 0, 96% 100%, 4% 100%);
       filter: blur(2px);
       opacity: 0;
       transform-origin: top center;
@@ -365,14 +366,18 @@
     .light-unit .beam-fan::before,
     .light-unit .beam-fan::after {
       content: ""; position: absolute; left: 50%; top: 0;
-      width: 126px; height: 338px; margin-left: -63px;
-      background: linear-gradient(180deg, rgba(255,255,255,.26), rgba(255,255,255,0) 74%);
+      width: 100%; height: 100%;
+      clip-path: inherit;
+      transform: translateX(-50%);
       animation: beamGlow 5.8s infinite ease-in-out;
-      opacity: .9;
+    }
+    .light-unit .beam-fan::before {
+      background: linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,0) 76%);
+      opacity: .92;
     }
     .light-unit .beam-fan::after {
-      width: 74px; height: 286px; margin-left: -37px;
-      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,0) 76%);
+      width: 100%; height: 100%;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 82%);
       animation-delay: 1.4s;
     }
     .u1 { left: 12%; --beam: -24deg; }
