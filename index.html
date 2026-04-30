@@ -797,12 +797,18 @@
       <h1>把代码，做成可运行的结果</h1>
       <p>动画比静态图更能说明能力。</p>
       <div class="eyebrow" style="margin-top:12px; margin-bottom:0; opacity:.9;">代码能力展示</div>
-      <div style="margin-top: 18px; padding: 18px; border: 1px solid rgba(255,255,255,.10); border-radius: 24px; background: rgba(255,255,255,.03); text-align: left; overflow: hidden;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px; color: rgba(255,255,255,.78); font-size: 13px; letter-spacing: .08em;">
-          <div style="display:flex; align-items:center; gap: 10px;"><span style="width:10px; height:10px; border-radius:50%; background: rgba(255,255,255,.16); display:inline-block;"></span><span>main.ts</span></div>
-          <div>typescript</div>
-        </div>
-        <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 18px; line-height: 1.9; color: rgba(255,255,255,.98); white-space: pre-wrap;">
+    </div>
+
+    <div class="workspace" style="margin-top: 24px;">
+      <section class="panel">
+        <div class="head"><div class="dots"><span></span><span></span><span></span></div><div>editor</div></div>
+        <div class="body">
+          <div class="editor-wrap">
+            <div class="shell">
+              <div class="shell-top"><div class="left-tag"><span class="tag-dot"></span><span>main.ts</span></div><div>typescript</div></div>
+              <div class="editor">
+                <div class="gutter">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8</div>
+                <div class="code" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 15px; line-height: 1.72; color: rgba(255,255,255,.92); white-space: pre-wrap;">
 // main.ts
 import { createDemo } from './lib'
 
@@ -813,13 +819,68 @@ const demo = createDemo({
   preview: true,
   ship: true
 })
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="margin-top: 14px; color: rgba(255,255,255,.58); font-size: 14px; line-height: 1.8;">
-          terminal: <span style="color: rgba(255,255,255,.94);">pnpm dev -- --host</span><br>
-          preview: <span style="color: rgba(255,255,255,.94);">localhost:3000</span><br>
-          result: <span style="color: rgba(255,255,255,.94);">把代码，做成可运行的结果</span>
+      </section>
+
+      <section class="panel">
+        <div class="head"><div class="dots"><span></span><span></span><span></span></div><div>terminal</div></div>
+        <div class="body">
+          <div class="terminal-wrap">
+            <div class="shell">
+              <div class="shell-top"><div class="left-tag"><span class="tag-dot"></span><span>zsh</span></div><div>local</div></div>
+              <div class="terminal-body">
+                <div class="term-line"><span class="prompt">$</span> <span class="cmd">pnpm dev -- --host</span><span class="term-cursor"></span></div>
+                <div class="term-line out">running dev server ...</div>
+                <div class="term-line out">bundling assets ...</div>
+                <div class="term-line out">✓ ready at http://localhost:3000</div>
+                <div class="pill"><div class="spin"></div><span>output ready</span></div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section class="panel">
+        <div class="head"><div class="dots"><span></span><span></span><span></span></div><div>preview</div></div>
+        <div class="body">
+          <div class="preview-wrap">
+            <div class="shell">
+              <div class="shell-top">
+                <div class="tab"><span class="dot"></span><span>main.ts preview</span></div>
+                <div class="address">localhost:3000</div>
+                <div class="nav-btns"><div class="nav-btn"></div><div class="nav-btn"></div><div class="nav-btn"></div></div>
+              </div>
+              <div class="preview-body">
+                <div class="page">
+                  <div class="nav">
+                    <div class="brand"><span class="mark"></span><span>Hermes</span></div>
+                    <div class="links"><span>Work</span><span>Skills</span><span>Contact</span></div>
+                    <div class="cta">Open Demo</div>
+                  </div>
+                  <div class="hero">
+                    <div class="copy">
+                      <div class="kicker">programming / motion</div>
+                      <div class="headline">把代码，做成可运行的结果</div>
+                      <div class="desc">动画比静态图更能说明能力。</div>
+                      <div class="buttons"><div class="btn primary">Run</div><div class="btn">Inspect</div></div>
+                    </div>
+                    <div class="stats">
+                      <div class="stat"><span>render</span><strong>03</strong></div>
+                      <div class="stat"><span>fps</span><strong>60</strong></div>
+                      <div class="stat"><span>status</span><strong>ready</strong></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="scan"></div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <div class="systems-outro">动画比静态图更能说明能力。</div>
