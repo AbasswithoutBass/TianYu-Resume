@@ -206,80 +206,44 @@
     .footer strong { display: block; margin-top: 4px; color: rgba(255,255,255,.92); font-size: 15px; }
     .hint { text-align: right; max-width: 420px; }
 
-    /* 舞台演唱模块 */
+    /* 舞台演唱模块 — 照片展示 */
     .vocal-stage {
       position: relative; width: 100%; height: 100vh;
-      background: #08090a; overflow: hidden;
+      background: #000; overflow: hidden;
     }
+    .vs-photo {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.6s ease;
+    }
+    .vocal-stage.show .vs-photo { opacity: 1; }
     .vs-overlay {
       position: absolute; inset: 0;
       background:
-        radial-gradient(circle at 50% 40%, rgba(255,233,180,.08), transparent 32%),
-        linear-gradient(180deg, rgba(0,0,0,.3), rgba(0,0,0,.6));
-      pointer-events: none;
+        linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.6) 100%);
+      pointer-events: none; z-index: 1;
     }
-    .vs-content {
-      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      text-align: center; z-index: 2; pointer-events: none;
-      opacity: 0; transition: opacity 1.2s ease;
+    .vs-text {
+      position: absolute; left: 8%; bottom: 10%;
+      z-index: 2; pointer-events: none;
+      opacity: 0; transform: translateY(18px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
     }
-    .vocal-stage.show .vs-content { opacity: 1; }
+    .vocal-stage.show .vs-text { opacity: 1; transform: translateY(0); }
     .vs-label {
       font-size: 11px; letter-spacing: .28em; text-transform: uppercase;
-      color: rgba(255,255,255,.48); margin-bottom: 16px;
+      color: rgba(255,255,255,.5); margin-bottom: 14px;
     }
     .vs-title {
-      margin: 0 0 14px; font-size: clamp(32px, 4.5vw, 64px);
+      margin: 0 0 12px; font-size: clamp(28px, 4vw, 56px);
       letter-spacing: -.04em; font-weight: 800; color: #fff; line-height: 1;
     }
     .vs-desc {
-      margin: 0; font-size: clamp(13px, 1.3vw, 17px);
-      color: rgba(255,255,255,.62); line-height: 1.8; max-width: 54ch;
+      margin: 0; font-size: clamp(12px, 1.1vw, 15px);
+      color: rgba(255,255,255,.55); line-height: 1.7;
     }
-    .vs-visual {
-      position: absolute; inset: 0; z-index: 1;
-    }
-    .vs-spotlight {
-      position: absolute; left: 50%; top: 30%; transform: translate(-50%, -50%);
-      width: 320px; height: 320px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,233,180,.42), rgba(255,233,180,.1) 30%, transparent 60%);
-      filter: blur(20px);
-      opacity: 0; transition: opacity 1.4s ease;
-    }
-    .vocal-stage.show .vs-spotlight { opacity: 1; }
-    .vs-row {
-      position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%);
-      display: flex; gap: 5%; width: min(700px, 80vw);
-    }
-    .vs-person {
-      flex: 1; aspect-ratio: 1 / 2.4;
-      border-radius: 999px 999px 18px 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.18));
-      box-shadow: 0 0 40px rgba(255,255,255,.08);
-      position: relative; opacity: 0; transform: scaleY(0.6);
-      transition: opacity .8s ease, transform .8s ease;
-    }
-    .vs-person::before {
-      content: ""; position: absolute;
-      left: 50%; top: -10%; transform: translateX(-50%);
-      width: 36%; height: 18%; border-radius: 50%;
-      background: rgba(255,255,255,.9);
-    }
-    .vs-person:nth-child(1), .vs-person:nth-child(5) { opacity: .68; height: 64%; }
-    .vs-person:nth-child(2), .vs-person:nth-child(4) { opacity: .82; height: 70%; }
-    .vocal-stage.show .vs-person { opacity: 1; transform: scaleY(1); }
-    .vocal-stage.show .vs-person:nth-child(1) { transition-delay: .3s; }
-    .vocal-stage.show .vs-person:nth-child(2) { transition-delay: .4s; }
-    .vocal-stage.show .vs-person:nth-child(3) { transition-delay: .5s; }
-    .vocal-stage.show .vs-person:nth-child(4) { transition-delay: .6s; }
-    .vocal-stage.show .vs-person:nth-child(5) { transition-delay: .7s; }
-    .vs-ripple {
-      position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%);
-      width: 80px; height: 80px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,.18);
-      opacity: 0; transition: opacity .6s ease;
-    }
-    .vocal-stage.show .vs-ripple { opacity: 1; }
   </style>
 </head>
 <body>
@@ -378,23 +342,18 @@
   </div>
 
   <!-- 舞台演唱模块 -->
-  <div class="vocal-stage" id="vocalStage">
+    <div class="vocal-stage" id="vocalStage">
+    <img
+      class="vs-photo"
+      id="vsPhoto"
+      src=""
+      alt="舞台演唱"
+    />
     <div class="vs-overlay"></div>
-    <div class="vs-content">
+    <div class="vs-text">
       <div class="vs-label">舞台演唱</div>
       <h2 class="vs-title">五人合唱现场</h2>
-      <p class="vs-desc">黑色舞台中，只用一束定点光照亮我们五个人。<br>画面左右留白充足，重点集中在表演本身。<br>现场配合 · 声音稳定 · 舞台表现</p>
-    </div>
-    <div class="vs-visual" id="vsVisual">
-      <div class="vs-spotlight"></div>
-      <div class="vs-row">
-        <div class="vs-person"></div>
-        <div class="vs-person"></div>
-        <div class="vs-person"></div>
-        <div class="vs-person"></div>
-        <div class="vs-person"></div>
-      </div>
-      <div class="vs-ripple" id="vsRipple"></div>
+      <p class="vs-desc">黑色舞台中，只用一束定点光照亮我们五个人。</p>
     </div>
   </div>
 
