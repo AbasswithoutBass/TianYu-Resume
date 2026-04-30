@@ -6,562 +6,522 @@
   <title>Programming Motion Demo</title>
   <style>
     :root {
-      --bg: #070809;
-      --line: rgba(255,255,255,.11);
-      --line-soft: rgba(255,255,255,.07);
-      --text: #f2f3f5;
-      --muted: rgba(244,245,247,.58);
-      --muted-2: rgba(244,245,247,.42);
-      --mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
-      --sans: -apple-system,BlinkMacSystemFont,"PingFang SC","SF Pro Display","SF Pro Text","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      --bg: #08090a;
+      --panel: rgba(20, 20, 22, 0.96);
+      --line: rgba(255,255,255,0.13);
+      --line2: rgba(255,255,255,0.07);
+      --text: #f7f8f8;
+      --muted: #a6a9b1;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { width: 100%; height: 100%; }
-    body {
-      background: var(--bg);
-      background-image:
-        radial-gradient(circle at 16% 14%,rgba(255,255,255,.09),transparent 20%),
-        radial-gradient(circle at 84% 18%,rgba(255,255,255,.06),transparent 18%),
-        radial-gradient(circle at 72% 80%,rgba(255,255,255,.04),transparent 22%),
-        linear-gradient(180deg,#0a0b0d,#070809);
-      color: var(--text);
-      font-family: var(--sans);
-      -webkit-font-smoothing: antialiased;
-      overflow: hidden;
-    }
-
-    /* ── stage ─────────────────────────────────────────── */
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; background: var(--bg); color: var(--text); overflow: hidden; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; }
     .stage {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: clamp(18px,2.5vw,30px);
-      gap: 0;
-    }
-
-    /* subtle grid overlay */
-    .grid {
-      position: fixed; inset: 0; pointer-events: none; z-index: 0;
-      opacity: .3;
-      background-image:
-        linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
-      background-size: 120px 88px;
-      mask-image: linear-gradient(to bottom,transparent,rgba(0,0,0,.9) 18%,rgba(0,0,0,.6) 72%,transparent);
-    }
-
-    /* ── hero text ─────────────────────────────────────── */
-    .hero {
-      position: relative; z-index: 1;
-      text-align: center;
-      margin-bottom: clamp(14px,2vh,22px);
-    }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 6px 14px;
-      border: 1px solid var(--line-soft);
-      border-radius: 999px;
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      letter-spacing: .22em; text-transform: uppercase;
-      font-size: 11px; font-weight: 700;
-    }
-    .eyebrow::before {
-      content: '';
-      width: 5px; height: 5px; border-radius: 999px;
-      background: #fff;
-      box-shadow: 0 0 0 5px rgba(255,255,255,.08);
-    }
-    h1 {
-      margin: 14px 0 0;
-      font-size: clamp(32px,4.8vw,72px);
-      line-height: .96; letter-spacing: -.06em; font-weight: 800;
-    }
-    .subtitle {
-      max-width: 700px; margin: 14px auto 0;
-      font-size: clamp(14px,1.4vw,22px);
-      line-height: 1.7; color: var(--muted);
-    }
-
-    /* ── main deck ────────────────────────────────────── */
-    .deck {
-      position: relative; z-index: 1;
-      width: min(1340px,94vw);
-      height: min(680px,65vh);
-      border-radius: 30px;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
-      box-shadow: 0 28px 80px rgba(0,0,0,.44),inset 0 1px 0 rgba(255,255,255,.04);
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: 1.08fr .72fr .88fr;
-      gap: 16px;
-      padding: 16px;
-    }
-
-    /* ── shared panel chrome ───────────────────────────── */
-    .panel {
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
-      overflow: hidden;
-      display: flex; flex-direction: column;
-    }
-    .panel-head {
-      height: 44px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 14px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.02);
-      color: rgba(255,255,255,.72);
-      font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-      flex-shrink: 0;
-    }
-    .panel-left { display: flex; align-items: center; gap: 9px; }
-    .dot { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.9); box-shadow: 0 0 0 4px rgba(255,255,255,.06); flex-shrink: 0; }
-    .panel-body { flex: 1; overflow: hidden; position: relative; }
-
-    /* ── editor (left) ─────────────────────────────────── */
-    .editor-inner {
-      padding: 16px 16px 16px 14px;
-      height: 100%;
-      display: flex; flex-direction: column;
-      font-family: var(--mono);
-      font-size: clamp(14px,1.6vw,20px);
-      line-height: 2.0;
-    }
-    .file-pill {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 6px 10px; border-radius: 999px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.09);
-      color: rgba(255,255,255,.82);
-      font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-      font-family: var(--sans);
-      align-self: flex-start; margin-bottom: 14px;
-    }
-    .file-pill::before { content:''; width:7px;height:7px;border-radius:999px;background:#fff; }
-    .code-wrap { position: relative; flex: 1; }
-    .gutter {
-      position: absolute; left: 0; top: 0; bottom: 0; width: 44px;
-      color: rgba(255,255,255,.38); text-align: right;
-      padding-right: 10px; user-select: none;
-      border-right: 1px solid rgba(255,255,255,.06);
-      font-size: inherit; line-height: inherit;
-    }
-    .code-content {
-      position: absolute; left: 54px; top: 0; right: 0; bottom: 0;
-      overflow: hidden;
-    }
-    .code-line {
-      display: block; min-height: 2em; padding: 0 10px 0 8px;
-      border-radius: 10px; white-space: pre-wrap; word-break: break-word;
-      transition: background 80ms ease;
-    }
-    .code-line.active { background: rgba(255,255,255,.09); }
-    .cursor {
-      display: inline-block; width: 9px; height: 1.1em;
-      margin-left: 1px; vertical-align: -0.15em;
-      background: #fff; border-radius: 2px;
-      box-shadow: 0 0 14px rgba(255,255,255,.22);
-      animation: blink .88s steps(1) infinite;
-    }
-    @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
-
-    /* ── terminal (middle) ──────────────────────────────── */
-    .terminal-inner {
-      padding: 16px; height: 100%;
-      font-family: var(--mono);
-      font-size: clamp(13px,1.5vw,18px);
-      line-height: 1.82;
-      overflow: hidden;
-    }
-    .t-line { margin: 0 0 6px; }
-    .prompt { color: rgba(255,255,255,.65); }
-    .cmd { color: rgba(255,255,255,.97); }
-    .t-cursor {
-      display: inline-block; width: 8px; height: 18px;
-      margin-left: 2px; vertical-align: -3px;
-      background: rgba(255,255,255,.96); border-radius: 2px;
-      box-shadow: 0 0 14px rgba(255,255,255,.18);
-      animation: blink .88s steps(1) infinite;
-    }
-    .t-out {
-      color: rgba(255,255,255,.70);
-      opacity: 0; transform: translateY(8px);
-      transition: opacity 260ms ease, transform 260ms ease;
-    }
-    .t-out.show { opacity: 1; transform: translateY(0); }
-    .t-ready {
-      display: inline-flex; align-items: center; gap: 9px;
-      margin-top: 12px; padding: 9px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.09);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.76);
-      opacity: 0; transform: translateY(7px);
-      transition: opacity 230ms ease, transform 230ms ease;
-      font-size: 13px;
-    }
-    .t-ready.show { opacity: 1; transform: translateY(0); }
-    .spin { width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.16);border-top-color:#fff;animation:spin .9s linear infinite; }
-    @keyframes spin { to{transform:rotate(360deg)} }
-
-    /* ── dashboard (right) ──────────────────────────────── */
-    .dash-inner {
-      height: 100%;
-      display: flex; flex-direction: column;
-      padding: 14px;
-      overflow: hidden;
-    }
-    .dash-tabs {
-      display: flex; gap: 6px;
-      margin-bottom: 12px; flex-shrink: 0;
-    }
-    .dtab {
-      appearance: none; cursor: pointer;
-      border: 1px solid rgba(255,255,255,.07);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      padding: 8px 12px; border-radius: 999px;
-      font: 600 12px/1 var(--sans);
-      transition: background 160ms, color 160ms, border-color 160ms;
-    }
-    .dtab:hover { color: #fff; background: rgba(255,255,255,.09); }
-    .dtab.active { background: rgba(255,255,255,.92); color: #111; border-color: rgba(255,255,255,.92); }
-
-    .dash-card {
-      flex: 1; border-radius: 20px;
-      border: 1px solid rgba(255,255,255,.09);
+      position: relative; width: 100vw; height: 100vh;
       background:
-        radial-gradient(circle at 82% 14%,rgba(255,255,255,.09),transparent 18%),
-        linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.03));
+        radial-gradient(circle at 70% 25%, rgba(255,255,255,0.10), transparent 22%),
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.05), transparent 18%),
+        linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 35%),
+        var(--bg);
+    }
+    .grid::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 120px 88px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.65) 20%, rgba(0,0,0,0.35) 75%, rgba(0,0,0,0.0));
+    }
+    .title {
+      position: absolute; left: 50%; top: 5.8vh; transform: translateX(-50%);
+      width: min(1200px, 92vw); text-align: center;
+    }
+    .title h1 {
+      margin: 0; font-size: clamp(42px, 4.8vw, 84px); line-height: 0.96; letter-spacing: -0.05em; font-weight: 800;
+    }
+    .title p {
+      margin: 16px 0 0; font-size: clamp(16px, 1.4vw, 24px); color: var(--muted);
+    }
+    .meta {
+      position: absolute; left: 50%; top: calc(5.8vh + 120px); transform: translateX(-50%);
+      color: rgba(255,255,255,.56); font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
+    }
+    .bar {
+      position: absolute; left: 50%; top: calc(54% - 316px); transform: translateX(-50%);
+      width: min(1360px, 92vw); height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+    }
+    .workspace {
+      position: absolute; left: 50%; top: 54%; transform: translate(-50%, -50%);
+      width: min(1360px, 92vw); height: min(620px, 61vh);
+      display: grid; grid-template-columns: 1.12fr 0.72fr 1fr; gap: 18px;
+    }
+    .panel {
+      position: relative; border: 1px solid var(--line); border-radius: 30px; overflow: hidden;
+      background: var(--panel); box-shadow: 0 22px 72px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.04);
+      backdrop-filter: blur(14px);
+    }
+    .panel .head {
+      display:flex; align-items:center; justify-content:space-between; padding: 14px 18px 12px;
+      border-bottom: 1px solid var(--line2); color: rgba(255,255,255,.78); font-size: 13px; letter-spacing: .08em;
+    }
+    .dots { display:flex; gap: 8px; }
+    .dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.16); box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset; }
+    .body { position:absolute; inset: 48px 0 0 0; }
+
+    .editor-wrap, .terminal-wrap, .preview-wrap { position:absolute; inset:0; padding: 20px 18px 18px; }
+    .shell {
+      position:relative; height:100%; border-radius: 24px; overflow:hidden;
+      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+    }
+    .shell-top {
+      height: 38px; display:flex; align-items:center; justify-content:space-between; padding: 0 14px;
+      border-bottom: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.76);
+      font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    }
+    .left-tag { display:flex; align-items:center; gap: 10px; }
+    .tag-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.9); }
+
+    .editor {
+      position: relative; padding: 18px 18px 18px 16px; height: calc(100% - 38px);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border-left: 1px solid rgba(255,255,255,.06);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 22px; line-height: 2.0; color: rgba(255,255,255,.995);
+      text-shadow: 0 0 20px rgba(255,255,255,.06);
+    }
+    .editor::before {
+      content: 'main.ts'; position: absolute; right: 16px; top: 14px; height: 24px; padding: 0 10px;
+      display:flex; align-items:center; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.10);
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.68);
+    }
+    .gutter {
+      position:absolute; left:0; top:0; bottom:0; width: 52px; padding: 18px 10px 18px 0;
+      color: rgba(255,255,255,.42); text-align:right; border-right: 1px solid rgba(255,255,255,.06);
+      font-size: 13px; line-height: 2.0; user-select:none;
+    }
+    .code {
+      position: relative; margin-left: 62px; white-space: pre-wrap; word-break: break-word; min-height: 100%;
+    }
+    .line { display:block; min-height: 2.0em; }
+    .kw { color: #fff; font-weight: 900; }
+    .str { color: rgba(255,255,255,.92); }
+    .com { color: rgba(255,255,255,.48); }
+    .cursor {
+      display:inline-block; width: 12px; height: 1.15em; margin-left: 2px; vertical-align: -0.15em;
+      background: rgba(255,255,255,1); border-radius: 2px; box-shadow: 0 0 24px rgba(255,255,255,.24);
+      animation: blink 0.9s steps(1) infinite;
+    }
+    .active-line {
+      position:absolute; left: 62px; right: 0; height: 32px; border-radius: 10px; pointer-events:none;
+      background: rgba(255,255,255,.10); outline: 1px solid rgba(255,255,255,.08);
+      opacity: 0; transition: opacity 120ms ease, transform 120ms ease;
+    }
+    @keyframes blink { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
+
+    .terminal-body {
+      padding: 18px 16px 16px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 18px; line-height: 1.78; color: rgba(255,255,255,.96);
+    }
+    .term-line { margin: 0 0 8px; }
+    .prompt { color: rgba(255,255,255,.68); }
+    .cmd { color: rgba(255,255,255,.98); }
+    .term-cursor {
+      display:inline-block; width: 10px; height: 20px; margin-left: 2px; border-radius: 2px;
+      background: rgba(255,255,255,.98); box-shadow: 0 0 18px rgba(255,255,255,.20); animation: blink 0.9s steps(1) infinite;
+    }
+    .out { opacity: 0; transform: translateY(10px); transition: 260ms ease; }
+    .out.show { opacity: 1; transform: translateY(0); }
+    .pill {
+      display:inline-flex; align-items:center; gap: 8px; margin-top: 10px; padding: 8px 12px;
+      border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+      opacity: 0; transform: translateY(8px); transition: 220ms ease;
+    }
+    .spin { width: 14px; height: 14px; border-radius:50%; border: 2px solid rgba(255,255,255,.18); border-top-color:#fff; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .browser-bar {
+      height: 46px; display:flex; align-items:center; justify-content:space-between; gap: 12px;
+      padding: 0 14px; border-bottom: 1px solid rgba(255,255,255,.07); color: rgba(255,255,255,.58);
+    }
+    .tab {
+      display:flex; align-items:center; gap: 8px; padding: 0 12px; height: 28px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.06); color: rgba(255,255,255,.78); font-size: 12px;
+    }
+    .tab .dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; }
+    .address {
+      flex: 1; height: 28px; border-radius: 999px; padding: 0 14px; display:flex; align-items:center;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); font-size: 12px; letter-spacing: .05em;
+    }
+    .nav-btns { display:flex; gap: 8px; }
+    .nav-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
+
+    .preview-body { padding: 14px; position: relative; height: calc(100% - 46px); }
+    .page {
+      position: relative; height: 100%; border-radius: 22px; overflow:hidden;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
       padding: 16px;
-      overflow: hidden; position: relative;
-      display: flex; flex-direction: column;
     }
-    .d-kicker {
-      font-size: 11px; letter-spacing: .22em;
-      text-transform: uppercase; color: rgba(255,255,255,.44);
-      margin-bottom: 8px;
+    .nav {
+      display:flex; align-items:center; justify-content:space-between; gap: 12px; padding-bottom: 14px; margin-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
-    .d-title {
-      font-size: clamp(22px,2.5vw,32px);
-      line-height: 1.0; letter-spacing: -.05em;
-      font-weight: 800; margin-bottom: 10px;
+    .brand { display:flex; align-items:center; gap: 10px; letter-spacing: .16em; text-transform: uppercase; font-size: 13px; }
+    .brand .mark { width: 12px; height: 12px; border-radius: 50%; background: #fff; }
+    .links { display:flex; gap: 16px; color: rgba(255,255,255,.64); font-size: 12px; }
+    .cta { padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.92); color: #000; font-size: 12px; font-weight: 800; }
+    .hero { display:grid; grid-template-columns: 1.15fr .85fr; gap: 14px; }
+    .copy, .stats, .card { border-radius: 20px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); overflow: hidden; }
+    .copy { padding: 18px; min-height: 180px; position: relative; }
+    .kicker { font-size: 12px; letter-spacing: .2em; color: rgba(255,255,255,.48); text-transform: uppercase; }
+    .headline { margin-top: 12px; font-size: 27px; line-height: 1.06; letter-spacing: -.04em; font-weight: 800; }
+    .desc { margin-top: 10px; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,.6); }
+    .buttons { display:flex; gap: 10px; margin-top: 14px; }
+    .btn { height: 30px; padding: 0 12px; display:flex; align-items:center; border-radius: 999px; font-size: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); }
+    .btn.primary { background: rgba(255,255,255,.92); color: #000; font-weight: 800; }
+    .stats { padding: 16px; display:grid; gap: 12px; }
+    .stat { height: 44px; border-radius: 14px; padding: 0 12px; display:flex; align-items:center; justify-content:space-between; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); font-size: 12px; }
+    .stat strong { font-size: 16px; color: #fff; }
+    .modules { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+    .card { min-height: 74px; padding: 12px; }
+    .label { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.42); }
+    .value { margin-top: 8px; font-size: 13px; color: rgba(255,255,255,.92); line-height: 1.45; }
+    .focus {
+      position:absolute; width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.95);
+      box-shadow: 0 0 0 12px rgba(255,255,255,.07); transform: translate(-50%, -50%); opacity: 0; pointer-events: none;
     }
-    .d-copy {
-      font-size: 13px; line-height: 1.65;
-      color: rgba(255,255,255,.60);
-      flex: 1;
+    .focus::after {
+      content:''; position:absolute; left:50%; top:50%; width: 7px; height: 7px; border-radius: 50%; background: #fff; transform: translate(-50%,-50%);
     }
-    .d-footer {
-      display: flex; flex-wrap: wrap; gap: 8px;
-      margin-top: 14px;
-    }
-    .dpill {
-      display: inline-flex; align-items: center;
-      padding: 6px 10px; border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.09);
-      color: rgba(255,255,255,.78);
-      font-size: 12px;
-    }
-    .dscan {
-      position: absolute; left:0; right:0;
-      height: 2px;
-      background: linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);
-      opacity: 0; pointer-events: none;
+    .scan {
+      position:absolute; left:0; right:0; height:2px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+      transform: translateY(-40px); opacity: 0; pointer-events:none;
     }
 
-    /* ── footer ────────────────────────────────────────── */
     .footer {
-      position: relative; z-index: 1;
-      margin-top: clamp(12px,1.8vh,18px);
-      display: flex; justify-content: space-between; gap: 18px;
-      color: rgba(255,255,255,.50); font-size: 13px;
-      max-width: min(1340px,94vw); width: 100%;
+      position: absolute; left: 50%; bottom: 4.8vh; transform: translateX(-50%); width: min(1040px, 92vw);
+      display: flex; justify-content: space-between; gap: 20px; color: rgba(255,255,255,.56); font-size: 13px;
     }
-    .footer strong {
-      display: block; margin-top: 4px;
-      color: rgba(255,255,255,.88);
-      font-size: 15px; font-weight: 700; line-height: 1.55;
-    }
-    .footer .hint { text-align: right; max-width: 380px; }
+    .footer strong { display: block; margin-top: 4px; color: rgba(255,255,255,.92); font-size: 15px; }
+    .hint { text-align: right; max-width: 420px; }
 
-    /* ── mobile ────────────────────────────────────────── */
-    @media (max-width: 900px) {
-      .deck {
-        grid-template-columns: 1fr;
-        height: auto; min-height: 780px;
-      }
-      .panel-body { min-height: 200px; }
-      .footer { flex-direction: column; }
-      .footer .hint { text-align: left; }
+    /* 舞台演唱模块 */
+    .vocal-stage {
+      position: relative; width: 100%; height: 100vh;
+      background: #08090a; overflow: hidden;
     }
+    .vs-overlay {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(255,233,180,.08), transparent 32%),
+        linear-gradient(180deg, rgba(0,0,0,.3), rgba(0,0,0,.6));
+      pointer-events: none;
+    }
+    .vs-content {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      text-align: center; z-index: 2; pointer-events: none;
+      opacity: 0; transition: opacity 1.2s ease;
+    }
+    .vocal-stage.show .vs-content { opacity: 1; }
+    .vs-label {
+      font-size: 11px; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(255,255,255,.48); margin-bottom: 16px;
+    }
+    .vs-title {
+      margin: 0 0 14px; font-size: clamp(32px, 4.5vw, 64px);
+      letter-spacing: -.04em; font-weight: 800; color: #fff; line-height: 1;
+    }
+    .vs-desc {
+      margin: 0; font-size: clamp(13px, 1.3vw, 17px);
+      color: rgba(255,255,255,.62); line-height: 1.8; max-width: 54ch;
+    }
+    .vs-visual {
+      position: absolute; inset: 0; z-index: 1;
+    }
+    .vs-spotlight {
+      position: absolute; left: 50%; top: 30%; transform: translate(-50%, -50%);
+      width: 320px; height: 320px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,233,180,.42), rgba(255,233,180,.1) 30%, transparent 60%);
+      filter: blur(20px);
+      opacity: 0; transition: opacity 1.4s ease;
+    }
+    .vocal-stage.show .vs-spotlight { opacity: 1; }
+    .vs-row {
+      position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%);
+      display: flex; gap: 5%; width: min(700px, 80vw);
+    }
+    .vs-person {
+      flex: 1; aspect-ratio: 1 / 2.4;
+      border-radius: 999px 999px 18px 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.18));
+      box-shadow: 0 0 40px rgba(255,255,255,.08);
+      position: relative; opacity: 0; transform: scaleY(0.6);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .vs-person::before {
+      content: ""; position: absolute;
+      left: 50%; top: -10%; transform: translateX(-50%);
+      width: 36%; height: 18%; border-radius: 50%;
+      background: rgba(255,255,255,.9);
+    }
+    .vs-person:nth-child(1), .vs-person:nth-child(5) { opacity: .68; height: 64%; }
+    .vs-person:nth-child(2), .vs-person:nth-child(4) { opacity: .82; height: 70%; }
+    .vocal-stage.show .vs-person { opacity: 1; transform: scaleY(1); }
+    .vocal-stage.show .vs-person:nth-child(1) { transition-delay: .3s; }
+    .vocal-stage.show .vs-person:nth-child(2) { transition-delay: .4s; }
+    .vocal-stage.show .vs-person:nth-child(3) { transition-delay: .5s; }
+    .vocal-stage.show .vs-person:nth-child(4) { transition-delay: .6s; }
+    .vocal-stage.show .vs-person:nth-child(5) { transition-delay: .7s; }
+    .vs-ripple {
+      position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%);
+      width: 80px; height: 80px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.18);
+      opacity: 0; transition: opacity .6s ease;
+    }
+    .vocal-stage.show .vs-ripple { opacity: 1; }
   </style>
 </head>
 <body>
-  <div class="stage">
-    <div class="grid"></div>
+  <div class="stage grid">
+    <div class="title">
+      <h1>把代码，做成可运行的结果</h1>
+      <p>编程展示要看过程，不只看截图。</p>
+    </div>
+    <div class="meta">PROGRAMMING · MOTION DEMO</div>
+    <div class="bar"></div>
 
-    <div class="hero">
-      <div class="eyebrow">Programming motion demo</div>
-      <h1>把编程能力，做成一页动画</h1>
-      <div class="subtitle">编辑器逐行输入，终端命令执行，Dashboard 卡片切换 — 三个同步动画，说明能力。</div>
+    <div class="workspace">
+      <section class="panel">
+        <div class="head"><div class="dots"><span></span><span></span><span></span></div><div>editor</div></div>
+        <div class="body">
+          <div class="editor-wrap">
+            <div class="shell">
+              <div class="shell-top"><div class="left-tag"><span class="tag-dot"></span><span>main.ts</span></div><div>typescript</div></div>
+              <div class="editor">
+                <div class="gutter">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8</div>
+                <div class="active-line" id="activeLine"></div>
+                <div class="code" id="editorText"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="head"><div class="dots"><span></span><span></span><span></span></div><div>terminal</div></div>
+        <div class="body">
+          <div class="terminal-wrap">
+            <div class="shell">
+              <div class="shell-top"><div class="left-tag"><span class="tag-dot"></span><span>zsh</span></div><div>local</div></div>
+              <div class="terminal-body">
+                <div class="term-line"><span class="prompt">$</span> <span class="cmd" id="cmdText"></span><span class="term-cursor" id="termCaret"></span></div>
+                <div class="term-line out" id="out1">running dev server ...</div>
+                <div class="term-line out" id="out2">bundling assets ...</div>
+                <div class="term-line out" id="out3">✓ ready at http://localhost:3000</div>
+                <div class="pill" id="pill"><div class="spin"></div><span>output ready</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="head"><div class="dots"><span></span><span></span><span></span></div><div>preview</div></div>
+        <div class="body">
+          <div class="preview-wrap">
+            <div class="shell">
+              <div class="shell-top">
+                <div class="tab"><span class="dot"></span><span>main.ts preview</span></div>
+                <div class="address" id="address">localhost:3000</div>
+                <div class="nav-btns"><div class="nav-btn"></div><div class="nav-btn"></div><div class="nav-btn"></div></div>
+              </div>
+              <div class="preview-body">
+                <div class="page" id="heroCard">
+                  <div class="nav">
+                    <div class="brand"><span class="mark"></span><span>Hermes</span></div>
+                    <div class="links"><span>Work</span><span>Skills</span><span>Contact</span></div>
+                    <div class="cta">Open Demo</div>
+                  </div>
+                  <div class="hero">
+                    <div class="copy">
+                      <div class="kicker">programming / motion</div>
+                      <div class="headline">把代码，做成可运行的结果</div>
+                      <div class="desc">编辑器、终端、浏览器预览三步联动。代码被敲出来，命令跑起来，结果真正显示出来。</div>
+                      <div class="buttons"><div class="btn primary">Run</div><div class="btn">Inspect</div></div>
+                      <div class="focus" id="previewCursor"></div>
+                    </div>
+                    <div class="stats">
+                      <div class="stat"><span>render</span><strong id="score">03</strong></div>
+                      <div class="stat"><span>fps</span><strong>60</strong></div>
+                      <div class="stat"><span>status</span><strong>ready</strong></div>
+                    </div>
+                  </div>
+                  <div class="modules">
+                    <div class="card"><div class="label">editor</div><div class="value">main.ts<br>逐行输入</div></div>
+                    <div class="card"><div class="label">terminal</div><div class="value">zsh<br>命令执行</div></div>
+                    <div class="card"><div class="label">browser</div><div class="value">页面加载<br>结果出现</div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="scan" id="scanline"></div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <div class="deck">
-
-      <!-- LEFT: editor -->
-      <section class="panel">
-        <div class="panel-head">
-          <div class="panel-left"><span class="dot"></span><span id="edFile">main.ts</span></div>
-          <div id="edLang">typescript</div>
-        </div>
-        <div class="panel-body">
-          <div class="editor-inner">
-            <div class="file-pill">main.ts</div>
-            <div class="code-wrap">
-              <div class="gutter" id="gutter"></div>
-              <div class="code-content" id="codeContent"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- MIDDLE: terminal -->
-      <section class="panel">
-        <div class="panel-head">
-          <div class="panel-left"><span class="dot"></span><span>zsh</span></div>
-          <div>local</div>
-        </div>
-        <div class="panel-body">
-          <div class="terminal-inner">
-            <div class="t-line">
-              <span class="prompt">$</span>
-              <span class="cmd" id="tCmd"></span><span class="t-cursor" id="tCursor"></span>
-            </div>
-            <div class="t-out" id="tOut1">running dev server ...</div>
-            <div class="t-out" id="tOut2">bundling assets ...</div>
-            <div class="t-out" id="tOut3">✓ ready at http://localhost:3000</div>
-            <div class="t-ready" id="tReady"><div class="spin"></div><span>output ready</span></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- RIGHT: dashboard -->
-      <section class="panel">
-        <div class="panel-head">
-          <div class="panel-left"><span class="dot"></span><span>preview</span></div>
-          <div id="dTabLabel">Work</div>
-        </div>
-        <div class="panel-body">
-          <div class="dash-inner">
-            <div class="dash-tabs" id="dTabs">
-              <button class="dtab active" data-tab="work">Work</button>
-              <button class="dtab" data-tab="skills">Skills</button>
-              <button class="dtab" data-tab="memory">Memory</button>
-              <button class="dtab" data-tab="deploy">Deploy</button>
-            </div>
-            <div class="dash-card" id="dCard">
-              <div class="d-kicker" id="dKicker">Works where you work</div>
-              <div class="d-title" id="dTitle">Work</div>
-              <div class="d-copy" id="dCopy">Hermes stays in the flow: CLI, terminal, browser, and messaging — one agent, many surfaces.</div>
-              <div class="d-footer" id="dFooter">
-                <span class="dpill">Work in progress</span>
-                <span class="dpill">Built for long runs</span>
-              </div>
-              <div class="dscan" id="dScan"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div><!-- /deck -->
-
     <div class="footer">
-      <div><span>说明</span><strong>不是截图，是真的把流程做出来给人看。</strong></div>
-      <div class="hint"><span>给谁看</span><strong>面试官 / 导师 / 客户 — 一眼看出你的编程能力。</strong></div>
+      <div><span>展示方式</span><strong>动画比静态图更能说明能力</strong></div>
+      <div class="hint"><span>一句话说明</span><strong>从编辑器，到命令行，到结果。</strong></div>
+    </div>
+  </div>
+
+  <!-- 舞台演唱模块 -->
+  <div class="vocal-stage" id="vocalStage">
+    <div class="vs-overlay"></div>
+    <div class="vs-content">
+      <div class="vs-label">舞台演唱</div>
+      <h2 class="vs-title">五人合唱现场</h2>
+      <p class="vs-desc">黑色舞台中，只用一束定点光照亮我们五个人。<br>画面左右留白充足，重点集中在表演本身。<br>现场配合 · 声音稳定 · 舞台表现</p>
+    </div>
+    <div class="vs-visual" id="vsVisual">
+      <div class="vs-spotlight"></div>
+      <div class="vs-row">
+        <div class="vs-person"></div>
+        <div class="vs-person"></div>
+        <div class="vs-person"></div>
+        <div class="vs-person"></div>
+        <div class="vs-person"></div>
+      </div>
+      <div class="vs-ripple" id="vsRipple"></div>
     </div>
   </div>
 
   <script>
-    /* ── constants ─────────────────────────────────────── */
-    const CODE = [
-      '// main.ts',
+    const editorText = document.getElementById('editorText');
+    const activeLine = document.getElementById('activeLine');
+    const cmdText = document.getElementById('cmdText');
+    const termCaret = document.getElementById('termCaret');
+    const out1 = document.getElementById('out1');
+    const out2 = document.getElementById('out2');
+    const out3 = document.getElementById('out3');
+    const pill = document.getElementById('pill');
+    const previewCursor = document.getElementById('previewCursor');
+    const heroCard = document.getElementById('heroCard');
+    const score = document.getElementById('score');
+    const scanline = document.getElementById('scanline');
+    const address = document.getElementById('address');
+
+    const editorLines = [
+      "// main.ts",
       "import { createDemo } from './lib'",
-      '',
-      'const demo = createDemo({',
+      "",
+      "const demo = createDemo({",
       "  mode: 'black-white',",
       "  motion: 'precise',",
       "  speed: 'smooth',",
-      '  preview: true,',
-      '  ship: true',
-      '})',
+      "  preview: true,",
+      "  ship: true",
+      "})"
     ];
+    const terminalCmd = 'pnpm dev -- --host';
 
-    const TCMD = 'pnpm dev -- --host';
-    const TOUTS = ['running dev server ...', 'bundling assets ...', '✓ ready at http://localhost:3000'];
-
-    const DCARD = {
-      work: {
-        kicker: 'Works where you work',
-        title: 'Work',
-        copy: 'Hermes stays in the flow: CLI, terminal, browser, and messaging — one agent, many surfaces.',
-        pills: ['Work in progress', 'Built for long runs'],
-      },
-      skills: {
-        kicker: 'Turns actions into reusable skills',
-        title: 'Skills',
-        copy: 'When Hermes solves something once, it can package the workflow as a skill and reuse it later.',
-        pills: ['Auto-generate', 'Shareable format'],
-      },
-      memory: {
-        kicker: 'Keeps context without ballooning',
-        title: 'Memory',
-        copy: 'It remembers what matters, trims what does not, and keeps long sessions from turning into noise.',
-        pills: ['Persistent', 'Compact by design'],
-      },
-      deploy: {
-        kicker: 'Ships to the places you already use',
-        title: 'Deploy',
-        copy: 'Connect it to chat apps, run it on your own machine, or put it behind automation and schedules.',
-        pills: ['Easy setup', 'Ready for teams'],
-      },
-    };
-
-    const DKEYS = Object.keys(DCARD);
-    const CYCLE = 9000; // ms per full loop
-
-    /* ── helpers ─────────────────────────────────────── */
-    const $ = id => document.getElementById(id);
-    const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
-    const ease = t => { t = clamp(t); return 0.5 - 0.5 * Math.cos(Math.PI * t); };
-    const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-    /* ── editor render ───────────────────────────────── */
+    function clamp(v, a=0, b=1){ return Math.max(a, Math.min(b, v)); }
+    function ease(t){ return 0.5 - 0.5 * Math.cos(Math.PI * clamp(t)); }
+    function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function typedCode(progress) {
+      const p = ease(progress);
+      const total = editorLines.join('\n').length;
+      const typed = Math.max(1, Math.min(total, Math.floor(total * p)));
+      const prefix = editorLines.join('\n').slice(0, typed);
+      return prefix;
+    }
     function renderEditor(progress) {
       const p = ease(progress);
-      const totalChars = CODE.join('\n').length;
-      const chars = Math.floor(totalChars * p);
-      const activeLine = Math.min(CODE.length - 1, Math.floor(p * CODE.length));
-
-      // gutter
-      $('gutter').innerHTML = CODE.map((_, i) => i + 1).join('<br>');
-
-      // code lines
-      let charCount = 0;
-      const html = CODE.map((line, i) => {
-        const lineChars = line.length + 1;
-        const lineStart = charCount;
-        charCount += lineChars;
-        const lineEnd = charCount;
-        const isActive = i === activeLine;
-        const isDone = i < activeLine;
-
-        let shown = '';
-        if (isDone) {
-          shown = esc(line);
-        } else if (isActive) {
-          const local = clamp(chars - lineStart, 0, lineChars);
-          shown = esc(line.slice(0, local)) + '<span class="cursor"></span>';
-        } else {
-          shown = '';
-        }
-
-        return `<span class="code-line${isActive ? ' active' : ''}">${shown}</span>`;
+      // Always render the full code so it never looks empty.
+      // Only the cursor/highlight moves.
+      const phaseIdx = Math.min(editorLines.length - 1, Math.floor(p * editorLines.length));
+      const html = editorLines.map((ln, i) => {
+        const line = esc(ln);
+        return i === phaseIdx ? `<span class="line">${line}<span class="cursor"></span></span>` : `<span class="line">${line}</span>`;
       }).join('');
-      $('codeContent').innerHTML = html;
+      editorText.innerHTML = html;
+      activeLine.style.opacity = '1';
+      activeLine.style.transform = `translateY(${16 + phaseIdx * 31}px)`;
     }
-
-    /* ── terminal render ──────────────────────────────── */
     function renderTerminal(progress) {
       const p = ease(progress);
-      const cmdProgress = clamp(p / 0.40);
-      const typed = Math.floor(TCMD.length * cmdProgress);
-      $('tCmd').textContent = TCMD.slice(0, typed);
-      $('tCursor').style.opacity = cmdProgress < 0.92 ? '1' : '0';
-
-      const outs = [$('tOut1'), $('tOut2'), $('tOut3')];
-      const thresholds = [0.28, 0.44, 0.60];
-      outs.forEach((el, i) => {
-        el.classList.toggle('show', p > thresholds[i]);
-      });
-
-      const ready = p > 0.72;
-      $('tReady').classList.toggle('show', ready);
+      // Keep the command visible at all times.
+      cmdText.textContent = terminalCmd;
+      termCaret.style.opacity = p < 0.92 ? '1' : '0.35';
+      termCaret.style.transform = `translateX(${Math.floor(p * 4)}px)`;
+      out1.classList.toggle('show', p > 0.10);
+      out2.classList.toggle('show', p > 0.22);
+      out3.classList.toggle('show', p > 0.36);
+      pill.style.opacity = p > 0.45 ? '1' : '0';
+      pill.style.transform = `translateY(${(1 - clamp((p - 0.45)/0.15)) * 8}px)`;
     }
-
-    /* ── dashboard render ─────────────────────────────── */
-    function renderDashboard(progress) {
+    function renderPreview(progress) {
       const p = ease(progress);
-      const tabCount = DKEYS.length;
-      const rawStep = p * tabCount;
-      const step = Math.floor(rawStep);
-      const local = rawStep - step;
-      const currentKey = DKEYS[step % tabCount];
-
-      // update tabs
-      $('dTabs').querySelectorAll('.dtab').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.tab === currentKey);
-      });
-      $('dTabLabel').textContent = DCARD[currentKey].title;
-
-      // update card with a tiny flash
-      const cfg = DCARD[currentKey];
-      $('dKicker').textContent = cfg.kicker;
-      $('dTitle').textContent = cfg.title;
-      $('dCopy').textContent = cfg.copy;
-      $('dFooter').innerHTML = cfg.pills.map(pill => `<span class="dpill">${pill}</span>`).join('');
-
-      // scan line sweeps each card
-      const scan = $('dScan');
-      scan.style.opacity = String(clamp((Math.sin(local * Math.PI * 2)) * 0.6));
-      scan.style.transform = `translateY(${local * 100}%)`;
-
-      // flash card border on tab switch
-      const card = $('dCard');
-      if (local < 0.06) {
-        card.style.boxShadow = `0 0 20px rgba(255,255,255,.12)`;
+      previewCursor.style.opacity = p > 0.08 ? '1' : '0';
+      previewCursor.style.left = `${28 + 28 * Math.sin(p * Math.PI * 1.2)}%`;
+      previewCursor.style.top = `${26 + 18 * Math.sin(p * Math.PI * 1.0)}%`;
+      heroCard.style.boxShadow = `0 0 ${24 * clamp((p - 0.12)/0.2)}px rgba(255,255,255,.12), inset 0 1px 0 rgba(255,255,255,.04)`;
+      score.textContent = String(Math.min(99, 3 + Math.floor(p * 18))).padStart(2, '0');
+      address.textContent = p < 0.22 ? 'localhost:3000' : p < 0.44 ? 'Loading preview ...' : 'localhost:3000';
+      scanline.style.opacity = p > 0.42 ? String(0.35 * clamp((p - 0.42)/0.16)) : '0';
+      scanline.style.transform = `translateY(${40 + clamp((p - 0.42)/0.18) * 160}px)`;
+    }
+    function renderAll(t) {
+      if (t < 0.42) {
+        renderEditor(t / 0.42);
+        renderTerminal(0);
+        renderPreview(0);
+      } else if (t < 0.72) {
+        renderEditor(1);
+        renderTerminal((t - 0.42) / 0.30);
+        renderPreview(0);
       } else {
-        card.style.boxShadow = '';
+        renderEditor(1);
+        renderTerminal(1);
+        renderPreview((t - 0.72) / 0.28);
       }
     }
-
-    /* ── main loop ────────────────────────────────────── */
-    function tick(now) {
-      const loopProgress = ((now % CYCLE) / CYCLE);
-      renderEditor(loopProgress);
-      renderTerminal(loopProgress);
-      renderDashboard(loopProgress);
+    let t = 0;
+    function tick(){
+      t += 0.0018;
+      if (t >= 1) t = 0;
+      renderAll(t);
+      document.querySelectorAll('.panel').forEach((el, i) => {
+        el.style.transform = `translateY(${Math.sin(t * Math.PI * 2 + i * 0.2) * 2}px)`;
+      });
       requestAnimationFrame(tick);
     }
+    renderAll(0);
+    tick();
 
-    /* ── click to jump ────────────────────────────────── */
-    $('dTabs').addEventListener('click', e => {
-      const btn = e.target.closest('.dtab');
-      if (!btn) return;
-      const target = btn.dataset.tab;
-      const idx = DKEYS.indexOf(target);
-      if (idx < 0) return;
-      const offset = (idx / DKEYS.length) * CYCLE;
-      const start = performance.now() - offset;
-      // smooth jump by restarting
-      requestAnimationFrame(() => tick(performance.now()));
+    // 舞台演唱模块入场动画
+    const vsStage = document.getElementById('vocalStage');
+    function triggerVocal() {
+      setTimeout(() => vsStage.classList.add('show'), 400);
+    }
+    // Intersection Observer：进入视口时触发
+    const vsObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { triggerVocal(); vsObs.disconnect(); } });
+    }, { threshold: 0.2 });
+    if (vsStage) vsObs.observe(vsStage);
+    // 如果页面高度不够 viewport，直接等 1.2s 再触发
+    if (document.documentElement.scrollHeight <= window.innerHeight) {
+      setTimeout(triggerVocal, 1200);
+    }
+    window.addEventListener('pointermove', (e) => {
+      const x = (e.clientX / innerWidth) * 100;
+      const y = (e.clientY / innerHeight) * 100;
+      previewCursor.style.opacity = '1';
+      previewCursor.style.left = x + '%';
+      previewCursor.style.top = y + '%';
     });
-
-    /* prefers-reduced-motion */
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      renderEditor(1); renderTerminal(1); renderDashboard(1);
-    } else {
-      requestAnimationFrame(tick);
-    }
   </script>
 </body>
 </html>
