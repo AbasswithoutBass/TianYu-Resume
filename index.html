@@ -331,16 +331,16 @@
     }
     .light-unit {
       position: absolute; top: 0; width: 18%; height: 100%;
-      --turn: 0deg;
+      transform: rotate(var(--beam));
     }
     .light-unit .moving-head {
       position: absolute; top: 12.2%; left: 50%;
       width: 24px; height: 34px; border-radius: 10px;
       background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.24));
       box-shadow: 0 0 18px rgba(255,255,255,.16);
-      transform-origin: 50% 0%;
-      transform: translateX(-50%) rotate(var(--turn));
-      animation: headSweep 7.2s infinite ease-in-out;
+      transform-origin: 50% 100%;
+      transform: translateX(-50%);
+      animation: headSweep 4.2s infinite ease-in-out;
     }
     .light-unit .moving-head::before {
       content: ""; position: absolute; inset: 4px 5px 14px;
@@ -353,14 +353,14 @@
       width: 4px; height: 12px; border-radius: 999px; background: rgba(255,255,255,.85);
     }
     .light-unit .beam-fan {
-      position: absolute; left: 50%; top: 18%;
+      position: absolute; left: 50%; top: calc(12.2% + 32px);
       width: 182px; height: 392px; margin-left: -91px;
       background: linear-gradient(180deg, rgba(255,255,255,.56), rgba(255,255,255,0) 72%);
       filter: blur(2px);
       opacity: 0;
       transform-origin: top center;
-      transform: translateX(-50%) rotate(var(--beam,0deg));
-      animation: beamGlow 5.8s infinite ease-in-out;
+      transform: translateX(-50%);
+      animation: headSweep 4.2s infinite ease-in-out;
     }
     .light-unit .beam-fan::before,
     .light-unit .beam-fan::after {
@@ -375,11 +375,11 @@
       background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,0) 76%);
       animation-delay: 1.4s;
     }
-    .u1 { left: 12%; --turn: -20deg; --beam: -24deg; }
-    .u2 { left: 30%; --turn: -8deg; --beam: -12deg; }
-    .u3 { left: 48%; --turn: 0deg; --beam: 0deg; }
-    .u4 { left: 66%; --turn: 10deg; --beam: 12deg; }
-    .u5 { left: 84%; --turn: 22deg; --beam: 24deg; }
+    .u1 { left: 12%; --beam: -24deg; }
+    .u2 { left: 30%; --beam: -12deg; }
+    .u3 { left: 48%; --beam: 0deg; }
+    .u4 { left: 66%; --beam: 12deg; }
+    .u5 { left: 84%; --beam: 24deg; }
     .haze {
       position: absolute; inset: 0;
       background:
@@ -447,15 +447,15 @@
       background: #fff;
       box-shadow: 0 0 26px rgba(255,255,255,.45);
       top: var(--knob, 62%);
-      animation: faderSlide var(--speed, 4.8s) infinite ease-in-out;
+      animation: faderSlide var(--speed, 2.4s) infinite ease-in-out;
       animation-delay: var(--delay, 0s);
     }
-    .f1 { --knob: 76%; --delay: 0s; --speed: 4.4s; }
-    .f2 { --knob: 44%; --delay: .22s; --speed: 5.0s; }
-    .f3 { --knob: 67%; --delay: .38s; --speed: 4.7s; }
-    .f4 { --knob: 31%; --delay: .58s; --speed: 5.4s; }
-    .f5 { --knob: 58%; --delay: .12s; --speed: 4.9s; }
-    .f6 { --knob: 39%; --delay: .46s; --speed: 5.2s; }
+    .f1 { --knob: 80%; --delay: 0s; --speed: 2.4s; }
+    .f2 { --knob: 40%; --delay: .18s; --speed: 2.8s; }
+    .f3 { --knob: 70%; --delay: .32s; --speed: 2.6s; }
+    .f4 { --knob: 28%; --delay: .48s; --speed: 3.0s; }
+    .f5 { --knob: 62%; --delay: .14s; --speed: 2.5s; }
+    .f6 { --knob: 35%; --delay: .38s; --speed: 2.9s; }
     .wave-panel {
       position: absolute; left: 20px; right: 20px; top: 72px; height: 120px;
       border-radius: 24px;
@@ -551,8 +551,8 @@
       50% { opacity: .95; transform: translateX(-50%) scale(1.04); }
     }
     @keyframes faderSlide {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(-8px); }
+      0%, 100% { transform: translateX(-50%) translateY(6px); }
+      50% { transform: translateX(-50%) translateY(-28px); }
     }
     @keyframes waveFlow {
       from { stroke-dashoffset: 0; }
