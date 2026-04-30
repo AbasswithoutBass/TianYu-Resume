@@ -262,6 +262,110 @@
     .page-list { display:grid; gap: 10px; }
     .page-list .page-row { display:flex; align-items:center; justify-content:space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.07); font-size: 13px; color: rgba(255,255,255,.74); }
     .page-list .page-row:last-child { border-bottom: 0; }
+    .live-room {
+      position: relative; min-height: 180px; border-radius: 20px; overflow: hidden;
+      background: radial-gradient(circle at 50% 28%, rgba(255,255,255,.12), transparent 34%),
+                  linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 16px;
+    }
+    .live-window {
+      position: absolute; left: 50%; top: 50%; width: 76%; height: 76%;
+      transform: translate(-50%, -50%);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 0 0 1px rgba(255,255,255,.02);
+      overflow: hidden;
+    }
+    .live-window::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), transparent 24%, transparent 76%, rgba(255,255,255,.05));
+      pointer-events: none;
+    }
+    .live-stage {
+      position: absolute; left: 50%; bottom: 14px; width: 82%; height: 34px;
+      transform: translateX(-50%);
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.07);
+      filter: blur(.1px);
+    }
+    .device {
+      position: absolute; left: 50%; top: 50%;
+      width: var(--w); height: var(--h); border-radius: var(--r);
+      transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(.72);
+      opacity: 0;
+      animation: deviceFly 5.2s infinite cubic-bezier(.2,.8,.2,1);
+      animation-delay: var(--delay);
+      box-shadow: 0 14px 30px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.12);
+    }
+    .device::before, .device::after { content: ''; position: absolute; }
+    .device.screen {
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .device.cam {
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .device.mic {
+      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .device.light {
+      background: linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,.1));
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .device.card {
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .device.screen::after {
+      left: 10%; right: 10%; bottom: 8%; height: 8px; border-radius: 999px;
+      background: rgba(255,255,255,.32);
+    }
+    .device.cam::before {
+      left: 50%; top: 12%; width: 54%; height: 56%; transform: translateX(-50%);
+      border-radius: 8px; background: rgba(255,255,255,.32);
+    }
+    .device.cam::after {
+      left: 50%; bottom: -7px; width: 18px; height: 18px; transform: translateX(-50%) rotate(45deg);
+      background: rgba(255,255,255,.12);
+    }
+    .device.mic::before {
+      left: 50%; top: 16%; width: 18px; height: 26px; transform: translateX(-50%);
+      border-radius: 999px; background: rgba(255,255,255,.32);
+    }
+    .device.mic::after {
+      left: 50%; bottom: 5px; width: 24px; height: 3px; transform: translateX(-50%);
+      border-radius: 999px; background: rgba(255,255,255,.26);
+    }
+    .device.light::before {
+      left: 50%; top: 12%; width: 34%; height: 46%; transform: translateX(-50%);
+      border-radius: 14px; background: rgba(255,255,255,.36);
+      box-shadow: 0 0 26px rgba(255,255,255,.22);
+    }
+    .device.light::after {
+      left: 50%; bottom: -8px; width: 10px; height: 20px; transform: translateX(-50%);
+      background: rgba(255,255,255,.10);
+      border-radius: 999px;
+    }
+    .device.card::before {
+      left: 10%; top: 18%; width: 44%; height: 9px; border-radius: 999px; background: rgba(255,255,255,.30);
+      box-shadow: 0 16px 0 rgba(255,255,255,.18), 0 32px 0 rgba(255,255,255,.12);
+    }
+    .device.card::after {
+      right: 10%; bottom: 14%; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,.28);
+    }
+    @keyframes deviceFly {
+      0%   { opacity: 0; transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(.68) rotate(-8deg); }
+      12%  { opacity: 1; }
+      38%  { transform: translate(calc(-50% + (var(--sx) * .42)), calc(-50% + (var(--sy) * .42))) scale(.92) rotate(0deg); }
+      62%  { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1) rotate(0deg); }
+      100% { opacity: 1; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1); }
+    }
 
     .footer {
       position: absolute; left: 50%; bottom: 4.8vh; transform: translateX(-50%); width: min(1040px, 92vw);
@@ -601,6 +705,187 @@
       color: rgba(255,255,255,.76);
       letter-spacing: -.02em;
     }
+    .music-flow {
+      position: absolute; inset: 0;
+      padding: 84px 20px 22px;
+      display: grid;
+      grid-template-columns: 1.05fr .9fr .95fr;
+      gap: 14px;
+    }
+    .flow-step {
+      position: relative;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      overflow: hidden;
+      min-height: 390px;
+    }
+    .flow-step::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,.08), transparent 42%);
+      pointer-events: none;
+    }
+    .flow-step .step-tag {
+      position: absolute; left: 18px; top: 16px; z-index: 3;
+      font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+    }
+    .flow-step .step-body {
+      position: absolute; inset: 52px 16px 16px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.04);
+      overflow: hidden;
+    }
+    .recording-room {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0)),
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,.06), transparent 26%);
+    }
+    .mic-rig {
+      position: absolute; left: 50%; top: 34%; transform: translate(-50%, -50%);
+      width: 136px; height: 180px;
+    }
+    .mic-head {
+      position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+      width: 66px; height: 86px; border-radius: 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.26));
+      box-shadow: 0 0 28px rgba(255,255,255,.16);
+    }
+    .mic-head::before {
+      content: ""; position: absolute; inset: 12px 12px 16px;
+      border-radius: 18px;
+      background: repeating-linear-gradient(180deg, rgba(0,0,0,.34) 0 3px, rgba(255,255,255,.07) 3px 6px);
+      opacity: .9;
+    }
+    .mic-stand {
+      position: absolute; left: 50%; top: 68px; transform: translateX(-50%);
+      width: 6px; height: 82px; border-radius: 999px; background: rgba(255,255,255,.72);
+      box-shadow: 0 0 16px rgba(255,255,255,.12);
+    }
+    .mic-stand::before {
+      content: ""; position: absolute; left: 50%; top: 20px; transform: translateX(-50%);
+      width: 78px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.26);
+    }
+    .record-waves {
+      position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%);
+      width: 88%; height: 104px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .record-waves span {
+      width: 6px; border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.14));
+      animation: captureBars 1.6s infinite ease-in-out;
+    }
+    .record-waves span:nth-child(1){height: 18px; animation-delay: 0s}
+    .record-waves span:nth-child(2){height: 52px; animation-delay: .1s}
+    .record-waves span:nth-child(3){height: 74px; animation-delay: .2s}
+    .record-waves span:nth-child(4){height: 32px; animation-delay: .3s}
+    .record-waves span:nth-child(5){height: 86px; animation-delay: .4s}
+    .record-waves span:nth-child(6){height: 42px; animation-delay: .5s}
+    .record-waves span:nth-child(7){height: 64px; animation-delay: .6s}
+    .record-waves span:nth-child(8){height: 24px; animation-delay: .7s}
+    .signal-badge {
+      position: absolute; left: 20px; right: 20px; top: 18px; display: flex; justify-content: space-between;
+      color: rgba(255,255,255,.48); font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+    }
+    .track-lane {
+      position: absolute; left: 18px; right: 18px; top: 76px; bottom: 18px;
+      display: grid; gap: 10px;
+      grid-template-rows: 1fr 1fr 1fr;
+    }
+    .track-strip {
+      position: relative; border-radius: 16px; overflow: hidden;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.05);
+    }
+    .track-strip::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+      transform: translateX(-120%);
+      animation: trackSweep 3.8s infinite ease-in-out;
+    }
+    .track-strip .track-wave {
+      position: absolute; left: 10px; right: 10px; top: 50%; height: 26px; transform: translateY(-50%);
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.06) 0 24%, rgba(255,255,255,.18) 24% 25%, rgba(255,255,255,.06) 25% 50%, rgba(255,255,255,.18) 50% 51%, rgba(255,255,255,.06) 51% 76%, rgba(255,255,255,.18) 76% 77%, rgba(255,255,255,.06) 77% 100%);
+      clip-path: polygon(0 60%, 5% 52%, 10% 64%, 15% 44%, 20% 62%, 25% 40%, 30% 64%, 35% 50%, 40% 60%, 45% 42%, 50% 62%, 55% 48%, 60% 64%, 65% 44%, 70% 60%, 75% 38%, 80% 62%, 85% 50%, 90% 64%, 95% 48%, 100% 58%, 100% 100%, 0 100%);
+      opacity: .92;
+    }
+    .chain-meter {
+      position: absolute; left: 18px; right: 18px; bottom: 18px;
+      display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: end;
+    }
+    .meter-stack {
+      position: relative; height: 140px; border-radius: 18px; background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.05); overflow: hidden; padding: 12px;
+    }
+    .meter-bars {
+      position: absolute; left: 12px; right: 12px; bottom: 12px; top: 12px;
+      display: grid; grid-template-columns: repeat(18, 1fr); gap: 4px; align-items: end;
+    }
+    .meter-bars span {
+      border-radius: 4px 4px 0 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.18));
+      animation: meterPulse 1.2s infinite ease-in-out;
+    }
+    .meter-bars span:nth-child(odd) { background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.22)); }
+    .meter-bars span:nth-child(3n) { animation-delay: .18s; }
+    .meter-bars span:nth-child(4n) { animation-delay: .32s; }
+    .meter-bars span:nth-child(5n) { animation-delay: .46s; }
+    .master-chain {
+      display: flex; flex-direction: column; gap: 8px; width: 92px;
+    }
+    .module-pill {
+      height: 38px; border-radius: 999px; border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04); display: flex; align-items: center; justify-content: center;
+      font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.52);
+    }
+    .module-pill.active {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      box-shadow: 0 0 22px rgba(255,255,255,.1);
+    }
+    .flow-arrow {
+      position: absolute; left: 33.3%; top: 50%; width: 34%; height: 2px; transform: translateY(-50%);
+      background: linear-gradient(90deg, rgba(255,255,255,.12), rgba(255,255,255,.36), rgba(255,255,255,.12));
+      overflow: hidden;
+      z-index: 5;
+    }
+    .flow-arrow::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent);
+      animation: flowRun 3.2s infinite ease-in-out;
+    }
+    .flow-arrow::after {
+      content: ""; position: absolute; right: -1px; top: 50%; transform: translateY(-50%);
+      border-left: 10px solid rgba(255,255,255,.75);
+      border-top: 7px solid transparent; border-bottom: 7px solid transparent;
+    }
+    .stage-phases {
+      position: absolute; left: 20px; right: 20px; top: 18px; display: flex; justify-content: space-between; z-index: 4;
+      color: rgba(255,255,255,.42); font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+    }
+    @keyframes captureBars {
+      0%, 100% { transform: scaleY(.32); opacity: .45; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+    @keyframes trackSweep {
+      0% { transform: translateX(-120%); }
+      55% { transform: translateX(120%); }
+      100% { transform: translateX(120%); }
+    }
+    @keyframes meterPulse {
+      0%, 100% { height: 18%; }
+      50% { height: 92%; }
+    }
+    @keyframes flowRun {
+      0% { transform: translateX(-100%); opacity: 0; }
+      18% { opacity: 1; }
+      50% { transform: translateX(100%); opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
     @keyframes headSweep {
       0%, 100% { transform: translateY(0) rotate(-18deg); opacity: .65; }
       25% { transform: translateY(6px) rotate(22deg); opacity: 1; }
@@ -650,6 +935,7 @@
   <div class="quick-nav">
     <button onclick="document.querySelector('.stage.grid').scrollIntoView({behavior:'smooth', block:'start'})">代码演示</button>
     <button onclick="document.getElementById('systemsStage').scrollIntoView({behavior:'smooth', block:'start'})">舞台灯光 / 音响</button>
+    <button onclick="document.getElementById('musicStage').scrollIntoView({behavior:'smooth', block:'start'})">音乐制作 / 混音</button>
   </div>
 
   <div class="stage grid">
@@ -754,20 +1040,25 @@
                   </section>
                   <section class="page-screen next" id="pageNext">
                     <div class="page-top">
-                      <div class="page-tag"><span class="page-chip">03</span><span>Stage</span></div>
-                      <div class="page-chip">lighting / sound</div>
+                      <div class="page-tag"><span class="page-chip">03</span><span>Live</span></div>
+                      <div class="page-chip">setup / ops</div>
                     </div>
                     <div class="page-hero">
                       <div class="page-copy">
-                        <div class="kicker">stage / systems</div>
-                        <div class="headline">把灯光、音响、现场感做成一套链路</div>
-                        <div class="desc">不是只会做页面，而是能把展示系统完整搭起来。</div>
-                        <div class="buttons"><div class="btn primary">Open Stage</div><div class="btn">System</div></div>
+                        <div class="kicker">live / operations</div>
+                        <div class="headline">直播运营不是盯着开播，而是把整套链路搭稳</div>
+                        <div class="desc">从设备摆位、信号链路、开播检查到节奏转化，我都能直接上手。</div>
+                        <div class="buttons"><div class="btn primary">Open Live</div><div class="btn">Workflow</div></div>
                       </div>
-                      <div class="page-grid">
-                        <div class="page-card"><span class="label">lights</span><strong>motion sync</strong></div>
-                        <div class="page-card"><span class="label">audio</span><strong>signal flow</strong></div>
-                        <div class="page-card"><span class="label">scene</span><strong>page switch</strong></div>
+                      <div class="live-room">
+                        <div class="live-window">
+                          <div class="live-stage"></div>
+                          <div class="device screen" style="--w:108px;--h:72px;--r:12px;--sx:-92px;--sy:-110px;--dx:-64px;--dy:-42px;--delay:0s;"></div>
+                          <div class="device cam" style="--w:40px;--h:34px;--r:10px;--sx:92px;--sy:-104px;--dx:46px;--dy:-48px;--delay:.45s;"></div>
+                          <div class="device mic" style="--w:32px;--h:54px;--r:16px;--sx:-120px;--sy:28px;--dx:-36px;--dy:10px;--delay:.9s;"></div>
+                          <div class="device light" style="--w:34px;--h:84px;--r:14px;--sx:124px;--sy:34px;--dx:70px;--dy:-8px;--delay:1.35s;"></div>
+                          <div class="device card" style="--w:70px;--h:50px;--r:14px;--sx:0px;--sy:122px;--dx:4px;--dy:48px;--delay:1.8s;"></div>
+                        </div>
                       </div>
                     </div>
                   </section>
@@ -844,6 +1135,63 @@
       </div>
     </div>
   </div>
+
+  <div class="systems-stage" id="musicStage">
+    <div class="systems-intro">
+      <div class="systems-kicker">music production / mixing</div>
+      <h2>音乐制作与混音</h2>
+      <p>把录音、混音、母带拆成一段段流程，用动画把“声音怎么被做出来”的过程讲清楚。</p>
+    </div>
+    <div class="music-flow">
+      <div class="flow-step">
+        <div class="step-tag">01 · recording</div>
+        <div class="step-body recording-room">
+          <div class="signal-badge"><span>input</span><span>live take</span></div>
+          <div class="mic-rig">
+            <div class="mic-head"></div>
+            <div class="mic-stand"></div>
+            <div class="record-waves"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-tag">02 · mixing</div>
+        <div class="step-body">
+          <div class="signal-badge"><span>session</span><span>balance</span></div>
+          <div class="track-lane">
+            <div class="track-strip"><div class="track-wave"></div></div>
+            <div class="track-strip"><div class="track-wave"></div></div>
+            <div class="track-strip"><div class="track-wave"></div></div>
+          </div>
+          <div class="flow-arrow"></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-tag">03 · mastering</div>
+        <div class="step-body">
+          <div class="stage-phases"><span>eq</span><span>comp</span><span>limiter</span></div>
+          <div class="meter-stack">
+            <div class="meter-bars">
+              <span style="height:26%"></span><span style="height:72%"></span><span style="height:48%"></span><span style="height:88%"></span>
+              <span style="height:38%"></span><span style="height:64%"></span><span style="height:82%"></span><span style="height:44%"></span>
+              <span style="height:74%"></span><span style="height:36%"></span><span style="height:58%"></span><span style="height:84%"></span>
+              <span style="height:30%"></span><span style="height:68%"></span><span style="height:50%"></span><span style="height:92%"></span>
+              <span style="height:40%"></span><span style="height:76%"></span>
+            </div>
+          </div>
+          <div class="chain-meter">
+            <div class="master-chain">
+              <div class="module-pill">eq</div>
+              <div class="module-pill active">comp</div>
+              <div class="module-pill">limiter</div>
+            </div>
+            <div class="signal-run"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const editorText = document.getElementById('editorText');
     const activeLine = document.getElementById('activeLine');
@@ -860,6 +1208,7 @@
     const score = document.getElementById('score');
     const scanline = document.getElementById('scanline');
     const address = document.getElementById('address');
+    const musicStage = document.getElementById('musicStage');
 
     const editorLines = [
       "// main.ts",
@@ -937,7 +1286,7 @@
         setPageState(pagePrev, 'prev', '-12%', '.98', '0');
         setPageState(pageCurrent, 'prev', '-14%', '.985', '0');
         setPageState(pageNext, 'active', '0%', '1', '1');
-        address.textContent = 'Portfolio → Stage';
+        address.textContent = 'Portfolio → Live';
       }
 
       heroCard.style.boxShadow = `0 0 ${20 + Math.round(18 * local)}px rgba(255,255,255,.10), inset 0 1px 0 rgba(255,255,255,.04)`;
