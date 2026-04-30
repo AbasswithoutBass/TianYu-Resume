@@ -6,411 +6,962 @@
   <title>Programming Motion Demo</title>
   <style>
     :root {
-      --bg: #08090a;
-      --panel: rgba(20, 20, 22, 0.96);
-      --line: rgba(255,255,255,0.13);
-      --line2: rgba(255,255,255,0.07);
-      --text: #f7f8f8;
-      --muted: #a6a9b1;
+      --bg: #050607;
+      --panel: rgba(18, 18, 20, 0.92);
+      --panel-2: rgba(255, 255, 255, 0.04);
+      --line: rgba(255, 255, 255, 0.12);
+      --line-soft: rgba(255, 255, 255, 0.08);
+      --text: #f4f5f7;
+      --muted: rgba(244, 245, 247, 0.62);
+      --muted-2: rgba(244, 245, 247, 0.44);
+      --accent: #ffffff;
+      --accent-soft: rgba(255, 255, 255, 0.10);
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+      --radius: 28px;
+      --radius-sm: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'SF Pro Display', 'SF Pro Text', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
     }
+
     * { box-sizing: border-box; }
-    html, body { margin: 0; width: 100%; height: 100%; background: var(--bg); color: var(--text); overflow: hidden; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; }
-    .stage {
-      position: relative; width: 100vw; height: 100vh;
+    html, body { width: 100%; height: 100%; margin: 0; }
+    body {
+      overflow: hidden;
+      color: var(--text);
+      font-family: var(--sans);
       background:
-        radial-gradient(circle at 70% 25%, rgba(255,255,255,0.10), transparent 22%),
-        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.05), transparent 18%),
-        linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 35%),
-        var(--bg);
+        radial-gradient(circle at 18% 12%, rgba(255,255,255,.10), transparent 20%),
+        radial-gradient(circle at 80% 16%, rgba(255,255,255,.06), transparent 18%),
+        radial-gradient(circle at 76% 82%, rgba(255,255,255,.05), transparent 20%),
+        linear-gradient(180deg, #090a0c 0%, #050607 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
-    .grid::before {
-      content: '';
-      position: absolute; inset: 0; pointer-events: none;
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      padding: clamp(22px, 3vw, 36px);
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .35;
       background-image:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
       background-size: 120px 88px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.65) 20%, rgba(0,0,0,0.35) 75%, rgba(0,0,0,0.0));
+      mask-image: linear-gradient(to bottom, transparent, rgba(0,0,0,.85) 20%, rgba(0,0,0,.55) 75%, transparent);
     }
-    .title {
-      position: absolute; left: 50%; top: 5.8vh; transform: translateX(-50%);
-      width: min(1200px, 92vw); text-align: center;
-    }
-    .title h1 {
-      margin: 0; font-size: clamp(42px, 4.8vw, 84px); line-height: 0.96; letter-spacing: -0.05em; font-weight: 800;
-    }
-    .title p {
-      margin: 16px 0 0; font-size: clamp(16px, 1.4vw, 24px); color: var(--muted);
-    }
-    .meta {
-      position: absolute; left: 50%; top: calc(5.8vh + 120px); transform: translateX(-50%);
-      color: rgba(255,255,255,.56); font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
-    }
-    .bar {
-      position: absolute; left: 50%; top: calc(54% - 316px); transform: translateX(-50%);
-      width: min(1360px, 92vw); height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
-    }
-    .workspace {
-      position: absolute; left: 50%; top: 54%; transform: translate(-50%, -50%);
-      width: min(1360px, 92vw); height: min(620px, 61vh);
-      display: grid; grid-template-columns: 1.12fr 0.72fr 1fr; gap: 18px;
-    }
-    .panel {
-      position: relative; border: 1px solid var(--line); border-radius: 30px; overflow: hidden;
-      background: var(--panel); box-shadow: 0 22px 72px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.04);
-      backdrop-filter: blur(14px);
-    }
-    .panel .head {
-      display:flex; align-items:center; justify-content:space-between; padding: 14px 18px 12px;
-      border-bottom: 1px solid var(--line2); color: rgba(255,255,255,.78); font-size: 13px; letter-spacing: .08em;
-    }
-    .dots { display:flex; gap: 8px; }
-    .dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.16); box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset; }
-    .body { position:absolute; inset: 48px 0 0 0; }
 
-    .editor-wrap, .terminal-wrap, .preview-wrap { position:absolute; inset:0; padding: 20px 18px 18px; }
-    .shell {
-      position:relative; height:100%; border-radius: 24px; overflow:hidden;
-      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+    .hero {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding-top: clamp(6px, 1vh, 12px);
+      text-align: center;
     }
-    .shell-top {
-      height: 38px; display:flex; align-items:center; justify-content:space-between; padding: 0 14px;
-      border-bottom: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.76);
-      font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
-    }
-    .left-tag { display:flex; align-items:center; gap: 10px; }
-    .tag-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.9); }
 
-    .editor {
-      position: relative; padding: 18px 18px 18px 16px; height: calc(100% - 38px);
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 14px;
+      border: 1px solid var(--line-soft);
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(255,255,255,.08);
+    }
+
+    h1 {
+      margin: 18px 0 0;
+      font-size: clamp(38px, 5.2vw, 80px);
+      line-height: .94;
+      letter-spacing: -.06em;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 16px auto 0;
+      font-size: clamp(16px, 1.5vw, 24px);
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 13px;
+      letter-spacing: .12em;
+      color: var(--muted-2);
+      text-transform: uppercase;
+    }
+
+    .deck {
+      position: relative;
+      z-index: 2;
+      width: min(1320px, 94vw);
+      height: min(690px, 66vh);
+      margin: 26px auto 0;
+      border-radius: 34px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.04);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+
+    .deck-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(255,255,255,.02);
+    }
+
+    .traffic {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .traffic span {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.15);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex: 1;
+      min-width: 0;
+    }
+    .mode-tab {
+      appearance: none;
+      border: 1px solid transparent;
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font: 600 13px/1 var(--sans);
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
+      white-space: nowrap;
+    }
+    .mode-tab:hover { color: #fff; background: rgba(255,255,255,.08); }
+    .mode-tab.active {
+      color: #111;
+      background: rgba(255,255,255,.92);
+      border-color: rgba(255,255,255,.92);
+    }
+
+    .mode-label {
+      flex-shrink: 0;
+      color: var(--muted-2);
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .viewport {
+      position: relative;
+      height: calc(100% - 66px);
+      padding: 18px;
+    }
+
+    .panel-shell {
+      position: relative;
+      height: 100%;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.09);
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      border-left: 1px solid rgba(255,255,255,.06);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 22px; line-height: 2.0; color: rgba(255,255,255,.995);
-      text-shadow: 0 0 20px rgba(255,255,255,.06);
     }
-    .editor::before {
-      content: 'main.ts'; position: absolute; right: 16px; top: 14px; height: 24px; padding: 0 10px;
-      display:flex; align-items:center; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.10);
-      font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.68);
+
+    .panel-head {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      color: rgba(255,255,255,.74);
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,.02);
+    }
+
+    .panel-left { display: flex; align-items: center; gap: 10px; }
+    .panel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.95);
+      box-shadow: 0 0 0 5px rgba(255,255,255,.06);
+    }
+
+    .content {
+      height: calc(100% - 44px);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .content.fade-in {
+      animation: contentIn 360ms ease;
+    }
+    @keyframes contentIn {
+      from { opacity: .4; transform: translateY(10px) scale(.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .mode-card {
+      height: 100%;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(255,255,255,.03);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .editor-layout {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      height: 100%;
+    }
+    .editor-col {
+      padding: 18px 18px 18px 16px;
+      border-right: 1px solid rgba(255,255,255,.08);
+      position: relative;
+    }
+    .editor-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .file-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      color: rgba(255,255,255,.82);
+    }
+    .file-pill::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #fff;
+    }
+
+    .code-grid {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 0;
+      font-family: var(--mono);
+      font-size: 22px;
+      line-height: 1.9;
+      letter-spacing: -.01em;
+      position: relative;
     }
     .gutter {
-      position:absolute; left:0; top:0; bottom:0; width: 52px; padding: 18px 10px 18px 0;
-      color: rgba(255,255,255,.42); text-align:right; border-right: 1px solid rgba(255,255,255,.06);
-      font-size: 13px; line-height: 2.0; user-select:none;
+      color: rgba(255,255,255,.42);
+      text-align: right;
+      padding-right: 12px;
+      user-select: none;
     }
-    .code {
-      position: relative; margin-left: 62px; white-space: pre-wrap; word-break: break-word; min-height: 100%;
+    .code-line {
+      min-height: 1.9em;
+      padding: 0 8px 0 10px;
+      border-radius: 12px;
+      position: relative;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
-    .line { display:block; min-height: 2.0em; }
-    .kw { color: #fff; font-weight: 900; }
-    .str { color: rgba(255,255,255,.92); }
-    .com { color: rgba(255,255,255,.48); }
+    .code-line.active { background: rgba(255,255,255,.08); }
+    .code-line.done { color: rgba(255,255,255,.96); }
+    .code-line.dim { color: rgba(255,255,255,.86); }
+    .token-comment { color: rgba(255,255,255,.44); }
+    .token-key { color: #fff; font-weight: 700; }
+    .token-string { color: rgba(255,255,255,.92); }
     .cursor {
-      display:inline-block; width: 12px; height: 1.15em; margin-left: 2px; vertical-align: -0.15em;
-      background: rgba(255,255,255,1); border-radius: 2px; box-shadow: 0 0 24px rgba(255,255,255,.24);
-      animation: blink 0.9s steps(1) infinite;
+      display: inline-block;
+      width: 10px;
+      height: 1.15em;
+      margin-left: 2px;
+      vertical-align: -0.18em;
+      background: #fff;
+      border-radius: 2px;
+      box-shadow: 0 0 18px rgba(255,255,255,.24);
+      animation: blink .9s steps(1) infinite;
     }
-    .active-line {
-      position:absolute; left: 62px; right: 0; height: 32px; border-radius: 10px; pointer-events:none;
-      background: rgba(255,255,255,.10); outline: 1px solid rgba(255,255,255,.08);
-      opacity: 0; transition: opacity 120ms ease, transform 120ms ease;
-    }
-    @keyframes blink { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
+    @keyframes blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
 
+    .editor-side {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 14px;
+      padding: 18px;
+    }
+    .side-card {
+      border-radius: 20px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 16px;
+    }
+    .side-title {
+      font-size: 12px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      margin-bottom: 10px;
+    }
+    .side-copy {
+      font-size: 18px;
+      line-height: 1.7;
+      color: rgba(255,255,255,.9);
+      margin: 0;
+    }
+    .side-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .mini-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .mini-item strong { color: #fff; font-size: 14px; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      color: rgba(255,255,255,.82);
+      font-size: 13px;
+    }
+
+    .terminal-layout {
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
     .terminal-body {
-      padding: 18px 16px 16px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 18px; line-height: 1.78; color: rgba(255,255,255,.96);
+      padding: 18px 18px 20px;
+      font-family: var(--mono);
+      font-size: 18px;
+      line-height: 1.8;
+      color: rgba(255,255,255,.96);
+      overflow: hidden;
     }
     .term-line { margin: 0 0 8px; }
     .prompt { color: rgba(255,255,255,.68); }
     .cmd { color: rgba(255,255,255,.98); }
     .term-cursor {
-      display:inline-block; width: 10px; height: 20px; margin-left: 2px; border-radius: 2px;
-      background: rgba(255,255,255,.98); box-shadow: 0 0 18px rgba(255,255,255,.20); animation: blink 0.9s steps(1) infinite;
+      display: inline-block;
+      width: 10px;
+      height: 20px;
+      margin-left: 2px;
+      vertical-align: -4px;
+      background: rgba(255,255,255,.98);
+      border-radius: 2px;
+      box-shadow: 0 0 16px rgba(255,255,255,.18);
+      animation: blink .9s steps(1) infinite;
     }
-    .out { opacity: 0; transform: translateY(10px); transition: 260ms ease; }
-    .out.show { opacity: 1; transform: translateY(0); }
-    .pill {
-      display:inline-flex; align-items:center; gap: 8px; margin-top: 10px; padding: 8px 12px;
-      border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
-      opacity: 0; transform: translateY(8px); transition: 220ms ease;
+    .term-out {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 280ms ease, transform 280ms ease;
+      color: rgba(255,255,255,.72);
     }
-    .spin { width: 14px; height: 14px; border-radius:50%; border: 2px solid rgba(255,255,255,.18); border-top-color:#fff; animation: spin 1s linear infinite; }
+    .term-out.show { opacity: 1; transform: translateY(0); }
+    .term-ready {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.78);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 240ms ease, transform 240ms ease;
+    }
+    .term-ready.show { opacity: 1; transform: translateY(0); }
+    .spin {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.18);
+      border-top-color: #fff;
+      animation: spin 1s linear infinite;
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    .browser-layout {
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
     .browser-bar {
-      height: 46px; display:flex; align-items:center; justify-content:space-between; gap: 12px;
-      padding: 0 14px; border-bottom: 1px solid rgba(255,255,255,.07); color: rgba(255,255,255,.58);
-    }
-    .tab {
-      display:flex; align-items:center; gap: 8px; padding: 0 12px; height: 28px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.06); color: rgba(255,255,255,.78); font-size: 12px;
-    }
-    .tab .dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; }
-    .address {
-      flex: 1; height: 28px; border-radius: 999px; padding: 0 14px; display:flex; align-items:center;
-      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); font-size: 12px; letter-spacing: .05em;
-    }
-    .nav-btns { display:flex; gap: 8px; }
-    .nav-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
-
-    .preview-body { padding: 14px; position: relative; height: calc(100% - 46px); }
-    .page {
-      position: relative; height: 100%; border-radius: 22px; overflow:hidden;
-      border: 1px solid rgba(255,255,255,.08);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      padding: 16px;
-    }
-    .nav {
-      display:flex; align-items:center; justify-content:space-between; gap: 12px; padding-bottom: 14px; margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
       border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
     }
-    .brand { display:flex; align-items:center; gap: 10px; letter-spacing: .16em; text-transform: uppercase; font-size: 13px; }
-    .brand .mark { width: 12px; height: 12px; border-radius: 50%; background: #fff; }
-    .links { display:flex; gap: 16px; color: rgba(255,255,255,.64); font-size: 12px; }
-    .cta { padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.92); color: #000; font-size: 12px; font-weight: 800; }
-    .hero { display:grid; grid-template-columns: 1.15fr .85fr; gap: 14px; }
-    .copy, .stats, .card { border-radius: 20px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); overflow: hidden; }
-    .copy { padding: 18px; min-height: 180px; position: relative; }
-    .kicker { font-size: 12px; letter-spacing: .2em; color: rgba(255,255,255,.48); text-transform: uppercase; }
-    .headline { margin-top: 12px; font-size: 27px; line-height: 1.06; letter-spacing: -.04em; font-weight: 800; }
-    .desc { margin-top: 10px; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,.6); }
-    .buttons { display:flex; gap: 10px; margin-top: 14px; }
-    .btn { height: 30px; padding: 0 12px; display:flex; align-items:center; border-radius: 999px; font-size: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); }
-    .btn.primary { background: rgba(255,255,255,.92); color: #000; font-weight: 800; }
-    .stats { padding: 16px; display:grid; gap: 12px; }
-    .stat { height: 44px; border-radius: 14px; padding: 0 12px; display:flex; align-items:center; justify-content:space-between; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); font-size: 12px; }
-    .stat strong { font-size: 16px; color: #fff; }
-    .modules { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
-    .card { min-height: 74px; padding: 12px; }
-    .label { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.42); }
-    .value { margin-top: 8px; font-size: 13px; color: rgba(255,255,255,.92); line-height: 1.45; }
-    .focus {
-      position:absolute; width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.95);
-      box-shadow: 0 0 0 12px rgba(255,255,255,.07); transform: translate(-50%, -50%); opacity: 0; pointer-events: none;
+    .traffic-mini { display: flex; gap: 7px; flex-shrink: 0; }
+    .traffic-mini span {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
     }
-    .focus::after {
-      content:''; position:absolute; left:50%; top:50%; width: 7px; height: 7px; border-radius: 50%; background: #fff; transform: translate(-50%,-50%);
+    .address {
+      flex: 1;
+      height: 30px;
+      border-radius: 999px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.74);
+      font-size: 12px;
+      letter-spacing: .08em;
     }
-    .scan {
-      position:absolute; left:0; right:0; height:2px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
-      transform: translateY(-40px); opacity: 0; pointer-events:none;
+    .browser-actions { display: flex; gap: 8px; }
+    .browser-actions span {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+    }
+
+    .browser-body {
+      position: relative;
+      height: 100%;
+      padding: 16px;
+      overflow: hidden;
+    }
+    .page {
+      height: 100%;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(circle at 80% 18%, rgba(255,255,255,.08), transparent 18%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      padding: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+    .page-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      color: rgba(255,255,255,.72);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .brand-mark {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #fff;
+    }
+    .page-links {
+      display: flex;
+      gap: 16px;
+      color: rgba(255,255,255,.52);
+      font-size: 12px;
+    }
+    .page-cta {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      color: #111;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .page-hero {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 14px;
+      margin-top: 14px;
+      height: calc(100% - 64px);
+    }
+    .copy-card,
+    .stats-card {
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+      overflow: hidden;
+    }
+    .copy-card { padding: 18px; position: relative; }
+    .kicker {
+      font-size: 12px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.48);
+    }
+    .headline {
+      margin-top: 12px;
+      font-size: 30px;
+      line-height: 1.04;
+      letter-spacing: -.05em;
+      font-weight: 800;
+    }
+    .desc {
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255,255,255,.62);
+      max-width: 34ch;
+    }
+    .actions { display: flex; gap: 10px; margin-top: 16px; }
+    .btn {
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .btn.primary {
+      background: rgba(255,255,255,.92);
+      color: #111;
+    }
+    .stats-card { padding: 16px; display: grid; gap: 12px; }
+    .stat {
+      min-height: 46px;
+      border-radius: 16px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+    }
+    .stat strong { color: #fff; font-size: 16px; }
+    .feature-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .feature {
+      min-height: 74px;
+      border-radius: 18px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+    }
+    .feature .label {
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.42);
+    }
+    .feature .value {
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: rgba(255,255,255,.88);
+    }
+    .scanline {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent);
+      opacity: 0;
+      pointer-events: none;
     }
 
     .footer {
-      position:absolute; left:50%; bottom: 4.8vh; transform: translateX(-50%); width: min(1040px, 92vw);
-      display:flex; justify-content:space-between; gap: 20px; color: rgba(255,255,255,.56); font-size: 13px;
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: 16px auto 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: rgba(255,255,255,.54);
+      font-size: 13px;
     }
-    .footer strong { display:block; margin-top: 4px; color: rgba(255,255,255,.92); font-size: 15px; }
-    .hint { text-align:right; max-width: 420px; }
+    .footer strong {
+      display: block;
+      margin-top: 4px;
+      color: rgba(255,255,255,.9);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+    .footer .hint { text-align: right; max-width: 420px; }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 1100px) {
+      .deck { height: auto; min-height: 680px; }
+      .viewport { height: auto; }
+      .panel-shell { min-height: 620px; }
+      .editor-layout, .page-hero { grid-template-columns: 1fr; }
+      .editor-col { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+      .editor-side { grid-template-rows: auto auto auto; }
+      .feature-row { grid-template-columns: 1fr; }
+      .footer { flex-direction: column; }
+      .footer .hint { text-align: left; }
+    }
+
+    @media (max-width: 760px) {
+      body { overflow: auto; }
+      .stage { height: auto; min-height: 100vh; padding-bottom: 30px; }
+      .deck { width: 100%; height: auto; }
+      .viewport { padding: 12px; }
+      .panel-shell { min-height: 720px; }
+      .code-grid { font-size: 18px; line-height: 1.75; grid-template-columns: 42px 1fr; }
+      .editor-meta { flex-direction: column; align-items: flex-start; }
+      h1 { font-size: clamp(34px, 11vw, 50px); }
+      .subtitle { font-size: 15px; }
+      .mode-tabs { justify-content: flex-start; }
+    }
   </style>
 </head>
 <body>
-  <div class="stage grid">
-    <div class="title">
-      <h1>把代码，做成可运行的结果</h1>
-      <p>编程展示要看过程，不只看截图。</p>
+  <div class="stage">
+    <div class="grid"></div>
+
+    <div class="hero">
+      <div class="eyebrow">Programming motion demo</div>
+      <h1>把编程能力，做成一页会切换的展示</h1>
+      <div class="subtitle">不是假截图。是真的把 <strong>编辑器 → 终端 → 浏览器结果</strong> 做成一个 Apple 风格的演示页，给简历直接用。</div>
+      <div class="note">Write · Run · Ship</div>
     </div>
-    <div class="meta">PROGRAMMING · MOTION DEMO</div>
-    <div class="bar"></div>
 
-    <div class="workspace">
-      <section class="panel">
-        <div class="head"><div class="dots"><span></span><span></span><span></span></div><div>editor</div></div>
-        <div class="body">
-          <div class="editor-wrap">
-            <div class="shell">
-              <div class="shell-top"><div class="left-tag"><span class="tag-dot"></span><span>main.ts</span></div><div>typescript</div></div>
-              <div class="editor">
-                <div class="gutter">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8</div>
-                <div class="active-line" id="activeLine"></div>
-                <div class="code" id="editorText"></div>
-              </div>
-            </div>
-          </div>
+    <div class="deck">
+      <div class="deck-top">
+        <div class="traffic"><span></span><span></span><span></span></div>
+        <div class="mode-tabs" id="tabs">
+          <button class="mode-tab active" data-mode="write">Write</button>
+          <button class="mode-tab" data-mode="run">Run</button>
+          <button class="mode-tab" data-mode="ship">Ship</button>
         </div>
-      </section>
-
-      <section class="panel">
-        <div class="head"><div class="dots"><span></span><span></span><span></span></div><div>terminal</div></div>
-        <div class="body">
-          <div class="terminal-wrap">
-            <div class="shell">
-              <div class="shell-top"><div class="left-tag"><span class="tag-dot"></span><span>zsh</span></div><div>local</div></div>
-              <div class="terminal-body">
-                <div class="term-line"><span class="prompt">$</span> <span class="cmd" id="cmdText"></span><span class="term-cursor" id="termCaret"></span></div>
-                <div class="term-line out" id="out1">running dev server ...</div>
-                <div class="term-line out" id="out2">bundling assets ...</div>
-                <div class="term-line out" id="out3">✓ ready at http://localhost:3000</div>
-                <div class="pill" id="pill"><div class="spin"></div><span>output ready</span></div>
-              </div>
-            </div>
+        <div class="mode-label" id="modeLabel">Editor focus</div>
+      </div>
+      <div class="viewport">
+        <div class="panel-shell">
+          <div class="panel-head">
+            <div class="panel-left"><span class="panel-dot"></span><span id="panelTitle">main.ts</span></div>
+            <div id="panelRight">typescript</div>
           </div>
+          <div class="content" id="content"></div>
         </div>
-      </section>
-
-      <section class="panel">
-        <div class="head"><div class="dots"><span></span><span></span><span></span></div><div>preview</div></div>
-        <div class="body">
-          <div class="preview-wrap">
-            <div class="shell">
-              <div class="shell-top">
-                <div class="tab"><span class="dot"></span><span>main.ts preview</span></div>
-                <div class="address" id="address">localhost:3000</div>
-                <div class="nav-btns"><div class="nav-btn"></div><div class="nav-btn"></div><div class="nav-btn"></div></div>
-              </div>
-              <div class="preview-body">
-                <div class="page" id="heroCard">
-                  <div class="nav">
-                    <div class="brand"><span class="mark"></span><span>Hermes</span></div>
-                    <div class="links"><span>Work</span><span>Skills</span><span>Contact</span></div>
-                    <div class="cta">Open Demo</div>
-                  </div>
-                  <div class="hero">
-                    <div class="copy">
-                      <div class="kicker">programming / motion</div>
-                      <div class="headline">把代码，做成可运行的结果</div>
-                      <div class="desc">编辑器、终端、浏览器预览三步联动。代码被敲出来，命令跑起来，结果真正显示出来。</div>
-                      <div class="buttons"><div class="btn primary">Run</div><div class="btn">Inspect</div></div>
-                      <div class="focus" id="previewCursor"></div>
-                    </div>
-                    <div class="stats">
-                      <div class="stat"><span>render</span><strong id="score">03</strong></div>
-                      <div class="stat"><span>fps</span><strong>60</strong></div>
-                      <div class="stat"><span>status</span><strong>ready</strong></div>
-                    </div>
-                  </div>
-                  <div class="modules">
-                    <div class="card"><div class="label">editor</div><div class="value">main.ts<br>逐行输入</div></div>
-                    <div class="card"><div class="label">terminal</div><div class="value">zsh<br>命令执行</div></div>
-                    <div class="card"><div class="label">browser</div><div class="value">页面加载<br>结果出现</div></div>
-                  </div>
-                </div>
-              </div>
-              <div class="scan" id="scanline"></div>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
 
     <div class="footer">
-      <div><span>展示方式</span><strong>动画比静态图更能说明能力</strong></div>
-      <div class="hint"><span>一句话说明</span><strong>从编辑器，到命令行，到结果。</strong></div>
+      <div>
+        <span>展示方式</span>
+        <strong>一张卡片，三段流程。更像官网，也更像作品。</strong>
+      </div>
+      <div class="hint">
+        <span>简历用途</span>
+        <strong>让别人一眼看到：我能把代码写出来，还能把结果做漂亮。</strong>
+      </div>
     </div>
   </div>
 
   <script>
-    const editorText = document.getElementById('editorText');
-    const activeLine = document.getElementById('activeLine');
-    const cmdText = document.getElementById('cmdText');
-    const termCaret = document.getElementById('termCaret');
-    const out1 = document.getElementById('out1');
-    const out2 = document.getElementById('out2');
-    const out3 = document.getElementById('out3');
-    const pill = document.getElementById('pill');
-    const previewCursor = document.getElementById('previewCursor');
-    const heroCard = document.getElementById('heroCard');
-    const score = document.getElementById('score');
-    const scanline = document.getElementById('scanline');
-    const address = document.getElementById('address');
+    const content = document.getElementById('content');
+    const panelTitle = document.getElementById('panelTitle');
+    const panelRight = document.getElementById('panelRight');
+    const modeLabel = document.getElementById('modeLabel');
+    const tabs = [...document.querySelectorAll('.mode-tab')];
 
-    const editorLines = [
-      "// main.ts",
+    const MODES = ['write', 'run', 'ship'];
+    const MODE_META = {
+      write: { title: 'main.ts', right: 'typescript', label: 'Editor focus' },
+      run: { title: 'zsh', right: 'local', label: 'Command in motion' },
+      ship: { title: 'browser preview', right: 'localhost:3000', label: 'Result on screen' },
+    };
+
+    const CODE = [
+      '// main.ts',
       "import { createDemo } from './lib'",
-      "",
-      "const demo = createDemo({",
+      '',
+      'const demo = createDemo({',
       "  mode: 'black-white',",
       "  motion: 'precise',",
       "  speed: 'smooth',",
-      "  preview: true,",
-      "  ship: true",
-      "})"
+      '  preview: true,',
+      '  ship: true',
+      '})',
     ];
-    const terminalCmd = 'pnpm dev -- --host';
 
-    function clamp(v, a=0, b=1){ return Math.max(a, Math.min(b, v)); }
-    function ease(t){ return 0.5 - 0.5 * Math.cos(Math.PI * clamp(t)); }
-    function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-    function typedCode(progress) {
-      const p = ease(progress);
-      const total = editorLines.join('\n').length;
-      const typed = Math.max(1, Math.min(total, Math.floor(total * p)));
-      const prefix = editorLines.join('\n').slice(0, typed);
-      return prefix;
+    const TERMINAL_CMD = 'pnpm dev -- --host';
+    const TERMINAL_OUT = [
+      'running dev server ...',
+      'bundling assets ...',
+      '✓ ready at http://localhost:3000',
+    ];
+
+    let start = performance.now();
+    const modeDuration = 4600;
+
+    function clamp(v, min = 0, max = 1) { return Math.max(min, Math.min(max, v)); }
+    function ease(t) { t = clamp(t); return 0.5 - 0.5 * Math.cos(Math.PI * t); }
+    function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    function wrapCode(line) {
+      if (line.startsWith('//')) return `<span class="token-comment">${esc(line)}</span>`;
+      return esc(line)
+        .replace(/(import|const)/g, '<span class="token-key">$1</span>')
+        .replace(/'(.*?)'/g, '<span class="token-string">'$1'</span>');
     }
-    function renderEditor(progress) {
-      const p = ease(progress);
-      // Always render the full code so it never looks empty.
-      // Only the cursor/highlight moves.
-      const phaseIdx = Math.min(editorLines.length - 1, Math.floor(p * editorLines.length));
-      const html = editorLines.map((ln, i) => {
-        const line = esc(ln);
-        return i === phaseIdx ? `<span class="line">${line}<span class="cursor"></span></span>` : `<span class="line">${line}</span>`;
+
+    function activeMode(now) {
+      const total = ((now - start) / modeDuration) % MODES.length;
+      const idx = Math.floor(total);
+      return { name: MODES[idx], local: total - idx, idx };
+    }
+
+    function renderTabs(name) {
+      tabs.forEach((btn) => btn.classList.toggle('active', btn.dataset.mode === name));
+    }
+
+    function renderEditor(local) {
+      const p = ease(local);
+      const activeLine = Math.min(CODE.length - 1, Math.floor(p * CODE.length));
+      const focused = MODE_META.write;
+      panelTitle.textContent = focused.title;
+      panelRight.textContent = focused.right;
+      modeLabel.textContent = focused.label;
+
+      const rows = CODE.map((line, i) => {
+        const state = i < activeLine ? 'done' : i === activeLine ? 'active' : 'dim';
+        const cursor = i === activeLine ? '<span class="cursor"></span>' : '';
+        return `
+          <div class="gutter">${i + 1}</div>
+          <div class="code-line ${state}">${wrapCode(line)}${cursor}</div>
+        `;
       }).join('');
-      editorText.innerHTML = html;
-      activeLine.style.opacity = '1';
-      activeLine.style.transform = `translateY(${16 + phaseIdx * 31}px)`;
+
+      content.innerHTML = `
+        <div class="mode-card editor-layout">
+          <div class="editor-col">
+            <div class="editor-meta">
+              <div class="file-pill">main.ts</div>
+              <div>typed frame ${String(activeLine + 1).padStart(2, '0')}</div>
+            </div>
+            <div class="code-grid">${rows}</div>
+          </div>
+          <div class="editor-side">
+            <div class="side-card">
+              <div class="side-title">What this shows</div>
+              <p class="side-copy">我不是只会写一段代码。我会把结构、命名、节奏和结果一起管好，让页面有“完成感”。</p>
+            </div>
+            <div class="side-card">
+              <div class="side-title">Skills on display</div>
+              <div class="chip-row">
+                <span class="chip">TypeScript</span>
+                <span class="chip">UI motion</span>
+                <span class="chip">Layout</span>
+                <span class="chip">Polish</span>
+              </div>
+            </div>
+            <div class="side-card">
+              <div class="side-title">Resume line</div>
+              <div class="side-list">
+                <div class="mini-item"><span>Editor state</span><strong>aligned</strong></div>
+                <div class="mini-item"><span>Line numbers</span><strong>stable</strong></div>
+                <div class="mini-item"><span>Cursor</span><strong>sync</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      content.classList.remove('fade-in');
+      void content.offsetWidth;
+      content.classList.add('fade-in');
     }
-    function renderTerminal(progress) {
-      const p = ease(progress);
-      // Keep the command visible at all times.
-      cmdText.textContent = terminalCmd;
-      termCaret.style.opacity = p < 0.92 ? '1' : '0.35';
-      termCaret.style.transform = `translateX(${Math.floor(p * 4)}px)`;
-      out1.classList.toggle('show', p > 0.10);
-      out2.classList.toggle('show', p > 0.22);
-      out3.classList.toggle('show', p > 0.36);
-      pill.style.opacity = p > 0.45 ? '1' : '0';
-      pill.style.transform = `translateY(${(1 - clamp((p - 0.45)/0.15)) * 8}px)`;
+
+    function renderTerminal(local) {
+      const p = ease(local);
+      const typed = Math.floor(TERMINAL_CMD.length * clamp(p / 0.46));
+      const cmd = esc(TERMINAL_CMD.slice(0, typed));
+      const phase1 = p > 0.28;
+      const phase2 = p > 0.48;
+      const phase3 = p > 0.68;
+      const ready = p > 0.78;
+      const focused = MODE_META.run;
+      panelTitle.textContent = focused.title;
+      panelRight.textContent = focused.right;
+      modeLabel.textContent = focused.label;
+
+      const outHtml = TERMINAL_OUT.map((line, idx) => {
+        const show = p > (0.30 + idx * 0.18);
+        return `<div class="term-out ${show ? 'show' : ''}">${esc(line)}</div>`;
+      }).join('');
+
+      content.innerHTML = `
+        <div class="mode-card terminal-layout">
+          <div class="panel-head" style="border-bottom: 1px solid rgba(255,255,255,.08);">
+            <div class="panel-left"><span class="panel-dot"></span><span>zsh</span></div>
+            <div>local</div>
+          </div>
+          <div class="terminal-body">
+            <div class="term-line"><span class="prompt">$</span> <span class="cmd">${cmd}</span><span class="term-cursor"></span></div>
+            ${outHtml}
+            <div class="term-ready ${ready ? 'show' : ''}"><div class="spin"></div><span>output ready</span></div>
+          </div>
+        </div>
+      `;
+      content.classList.remove('fade-in');
+      void content.offsetWidth;
+      content.classList.add('fade-in');
     }
-    function renderPreview(progress) {
-      const p = ease(progress);
-      previewCursor.style.opacity = p > 0.08 ? '1' : '0';
-      previewCursor.style.left = `${28 + 28 * Math.sin(p * Math.PI * 1.2)}%`;
-      previewCursor.style.top = `${26 + 18 * Math.sin(p * Math.PI * 1.0)}%`;
-      heroCard.style.boxShadow = `0 0 ${24 * clamp((p - 0.12)/0.2)}px rgba(255,255,255,.12), inset 0 1px 0 rgba(255,255,255,.04)`;
-      score.textContent = String(Math.min(99, 3 + Math.floor(p * 18))).padStart(2, '0');
-      address.textContent = p < 0.22 ? 'localhost:3000' : p < 0.44 ? 'Loading preview ...' : 'localhost:3000';
-      scanline.style.opacity = p > 0.42 ? String(0.35 * clamp((p - 0.42)/0.16)) : '0';
-      scanline.style.transform = `translateY(${40 + clamp((p - 0.42)/0.18) * 160}px)`;
+
+    function renderShip(local) {
+      const p = ease(local);
+      const focused = MODE_META.ship;
+      panelTitle.textContent = focused.title;
+      panelRight.textContent = focused.right;
+      modeLabel.textContent = focused.label;
+
+      const navOpacity = clamp((p - 0.02) / 0.16);
+      const headlineOpacity = clamp((p - 0.08) / 0.18);
+      const statsOpacity = clamp((p - 0.22) / 0.16);
+      const cardsOpacity = clamp((p - 0.38) / 0.20);
+      const scanY = 38 + p * 150;
+
+      content.innerHTML = `
+        <div class="mode-card browser-layout">
+          <div class="browser-bar">
+            <div class="traffic-mini"><span></span><span></span><span></span></div>
+            <div class="address">localhost:3000</div>
+            <div class="browser-actions"><span></span><span></span><span></span></div>
+          </div>
+          <div class="browser-body">
+            <div class="page">
+              <div class="page-nav" style="opacity:${navOpacity}; transform: translateY(${(1-navOpacity) * 10}px)">
+                <div class="brand"><span class="brand-mark"></span><span>Hermes</span></div>
+                <div class="page-links"><span>Work</span><span>Skills</span><span>Deploy</span></div>
+                <div class="page-cta">Open Demo</div>
+              </div>
+              <div class="page-hero">
+                <div class="copy-card" style="opacity:${headlineOpacity}; transform: translateY(${(1-headlineOpacity) * 14}px)">
+                  <div class="kicker">programming / motion</div>
+                  <div class="headline">把代码写出来，把结果做漂亮。</div>
+                  <div class="desc">这一页不只是展示截图，而是展示流程：编辑器里的结构、终端里的执行、浏览器里的结果，全都一起出现。</div>
+                  <div class="actions"><div class="btn primary">Run</div><div class="btn">Inspect</div></div>
+                </div>
+                <div class="stats-card" style="opacity:${statsOpacity}; transform: translateY(${(1-statsOpacity) * 14}px)">
+                  <div class="stat"><span>render</span><strong>03</strong></div>
+                  <div class="stat"><span>fps</span><strong>60</strong></div>
+                  <div class="stat"><span>status</span><strong>ready</strong></div>
+                  <div class="feature-row" style="opacity:${cardsOpacity}; transform: translateY(${(1-cardsOpacity) * 14}px)">
+                    <div class="feature"><div class="label">editor</div><div class="value">main.ts<br>逐行完成</div></div>
+                    <div class="feature"><div class="label">terminal</div><div class="value">zsh<br>命令执行</div></div>
+                    <div class="feature"><div class="label">browser</div><div class="value">页面加载<br>结果出现</div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="scanline" style="opacity:${clamp((p - 0.18) / 0.22)}; transform: translateY(${scanY}px)"></div>
+            </div>
+          </div>
+        </div>
+      `;
+      content.classList.remove('fade-in');
+      void content.offsetWidth;
+      content.classList.add('fade-in');
     }
-    function renderAll(t) {
-      if (t < 0.42) {
-        renderEditor(t / 0.42);
-        renderTerminal(0);
-        renderPreview(0);
-      } else if (t < 0.72) {
-        renderEditor(1);
-        renderTerminal((t - 0.42) / 0.30);
-        renderPreview(0);
-      } else {
-        renderEditor(1);
-        renderTerminal(1);
-        renderPreview((t - 0.72) / 0.28);
-      }
+
+    function render(now) {
+      const { name, local, idx } = activeMode(now);
+      renderTabs(name);
+      if (name === 'write') renderEditor(local);
+      if (name === 'run') renderTerminal(local);
+      if (name === 'ship') renderShip(local);
+      tabs.forEach((btn) => btn.classList.toggle('active', btn.dataset.mode === name));
     }
-    let t = 0;
-    function tick(){
-      t += 0.0018;
-      if (t >= 1) t = 0;
-      renderAll(t);
-      document.querySelectorAll('.panel').forEach((el, i) => {
-        el.style.transform = `translateY(${Math.sin(t * Math.PI * 2 + i * 0.2) * 2}px)`;
-      });
+
+    tabs.forEach((btn, idx) => btn.addEventListener('click', () => {
+      start = performance.now() - idx * modeDuration;
+      render(performance.now());
+    }));
+
+    function tick(now) {
+      render(now);
       requestAnimationFrame(tick);
     }
-    renderAll(0);
-    tick();
-    window.addEventListener('pointermove', (e) => {
-      const x = (e.clientX / innerWidth) * 100;
-      const y = (e.clientY / innerHeight) * 100;
-      previewCursor.style.opacity = '1';
-      previewCursor.style.left = x + '%';
-      previewCursor.style.top = y + '%';
-    });
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      render(performance.now());
+    } else {
+      requestAnimationFrame(tick);
+    }
   </script>
 </body>
 </html>
