@@ -1,621 +1,621 @@
-     1|<!doctype html>
-     2|<html lang="zh-CN">
-     3|<head>
-     4|  <meta charset="utf-8" />
-     5|  <meta name="viewport" content="width=device-width, initial-scale=1" />
-     6|  <title>Programming Motion Demo</title>
-     7|  <style>
-     8|    :root {
-     9|      --bg: #08090a;
-    10|      --panel: rgba(20, 20, 22, 0.96);
-    11|      --line: rgba(255,255,255,0.13);
-    12|      --line2: rgba(255,255,255,0.07);
-    13|      --text: #f7f8f8;
-    14|      --muted: #a6a9b1;
-    15|    }
-    16|    * { box-sizing: border-box; }
-    17|    html, body { margin: 0; width: 100%; min-height: 100%; background: var(--bg); color: var(--text); overflow-x: hidden; overflow-y: auto; }
-    18|    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; }
-    19|    .stage {
-    20|      position: relative; width: 100vw; height: 100vh;
-    21|      background:
-    22|        radial-gradient(circle at 70% 25%, rgba(255,255,255,0.10), transparent 22%),
-    23|        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.05), transparent 18%),
-    24|        linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 35%),
-    25|        var(--bg);
-    26|    }
-    27|    .grid::before {
-    28|      content: '';
-    29|      position: absolute; inset: 0; pointer-events: none;
-    30|      background-image:
-    31|        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    32|        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-    33|      background-size: 120px 88px;
-    34|      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.65) 20%, rgba(0,0,0,0.35) 75%, rgba(0,0,0,0.0));
-    35|    }
-    36|    .title {
-    37|      position: absolute; left: 50%; top: 5.8vh; transform: translateX(-50%);
-    38|      width: min(1200px, 92vw); text-align: center;
-    39|    }
-    40|    .eyebrow {
-    41|      margin: 0 0 14px;
-    42|      font-size: 12px;
-    43|      letter-spacing: .24em;
-    44|      text-transform: uppercase;
-    45|      color: rgba(255,255,255,.56);
-    46|    }
-    47|    .title h1 {
-    48|      margin: 0; font-size: clamp(42px, 4.8vw, 84px); line-height: 0.96; letter-spacing: -0.05em; font-weight: 800;
-    49|    }
-    50|    .title p {
-    51|      margin: 16px 0 0; font-size: clamp(16px, 1.4vw, 24px); color: var(--muted);
-    52|    }
-    53|    .meta {
-    54|      position: absolute; left: 50%; top: calc(5.8vh + 120px); transform: translateX(-50%);
-    55|      color: rgba(255,255,255,.56); font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
-    56|    }
-    57|    .bar {
-    58|      position: absolute; left: 50%; top: calc(54% - 316px); transform: translateX(-50%);
-    59|      width: min(1360px, 92vw); height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
-    60|    }
-    61|    .workspace {
-    62|      position: absolute; left: 50%; top: 54%; transform: translate(-50%, -50%);
-    63|      width: min(1360px, 92vw); height: min(620px, 61vh);
-    64|      display: grid; grid-template-columns: 1.12fr 0.72fr 1fr; gap: 18px;
-    65|    }
-    66|    @media (max-height: 760px), (max-width: 980px) {
-    67|      .title { top: 3.5vh; }
-    68|      .title h1 { font-size: clamp(34px, 4vw, 64px); }
-    69|      .title p { margin-top: 12px; font-size: clamp(14px, 1.15vw, 18px); }
-    70|      .meta { top: calc(3.5vh + 116px); }
-    71|      .bar { top: calc(51% - 290px); }
-    72|      .workspace {
-    73|        top: 52%;
-    74|        width: min(1320px, 94vw);
-    75|        height: min(560px, 56vh);
-    76|        gap: 14px;
-    77|      }
-    78|      .panel { border-radius: 24px; }
-    79|      .panel .head { padding: 12px 16px 10px; font-size: 12px; }
-    80|      .editor { font-size: 18px; line-height: 1.85; }
-    81|      .terminal-body { font-size: 15px; line-height: 1.68; }
-    82|      .headline { font-size: 23px; }
-    83|      .copy { min-height: 160px; }
-    84|      .footer { bottom: 3.2vh; font-size: 12px; }
-    85|    }
-    86|    .panel {
-    87|      position: relative; border: 1px solid var(--line); border-radius: 30px; overflow: hidden;
-    88|      background: var(--panel); box-shadow: 0 22px 72px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.04);
-    89|      backdrop-filter: blur(14px);
-    90|    }
-    91|    .panel .head {
-    92|      display:flex; align-items:center; justify-content:space-between; padding: 14px 18px 12px;
-    93|      border-bottom: 1px solid var(--line2); color: rgba(255,255,255,.78); font-size: 13px; letter-spacing: .08em;
-    94|    }
-    95|    .dots { display:flex; gap: 8px; }
-    96|    .dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.16); box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset; }
-    97|    .body { position:absolute; inset: 48px 0 0 0; }
-    98|
-    99|    .editor-wrap, .terminal-wrap, .preview-wrap { position:absolute; inset:0; padding: 20px 18px 18px; }
-   100|    .shell {
-   101|      position:relative; height:100%; border-radius: 24px; overflow:hidden;
-   102|      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
-   103|    }
-   104|    .shell-top {
-   105|      height: 38px; display:flex; align-items:center; justify-content:space-between; padding: 0 14px;
-   106|      border-bottom: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.76);
-   107|      font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
-   108|    }
-   109|    .left-tag { display:flex; align-items:center; gap: 10px; }
-   110|    .tag-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.9); }
-   111|
-   112|    .editor {
-   113|      position: relative; padding: 18px 18px 18px 16px; height: calc(100% - 38px);
-   114|      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-   115|      border-left: 1px solid rgba(255,255,255,.06);
-   116|      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-   117|      font-size: 22px; line-height: 2.0; color: rgba(255,255,255,.995);
-   118|      text-shadow: 0 0 20px rgba(255,255,255,.06);
-   119|    }
-   120|    .editor::before {
-   121|      content: 'main.ts'; position: absolute; right: 16px; top: 14px; height: 24px; padding: 0 10px;
-   122|      display:flex; align-items:center; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.10);
-   123|      font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.68);
-   124|    }
-   125|    .gutter {
-   126|      position:absolute; left:0; top:0; bottom:0; width: 52px; padding: 18px 10px 18px 0;
-   127|      color: rgba(255,255,255,.42); text-align:right; border-right: 1px solid rgba(255,255,255,.06);
-   128|      font-size: 13px; line-height: 2.0; user-select:none;
-   129|    }
-   130|    .code {
-   131|      position: relative; margin-left: 62px; white-space: pre-wrap; word-break: break-word; min-height: 100%;
-   132|    }
-   133|    .line { display:block; min-height: 2.0em; }
-   134|    .kw { color: #fff; font-weight: 900; }
-   135|    .str { color: rgba(255,255,255,.92); }
-   136|    .com { color: rgba(255,255,255,.48); }
-   137|    .cursor {
-   138|      display:inline-block; width: 12px; height: 1.15em; margin-left: 2px; vertical-align: -0.15em;
-   139|      background: rgba(255,255,255,1); border-radius: 2px; box-shadow: 0 0 24px rgba(255,255,255,.24);
-   140|      animation: blink 0.9s steps(1) infinite;
-   141|    }
-   142|    .active-line {
-   143|      position:absolute; left: 62px; right: 0; height: 32px; border-radius: 10px; pointer-events:none;
-   144|      background: rgba(255,255,255,.10); outline: 1px solid rgba(255,255,255,.08);
-   145|      opacity: 0; transition: opacity 120ms ease, transform 120ms ease;
-   146|    }
-   147|    @keyframes blink { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
-   148|
-   149|    .terminal-body {
-   150|      padding: 18px 16px 16px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-   151|      font-size: 18px; line-height: 1.78; color: rgba(255,255,255,.96);
-   152|    }
-   153|    .term-line { margin: 0 0 8px; }
-   154|    .prompt { color: rgba(255,255,255,.68); }
-   155|    .cmd { color: rgba(255,255,255,.98); }
-   156|    .term-cursor {
-   157|      display:inline-block; width: 10px; height: 20px; margin-left: 2px; border-radius: 2px;
-   158|      background: rgba(255,255,255,.98); box-shadow: 0 0 18px rgba(255,255,255,.20); animation: blink 0.9s steps(1) infinite;
-   159|    }
-   160|    .out { opacity: 0; transform: translateY(10px); transition: 260ms ease; }
-   161|    .out.show { opacity: 1; transform: translateY(0); }
-   162|    .pill {
-   163|      display:inline-flex; align-items:center; gap: 8px; margin-top: 10px; padding: 8px 12px;
-   164|      border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
-   165|      opacity: 0; transform: translateY(8px); transition: 220ms ease;
-   166|    }
-   167|    .spin { width: 14px; height: 14px; border-radius:50%; border: 2px solid rgba(255,255,255,.18); border-top-color:#fff; animation: spin 1s linear infinite; }
-   168|    @keyframes spin { to { transform: rotate(360deg); } }
-   169|
-   170|    .browser-bar {
-   171|      height: 46px; display:flex; align-items:center; justify-content:space-between; gap: 12px;
-   172|      padding: 0 14px; border-bottom: 1px solid rgba(255,255,255,.07); color: rgba(255,255,255,.58);
-   173|    }
-   174|    .tab {
-   175|      display:flex; align-items:center; gap: 8px; padding: 0 12px; height: 28px; border-radius: 999px;
-   176|      border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.06); color: rgba(255,255,255,.78); font-size: 12px;
-   177|    }
-   178|    .tab .dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; }
-   179|    .address {
-   180|      flex: 1; height: 28px; border-radius: 999px; padding: 0 14px; display:flex; align-items:center;
-   181|      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); font-size: 12px; letter-spacing: .05em;
-   182|    }
-   183|    .nav-btns { display:flex; gap: 8px; }
-   184|    .nav-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
-   185|
-   186|    .preview-body { padding: 14px; position: relative; height: calc(100% - 46px); }
-   187|    .page {
-   188|      position: relative; height: 100%; border-radius: 22px; overflow:hidden;
-   189|      border: 1px solid rgba(255,255,255,.08);
-   190|      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-   191|      padding: 16px;
-   192|    }
-   193|    .nav {
-   194|      display:flex; align-items:center; justify-content:space-between; gap: 12px; padding-bottom: 14px; margin-bottom: 14px;
-   195|      border-bottom: 1px solid rgba(255,255,255,.08);
-   196|    }
-   197|    .brand { display:flex; align-items:center; gap: 10px; letter-spacing: .16em; text-transform: uppercase; font-size: 13px; }
-   198|    .brand .mark { width: 12px; height: 12px; border-radius: 50%; background: #fff; }
-   199|    .links { display:flex; gap: 16px; color: rgba(255,255,255,.64); font-size: 12px; }
-   200|    .cta { padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.92); color: #000; font-size: 12px; font-weight: 800; }
-   201|    .hero { display:grid; grid-template-columns: 1.15fr .85fr; gap: 14px; }
-   202|    .copy, .stats, .card { border-radius: 20px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); overflow: hidden; }
-   203|    .copy { padding: 18px; min-height: 180px; position: relative; }
-   204|    .kicker { font-size: 12px; letter-spacing: .2em; color: rgba(255,255,255,.48); text-transform: uppercase; }
-   205|    .headline { margin-top: 12px; font-size: 27px; line-height: 1.06; letter-spacing: -.04em; font-weight: 800; }
-   206|    .desc { margin-top: 10px; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,.6); }
-   207|    .buttons { display:flex; gap: 10px; margin-top: 14px; }
-   208|    .btn { height: 30px; padding: 0 12px; display:flex; align-items:center; border-radius: 999px; font-size: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); }
-   209|    .btn.primary { background: rgba(255,255,255,.92); color: #000; font-weight: 800; }
-   210|    .stats { padding: 16px; display:grid; gap: 12px; }
-   211|    .stat { height: 44px; border-radius: 14px; padding: 0 12px; display:flex; align-items:center; justify-content:space-between; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); font-size: 12px; }
-   212|    .stat strong { font-size: 16px; color: #fff; }
-   213|    .modules { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
-   214|    .card { min-height: 74px; padding: 12px; }
-   215|    .label { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.42); }
-   216|    .value { margin-top: 8px; font-size: 13px; color: rgba(255,255,255,.92); line-height: 1.45; }
-   217|    .focus {
-   218|      position:absolute; width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.95);
-   219|      box-shadow: 0 0 0 12px rgba(255,255,255,.07); transform: translate(-50%, -50%); opacity: 0; pointer-events: none;
-   220|    }
-   221|    .focus::after {
-   222|      content:''; position:absolute; left:50%; top:50%; width: 7px; height: 7px; border-radius: 50%; background: #fff; transform: translate(-50%,-50%);
-   223|    }
-   224|    .scan {
-   225|      position:absolute; left:0; right:0; height:2px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
-   226|      transform: translateY(-40px); opacity: 0; pointer-events:none;
-   227|    }
-   228|
-   229|    .footer {
-   230|      position: absolute; left: 50%; bottom: 4.8vh; transform: translateX(-50%); width: min(1040px, 92vw);
-   231|      display: flex; justify-content: space-between; gap: 20px; color: rgba(255,255,255,.56); font-size: 13px;
-   232|    }
-   233|    .footer strong { display: block; margin-top: 4px; color: rgba(255,255,255,.92); font-size: 15px; }
-   234|    .hint { text-align: right; max-width: 420px; }
-   235|    .quick-nav {
-   236|      position: fixed; left: 18px; top: 18px; z-index: 50;
-   237|      display: flex; gap: 10px; padding: 10px;
-   238|      border-radius: 999px;
-   239|      background: rgba(10,10,12,.72);
-   240|      backdrop-filter: blur(16px);
-   241|      border: 1px solid rgba(255,255,255,.08);
-   242|    }
-   243|    .quick-nav button {
-   244|      appearance: none; border: 0; cursor: pointer;
-   245|      color: rgba(255,255,255,.9);
-   246|      background: rgba(255,255,255,.08);
-   247|      padding: 10px 14px; border-radius: 999px;
-   248|      font-size: 13px; line-height: 1;
-   249|    }
-   250|    .quick-nav button:hover { background: rgba(255,255,255,.14); }
-   251|
-   252|    /* 舞台演唱模块 — 照片展示 */
-   253|    .vocal-stage {
-   254|      position: relative; width: 100%; height: 100vh;
-   255|      background: #000; overflow: hidden;
-   256|    }
-   257|    .vs-photo {
-   258|      position: absolute; inset: 0;
-   259|      width: 100%; height: 100%;
-   260|      object-fit: cover;
-   261|      opacity: 0;
-   262|      transition: opacity 1.6s ease;
-   263|    }
-   264|    .vocal-stage.show .vs-photo { opacity: 1; }
-   265|    .vs-overlay {
-   266|      position: absolute; inset: 0;
-   267|      background:
-   268|        linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.6) 100%);
-   269|      pointer-events: none; z-index: 1;
-   270|    }
-   271|    .vs-text {
-   272|      position: absolute; left: 8%; bottom: 10%;
-   273|      z-index: 2; pointer-events: none;
-   274|      opacity: 0; transform: translateY(18px);
-   275|      transition: opacity 1.2s ease, transform 1.2s ease;
-   276|    }
-   277|    .vocal-stage.show .vs-text { opacity: 1; transform: translateY(0); }
-   278|    .vs-label {
-   279|      font-size: 11px; letter-spacing: .28em; text-transform: uppercase;
-   280|      color: rgba(255,255,255,.5); margin-bottom: 14px;
-   281|    }
-   282|    .vs-title {
-   283|      margin: 0 0 12px; font-size: clamp(28px, 4vw, 56px);
-   284|      letter-spacing: -.04em; font-weight: 800; color: #fff; line-height: 1;
-   285|    }
-   286|    .systems-stage {
-   287|      min-height: 100vh;
-   288|      background:
-   289|        radial-gradient(circle at 50% 18%, rgba(255,255,255,.06), transparent 26%),
-   290|        linear-gradient(180deg, #050506 0%, #09090b 100%);
-   291|      color: #fff;
-   292|      padding: 110px 8vw 80px;
-   293|      display: grid;
-   294|      gap: 38px;
-   295|      align-content: center;
-   296|    }
-   297|    .systems-intro h2 {
-   298|      margin: 10px 0 12px;
-   299|      font-size: clamp(34px, 4.8vw, 68px);
-   300|      letter-spacing: -.05em;
-   301|      line-height: 1.02;
-   302|    }
-   303|    .systems-kicker {
-   304|      font-size: 11px; letter-spacing: .28em; text-transform: uppercase;
-   305|      color: rgba(255,255,255,.45);
-   306|    }
-   307|    .systems-intro p {
-   308|      margin: 0;
-   309|      max-width: 56ch;
-   310|      font-size: clamp(13px, 1.35vw, 17px);
-   311|      line-height: 1.8;
-   312|      color: rgba(255,255,255,.58);
-   313|    }
-   314|    .systems-grid {
-   315|      display: grid;
-   316|      grid-template-columns: 1.15fr .85fr;
-   317|      gap: 24px;
-   318|      align-items: stretch;
-   319|    }
-   320|    .light-scene, .audio-scene {
-   321|      position: relative;
-   322|      min-height: 500px;
-   323|      border-radius: 34px;
-   324|      overflow: hidden;
-   325|      background: rgba(255,255,255,.03);
-   326|      border: 1px solid rgba(255,255,255,.08);
-   327|    }
-   328|    .light-scene {
-   329|      background:
-   330|        radial-gradient(circle at 50% 12%, rgba(255,255,255,.06), transparent 20%),
-   331|        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
-   332|    }
-   333|    .audio-scene {
-   334|      background:
-   335|        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-   336|      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02), 0 0 80px rgba(255,255,255,.04);
-   337|    }
-   338|    .scene-title {
-   339|      position: absolute; left: 24px; top: 22px; z-index: 4;
-   340|      font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
-   341|      color: rgba(255,255,255,.46);
-   342|    }
-   343|    .light-stage {
-   344|      position: absolute; inset: 0;
-   345|    }
-   346|    .truss {
-   347|      position: absolute; left: 6%; right: 6%; top: 16%; height: 16px;
-   348|      border-top: 2px solid rgba(255,255,255,.15);
-   349|      border-bottom: 2px solid rgba(255,255,255,.08);
-   350|      opacity: .85;
-   351|    }
-   352|    .truss::before, .truss::after {
-   353|      content: ""; position: absolute; inset: 0;
-   354|      background:
-   355|        linear-gradient(90deg, transparent 0 8%, rgba(255,255,255,.08) 8% 9%, transparent 9% 17%, rgba(255,255,255,.08) 17% 18%, transparent 18% 26%, rgba(255,255,255,.08) 26% 27%, transparent 27% 35%, rgba(255,255,255,.08) 35% 36%, transparent 36% 44%, rgba(255,255,255,.08) 44% 45%, transparent 45% 53%, rgba(255,255,255,.08) 53% 54%, transparent 54% 62%, rgba(255,255,255,.08) 62% 63%, transparent 63% 71%, rgba(255,255,255,.08) 71% 72%, transparent 72% 80%, rgba(255,255,255,.08) 80% 81%, transparent 81% 100%),
-   356|        linear-gradient(180deg, transparent 0 43%, rgba(255,255,255,.08) 43% 57%, transparent 57% 100%);
-   357|      opacity: .6;
-   358|    }
-   359|    .light-unit {
-   360|      position: absolute; top: 0; width: 18%; height: 100%;
-   361|      transform: rotate(var(--beam));
-   362|    }
-   363|    .light-unit .moving-head {
-   364|      position: absolute; top: 12.2%; left: 50%;
-   365|      width: 24px; height: 34px; border-radius: 10px;
-   366|      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.24));
-   367|      box-shadow: 0 0 18px rgba(255,255,255,.16);
-   368|      transform-origin: 50% 100%;
-   369|      transform: translateX(-50%);
-   370|      animation: headSweep 4.2s infinite ease-in-out;
-   371|    }
-   372|    .light-unit .moving-head::before {
-   373|      content: ""; position: absolute; inset: 4px 5px 14px;
-   374|      border-radius: 8px;
-   375|      background: linear-gradient(180deg, rgba(0,0,0,.38), rgba(255,255,255,.08));
-   376|      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
-   377|    }
-   378|    .light-unit .moving-head::after {
-   379|      content: ""; position: absolute; left: 50%; top: 100%; transform: translateX(-50%);
-   380|      width: 4px; height: 12px; border-radius: 999px; background: rgba(255,255,255,.85);
-   381|    }
-   382|    .light-unit .beam-fan {
-   383|      position: absolute; left: 50%; top: calc(12.2% + 32px);
-   384|      width: 220px; height: 392px; margin-left: -110px;
-   385|      background: linear-gradient(180deg, rgba(255,255,255,.52), rgba(255,255,255,.18) 18%, rgba(255,255,255,0) 82%);
-   386|      clip-path: polygon(50% 0, 96% 100%, 4% 100%);
-   387|      filter: blur(2px);
-   388|      opacity: 0;
-   389|      transform-origin: top center;
-   390|      transform: translateX(-50%);
-   391|      animation: headSweep 4.2s infinite ease-in-out;
-   392|    }
-   393|    .light-unit .beam-fan::before,
-   394|    .light-unit .beam-fan::after {
-   395|      content: ""; position: absolute; left: 50%; top: 0;
-   396|      width: 100%; height: 100%;
-   397|      clip-path: inherit;
-   398|      transform: translateX(-50%);
-   399|      animation: beamGlow 5.8s infinite ease-in-out;
-   400|    }
-   401|    .light-unit .beam-fan::before {
-   402|      background: linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,0) 76%);
-   403|      opacity: .92;
-   404|    }
-   405|    .light-unit .beam-fan::after {
-   406|      width: 100%; height: 100%;
-   407|      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 82%);
-   408|      animation-delay: 1.4s;
-   409|    }
-   410|    .u1 { left: 12%; --beam: -24deg; }
-   411|    .u2 { left: 30%; --beam: -12deg; }
-   412|    .u3 { left: 48%; --beam: 0deg; }
-   413|    .u4 { left: 66%; --beam: 12deg; }
-   414|    .u5 { left: 84%; --beam: 24deg; }
-   415|    .haze {
-   416|      position: absolute; inset: 0;
-   417|      background:
-   418|        radial-gradient(circle at 50% 72%, rgba(255,255,255,.08), transparent 24%),
-   419|        radial-gradient(circle at 45% 78%, rgba(255,255,255,.05), transparent 18%),
-   420|        radial-gradient(circle at 58% 80%, rgba(255,255,255,.06), transparent 16%);
-   421|      filter: blur(10px);
-   422|      mix-blend-mode: screen;
-   423|      animation: hazeDrift 8s infinite ease-in-out;
-   424|    }
-   425|    .floor {
-   426|      position: absolute; left: 10%; right: 10%; bottom: 12%; height: 18px;
-   427|      background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
-   428|      filter: blur(2px);
-   429|    }
-   430|    .floor-reflection {
-   431|      position: absolute; left: 50%; bottom: 8%; width: 42%; height: 70px; transform: translateX(-50%);
-   432|      background: radial-gradient(circle, rgba(255,255,255,.14), transparent 68%);
-   433|      filter: blur(18px);
-   434|      opacity: .8;
-   435|      animation: reflectionPulse 4.4s infinite ease-in-out;
-   436|    }
-   437|    .audio-grid {
-   438|      position: absolute; inset: 0;
-   439|      display: grid;
-   440|      grid-template-columns: 1fr 1.3fr;
-   441|      gap: 22px;
-   442|      padding: 76px 20px 22px;
-   443|    }
-   444|    .console, .speaker-bank {
-   445|      position: relative;
-   446|      border-radius: 28px;
-   447|      border: 1px solid rgba(255,255,255,.08);
-   448|      background: rgba(255,255,255,.03);
-   449|      overflow: hidden;
-   450|    }
-   451|    .console::before {
-   452|      content: ""; position: absolute; inset: 18px;
-   453|      border-radius: 22px;
-   454|      background:
-   455|        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
-   456|        repeating-linear-gradient(90deg, transparent 0 16px, rgba(255,255,255,.06) 16px 17px, transparent 17px 30px);
-   457|      box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
-   458|    }
-   459|    .mixer-fader {
-   460|      position: absolute; left: 22px; right: 22px; top: 68px; bottom: 22px;
-   461|      display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
-   462|      align-items: end;
-   463|    }
-   464|    .fader {
-   465|      position: relative; height: 100%;
-   466|      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.06));
-   467|      border-radius: 18px;
-   468|      border: 1px solid rgba(255,255,255,.05);
-   469|      overflow: hidden;
-   470|    }
-   471|    .fader::before {
-   472|      content: ""; position: absolute; left: 50%; top: 12%; width: 2px; bottom: 12%;
-   473|      transform: translateX(-50%);
-   474|      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.35), rgba(255,255,255,.08));
-   475|    }
-   476|    .fader::after {
-   477|      content: ""; position: absolute; left: 50%; width: 26px; height: 26px; border-radius: 50%;
-   478|      transform: translateX(-50%);
-   479|      background: #fff;
-   480|      box-shadow: 0 0 26px rgba(255,255,255,.45);
-   481|      top: var(--knob, 62%);
-   482|      animation: faderSlide var(--speed, 2.4s) infinite ease-in-out;
-   483|      animation-delay: var(--delay, 0s);
-   484|    }
-   485|    .f1 { --knob: 80%; --delay: 0s; --speed: 2.4s; }
-   486|    .f2 { --knob: 40%; --delay: .18s; --speed: 2.8s; }
-   487|    .f3 { --knob: 70%; --delay: .32s; --speed: 2.6s; }
-   488|    .f4 { --knob: 28%; --delay: .48s; --speed: 3.0s; }
-   489|    .f5 { --knob: 62%; --delay: .14s; --speed: 2.5s; }
-   490|    .f6 { --knob: 35%; --delay: .38s; --speed: 2.9s; }
-   491|    .wave-panel {
-   492|      position: absolute; left: 20px; right: 20px; top: 72px; height: 120px;
-   493|      border-radius: 24px;
-   494|      background: rgba(255,255,255,.02);
-   495|      overflow: hidden;
-   496|      border: 1px solid rgba(255,255,255,.05);
-   497|    }
-   498|    .wave-panel svg { width: 100%; height: 100%; display: block; }
-   499|    .wave {
-   500|      fill: none; stroke: rgba(255,255,255,.78); stroke-width: 2.2;
-   501|      stroke-dasharray: 14 10; animation: waveFlow 5s linear infinite;
-   502|    }
-   503|    .pulse {
-   504|      fill: none; stroke: rgba(255,255,255,.18); stroke-width: 1.2;
-   505|      animation: pulseFade 3.2s infinite ease-in-out;
-   506|    }
-   507|    .speaker-bank {
-   508|      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 74px 18px 18px;
-   509|      position: relative;
-   510|    }
-   511|    .speaker {
-   512|      position: relative; border-radius: 22px; background: rgba(255,255,255,.05);
-   513|      border: 1px solid rgba(255,255,255,.07);
-   514|      overflow: hidden;
-   515|    }
-   516|    .speaker::before, .speaker::after {
-   517|      content: ""; position: absolute; left: 50%; transform: translateX(-50%); border-radius: 50%;
-   518|      background: radial-gradient(circle, rgba(255,255,255,.6), rgba(255,255,255,.14) 52%, rgba(255,255,255,.03) 70%, transparent 72%);
-   519|      box-shadow: 0 0 24px rgba(255,255,255,.14);
-   520|    }
-   521|    .speaker::before { top: 18%; width: 52%; aspect-ratio: 1; }
-   522|    .speaker::after { bottom: 14%; width: 26%; aspect-ratio: 1; }
-   523|    .speaker .edge {
-   524|      position: absolute; inset: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,.04);
-   525|    }
-   526|    .speaker.s1 { grid-column: span 2; min-height: 150px; }
-   527|    .speaker.s2, .speaker.s3 { min-height: 125px; }
-   528|    .speaker.s1::before { width: 34%; top: 16%; }
-   529|    .speaker.s1::after { width: 16%; bottom: 12%; }
-   530|    .speaker.s2::before, .speaker.s3::before { width: 48%; top: 19%; }
-   531|    .speaker.s2::after, .speaker.s3::after { width: 20%; bottom: 12%; }
-   532|    .sound-rings {
-   533|      position: absolute; inset: 0;
-   534|      pointer-events: none;
-   535|      z-index: 2;
-   536|    }
-   537|    .sound-rings span {
-   538|      position: absolute;
-   539|      left: 50%; top: 50%;
-   540|      width: 94%; height: 94%;
-   541|      border-radius: 50%;
-   542|      border: 1.5px solid rgba(255,255,255,.34);
-   543|      box-shadow: 0 0 30px rgba(255,255,255,.12), inset 0 0 24px rgba(255,255,255,.08);
-   544|      transform: translate(-50%, -50%) scale(.26);
-   545|      opacity: 0;
-   546|      animation: ringSpread 3.9s infinite ease-out;
-   547|    }
-   548|    .sound-rings span:nth-child(2) { animation-delay: .55s; }
-   549|    .sound-rings span:nth-child(3) { animation-delay: 1.1s; }
-   550|    .signal-run {
-   551|      position: absolute; left: 20px; right: 20px; bottom: 18px; height: 4px;
-   552|      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.26), rgba(255,255,255,0));
-   553|      overflow: hidden;
-   554|      z-index: 1;
-   555|    }
-   556|    .signal-run::before {
-   557|      content: ""; position: absolute; inset: 0;
-   558|      background: linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent);
-   559|      transform: translateX(-80%);
-   560|      animation: signalSweep 3.8s infinite ease-in-out;
-   561|    }
-   562|    .systems-outro {
-   563|      font-size: clamp(15px, 1.5vw, 20px);
-   564|      color: rgba(255,255,255,.76);
-   565|      letter-spacing: -.02em;
-   566|    }
-   567|    @keyframes headSweep {
-   568|      0%, 100% { transform: translateY(0) rotate(-18deg); opacity: .65; }
-   569|      25% { transform: translateY(6px) rotate(22deg); opacity: 1; }
-   570|      50% { transform: translateY(0) rotate(-8deg); opacity: .85; }
-   571|      75% { transform: translateY(5px) rotate(28deg); opacity: 1; }
-   572|    }
-   573|    @keyframes beamGlow {
-   574|      0%, 100% { opacity: .04; transform: translateX(-50%) scaleY(.72); }
-   575|      50% { opacity: .92; transform: translateX(-50%) scaleY(1.02); }
-   576|    }
-   577|    @keyframes hazeDrift {
-   578|      0%, 100% { opacity: .45; transform: translateX(-1%) translateY(0); }
-   579|      50% { opacity: .8; transform: translateX(1%) translateY(-6px); }
-   580|    }
-   581|    @keyframes reflectionPulse {
-   582|      0%, 100% { opacity: .35; transform: translateX(-50%) scale(.92); }
-   583|      50% { opacity: .95; transform: translateX(-50%) scale(1.04); }
-   584|    }
-   585|    @keyframes faderSlide {
-   586|      0%, 100% { transform: translateX(-50%) translateY(6px); }
-   587|      50% { transform: translateX(-50%) translateY(-28px); }
-   588|    }
-   589|    @keyframes waveFlow {
-   590|      from { stroke-dashoffset: 0; }
-   591|      to { stroke-dashoffset: -120; }
-   592|    }
-   593|    @keyframes pulseFade {
-   594|      0%, 100% { opacity: .15; }
-   595|      50% { opacity: .9; }
-   596|    }
-   597|    @keyframes signalSweep {
-   598|      0% { transform: translateX(-80%); opacity: 0; }
-   599|      20% { opacity: 1; }
-   600|      50% { transform: translateX(20%); opacity: 1; }
-   601|      100% { transform: translateX(120%); opacity: 0; }
-   602|    }
-   603|    @keyframes ringSpread {
-   604|      0% { opacity: 0; transform: translate(-50%, -50%) scale(.24); }
-   605|      18% { opacity: .95; }
-   606|      60% { opacity: .36; }
-   607|      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.08); }
-   608|    }
-   609|
-   610|  </style>
-   611|</head>
-   612|<body>
-   613|  <div class="quick-nav">
-   614|    <button onclick="document.querySelector('.stage.grid').scrollIntoView({behavior:'smooth', block:'start'})">代码演示</button>
-   615|    <button onclick="document.getElementById('systemsStage').scrollIntoView({behavior:'smooth', block:'start'})">舞台灯光 / 音响</button>
-   616|  </div>
-   617|
-   618|  <div class="stage grid">
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Programming Motion Demo</title>
+  <style>
+    :root {
+      --bg: #08090a;
+      --panel: rgba(20, 20, 22, 0.96);
+      --line: rgba(255,255,255,0.13);
+      --line2: rgba(255,255,255,0.07);
+      --text: #f7f8f8;
+      --muted: #a6a9b1;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; min-height: 100%; background: var(--bg); color: var(--text); overflow-x: hidden; overflow-y: auto; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; }
+    .stage {
+      position: relative; width: 100vw; height: 100vh;
+      background:
+        radial-gradient(circle at 70% 25%, rgba(255,255,255,0.10), transparent 22%),
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.05), transparent 18%),
+        linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 35%),
+        var(--bg);
+    }
+    .grid::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 120px 88px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.65) 20%, rgba(0,0,0,0.35) 75%, rgba(0,0,0,0.0));
+    }
+    .title {
+      position: absolute; left: 50%; top: 5.8vh; transform: translateX(-50%);
+      width: min(1200px, 92vw); text-align: center;
+    }
+    .eyebrow {
+      margin: 0 0 14px;
+      font-size: 12px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.56);
+    }
+    .title h1 {
+      margin: 0; font-size: clamp(42px, 4.8vw, 84px); line-height: 0.96; letter-spacing: -0.05em; font-weight: 800;
+    }
+    .title p {
+      margin: 16px 0 0; font-size: clamp(16px, 1.4vw, 24px); color: var(--muted);
+    }
+    .meta {
+      position: absolute; left: 50%; top: calc(5.8vh + 120px); transform: translateX(-50%);
+      color: rgba(255,255,255,.56); font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
+    }
+    .bar {
+      position: absolute; left: 50%; top: calc(54% - 316px); transform: translateX(-50%);
+      width: min(1360px, 92vw); height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+    }
+    .workspace {
+      position: absolute; left: 50%; top: 54%; transform: translate(-50%, -50%);
+      width: min(1360px, 92vw); height: min(620px, 61vh);
+      display: grid; grid-template-columns: 1.12fr 0.72fr 1fr; gap: 18px;
+    }
+    @media (max-height: 760px), (max-width: 980px) {
+      .title { top: 3.5vh; }
+      .title h1 { font-size: clamp(34px, 4vw, 64px); }
+      .title p { margin-top: 12px; font-size: clamp(14px, 1.15vw, 18px); }
+      .meta { top: calc(3.5vh + 116px); }
+      .bar { top: calc(51% - 290px); }
+      .workspace {
+        top: 52%;
+        width: min(1320px, 94vw);
+        height: min(560px, 56vh);
+        gap: 14px;
+      }
+      .panel { border-radius: 24px; }
+      .panel .head { padding: 12px 16px 10px; font-size: 12px; }
+      .editor { font-size: 18px; line-height: 1.85; }
+      .terminal-body { font-size: 15px; line-height: 1.68; }
+      .headline { font-size: 23px; }
+      .copy { min-height: 160px; }
+      .footer { bottom: 3.2vh; font-size: 12px; }
+    }
+    .panel {
+      position: relative; border: 1px solid var(--line); border-radius: 30px; overflow: hidden;
+      background: var(--panel); box-shadow: 0 22px 72px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.04);
+      backdrop-filter: blur(14px);
+    }
+    .panel .head {
+      display:flex; align-items:center; justify-content:space-between; padding: 14px 18px 12px;
+      border-bottom: 1px solid var(--line2); color: rgba(255,255,255,.78); font-size: 13px; letter-spacing: .08em;
+    }
+    .dots { display:flex; gap: 8px; }
+    .dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.16); box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset; }
+    .body { position:absolute; inset: 48px 0 0 0; }
+
+    .editor-wrap, .terminal-wrap, .preview-wrap { position:absolute; inset:0; padding: 20px 18px 18px; }
+    .shell {
+      position:relative; height:100%; border-radius: 24px; overflow:hidden;
+      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+    }
+    .shell-top {
+      height: 38px; display:flex; align-items:center; justify-content:space-between; padding: 0 14px;
+      border-bottom: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.76);
+      font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    }
+    .left-tag { display:flex; align-items:center; gap: 10px; }
+    .tag-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.9); }
+
+    .editor {
+      position: relative; padding: 18px 18px 18px 16px; height: calc(100% - 38px);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border-left: 1px solid rgba(255,255,255,.06);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 22px; line-height: 2.0; color: rgba(255,255,255,.995);
+      text-shadow: 0 0 20px rgba(255,255,255,.06);
+    }
+    .editor::before {
+      content: 'main.ts'; position: absolute; right: 16px; top: 14px; height: 24px; padding: 0 10px;
+      display:flex; align-items:center; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.10);
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.68);
+    }
+    .gutter {
+      position:absolute; left:0; top:0; bottom:0; width: 52px; padding: 18px 10px 18px 0;
+      color: rgba(255,255,255,.42); text-align:right; border-right: 1px solid rgba(255,255,255,.06);
+      font-size: 13px; line-height: 2.0; user-select:none;
+    }
+    .code {
+      position: relative; margin-left: 62px; white-space: pre-wrap; word-break: break-word; min-height: 100%;
+    }
+    .line { display:block; min-height: 2.0em; }
+    .kw { color: #fff; font-weight: 900; }
+    .str { color: rgba(255,255,255,.92); }
+    .com { color: rgba(255,255,255,.48); }
+    .cursor {
+      display:inline-block; width: 12px; height: 1.15em; margin-left: 2px; vertical-align: -0.15em;
+      background: rgba(255,255,255,1); border-radius: 2px; box-shadow: 0 0 24px rgba(255,255,255,.24);
+      animation: blink 0.9s steps(1) infinite;
+    }
+    .active-line {
+      position:absolute; left: 62px; right: 0; height: 32px; border-radius: 10px; pointer-events:none;
+      background: rgba(255,255,255,.10); outline: 1px solid rgba(255,255,255,.08);
+      opacity: 0; transition: opacity 120ms ease, transform 120ms ease;
+    }
+    @keyframes blink { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
+
+    .terminal-body {
+      padding: 18px 16px 16px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 18px; line-height: 1.78; color: rgba(255,255,255,.96);
+    }
+    .term-line { margin: 0 0 8px; }
+    .prompt { color: rgba(255,255,255,.68); }
+    .cmd { color: rgba(255,255,255,.98); }
+    .term-cursor {
+      display:inline-block; width: 10px; height: 20px; margin-left: 2px; border-radius: 2px;
+      background: rgba(255,255,255,.98); box-shadow: 0 0 18px rgba(255,255,255,.20); animation: blink 0.9s steps(1) infinite;
+    }
+    .out { opacity: 0; transform: translateY(10px); transition: 260ms ease; }
+    .out.show { opacity: 1; transform: translateY(0); }
+    .pill {
+      display:inline-flex; align-items:center; gap: 8px; margin-top: 10px; padding: 8px 12px;
+      border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+      opacity: 0; transform: translateY(8px); transition: 220ms ease;
+    }
+    .spin { width: 14px; height: 14px; border-radius:50%; border: 2px solid rgba(255,255,255,.18); border-top-color:#fff; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .browser-bar {
+      height: 46px; display:flex; align-items:center; justify-content:space-between; gap: 12px;
+      padding: 0 14px; border-bottom: 1px solid rgba(255,255,255,.07); color: rgba(255,255,255,.58);
+    }
+    .tab {
+      display:flex; align-items:center; gap: 8px; padding: 0 12px; height: 28px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.06); color: rgba(255,255,255,.78); font-size: 12px;
+    }
+    .tab .dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; }
+    .address {
+      flex: 1; height: 28px; border-radius: 999px; padding: 0 14px; display:flex; align-items:center;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); font-size: 12px; letter-spacing: .05em;
+    }
+    .nav-btns { display:flex; gap: 8px; }
+    .nav-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
+
+    .preview-body { padding: 14px; position: relative; height: calc(100% - 46px); }
+    .page {
+      position: relative; height: 100%; border-radius: 22px; overflow:hidden;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      padding: 16px;
+    }
+    .nav {
+      display:flex; align-items:center; justify-content:space-between; gap: 12px; padding-bottom: 14px; margin-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .brand { display:flex; align-items:center; gap: 10px; letter-spacing: .16em; text-transform: uppercase; font-size: 13px; }
+    .brand .mark { width: 12px; height: 12px; border-radius: 50%; background: #fff; }
+    .links { display:flex; gap: 16px; color: rgba(255,255,255,.64); font-size: 12px; }
+    .cta { padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.92); color: #000; font-size: 12px; font-weight: 800; }
+    .hero { display:grid; grid-template-columns: 1.15fr .85fr; gap: 14px; }
+    .copy, .stats, .card { border-radius: 20px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); overflow: hidden; }
+    .copy { padding: 18px; min-height: 180px; position: relative; }
+    .kicker { font-size: 12px; letter-spacing: .2em; color: rgba(255,255,255,.48); text-transform: uppercase; }
+    .headline { margin-top: 12px; font-size: 27px; line-height: 1.06; letter-spacing: -.04em; font-weight: 800; }
+    .desc { margin-top: 10px; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,.6); }
+    .buttons { display:flex; gap: 10px; margin-top: 14px; }
+    .btn { height: 30px; padding: 0 12px; display:flex; align-items:center; border-radius: 999px; font-size: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); }
+    .btn.primary { background: rgba(255,255,255,.92); color: #000; font-weight: 800; }
+    .stats { padding: 16px; display:grid; gap: 12px; }
+    .stat { height: 44px; border-radius: 14px; padding: 0 12px; display:flex; align-items:center; justify-content:space-between; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); font-size: 12px; }
+    .stat strong { font-size: 16px; color: #fff; }
+    .modules { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+    .card { min-height: 74px; padding: 12px; }
+    .label { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.42); }
+    .value { margin-top: 8px; font-size: 13px; color: rgba(255,255,255,.92); line-height: 1.45; }
+    .focus {
+      position:absolute; width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.95);
+      box-shadow: 0 0 0 12px rgba(255,255,255,.07); transform: translate(-50%, -50%); opacity: 0; pointer-events: none;
+    }
+    .focus::after {
+      content:''; position:absolute; left:50%; top:50%; width: 7px; height: 7px; border-radius: 50%; background: #fff; transform: translate(-50%,-50%);
+    }
+    .scan {
+      position:absolute; left:0; right:0; height:2px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+      transform: translateY(-40px); opacity: 0; pointer-events:none;
+    }
+
+    .footer {
+      position: absolute; left: 50%; bottom: 4.8vh; transform: translateX(-50%); width: min(1040px, 92vw);
+      display: flex; justify-content: space-between; gap: 20px; color: rgba(255,255,255,.56); font-size: 13px;
+    }
+    .footer strong { display: block; margin-top: 4px; color: rgba(255,255,255,.92); font-size: 15px; }
+    .hint { text-align: right; max-width: 420px; }
+    .quick-nav {
+      position: fixed; left: 18px; top: 18px; z-index: 50;
+      display: flex; gap: 10px; padding: 10px;
+      border-radius: 999px;
+      background: rgba(10,10,12,.72);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .quick-nav button {
+      appearance: none; border: 0; cursor: pointer;
+      color: rgba(255,255,255,.9);
+      background: rgba(255,255,255,.08);
+      padding: 10px 14px; border-radius: 999px;
+      font-size: 13px; line-height: 1;
+    }
+    .quick-nav button:hover { background: rgba(255,255,255,.14); }
+
+    /* 舞台演唱模块 — 照片展示 */
+    .vocal-stage {
+      position: relative; width: 100%; height: 100vh;
+      background: #000; overflow: hidden;
+    }
+    .vs-photo {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.6s ease;
+    }
+    .vocal-stage.show .vs-photo { opacity: 1; }
+    .vs-overlay {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.6) 100%);
+      pointer-events: none; z-index: 1;
+    }
+    .vs-text {
+      position: absolute; left: 8%; bottom: 10%;
+      z-index: 2; pointer-events: none;
+      opacity: 0; transform: translateY(18px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
+    }
+    .vocal-stage.show .vs-text { opacity: 1; transform: translateY(0); }
+    .vs-label {
+      font-size: 11px; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); margin-bottom: 14px;
+    }
+    .vs-title {
+      margin: 0 0 12px; font-size: clamp(28px, 4vw, 56px);
+      letter-spacing: -.04em; font-weight: 800; color: #fff; line-height: 1;
+    }
+    .systems-stage {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,.06), transparent 26%),
+        linear-gradient(180deg, #050506 0%, #09090b 100%);
+      color: #fff;
+      padding: 110px 8vw 80px;
+      display: grid;
+      gap: 38px;
+      align-content: center;
+    }
+    .systems-intro h2 {
+      margin: 10px 0 12px;
+      font-size: clamp(34px, 4.8vw, 68px);
+      letter-spacing: -.05em;
+      line-height: 1.02;
+    }
+    .systems-kicker {
+      font-size: 11px; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+    }
+    .systems-intro p {
+      margin: 0;
+      max-width: 56ch;
+      font-size: clamp(13px, 1.35vw, 17px);
+      line-height: 1.8;
+      color: rgba(255,255,255,.58);
+    }
+    .systems-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+    .light-scene, .audio-scene {
+      position: relative;
+      min-height: 500px;
+      border-radius: 34px;
+      overflow: hidden;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .light-scene {
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255,255,255,.06), transparent 20%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+    }
+    .audio-scene {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02), 0 0 80px rgba(255,255,255,.04);
+    }
+    .scene-title {
+      position: absolute; left: 24px; top: 22px; z-index: 4;
+      font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
+      color: rgba(255,255,255,.46);
+    }
+    .light-stage {
+      position: absolute; inset: 0;
+    }
+    .truss {
+      position: absolute; left: 6%; right: 6%; top: 16%; height: 16px;
+      border-top: 2px solid rgba(255,255,255,.15);
+      border-bottom: 2px solid rgba(255,255,255,.08);
+      opacity: .85;
+    }
+    .truss::before, .truss::after {
+      content: ""; position: absolute; inset: 0;
+      background:
+        linear-gradient(90deg, transparent 0 8%, rgba(255,255,255,.08) 8% 9%, transparent 9% 17%, rgba(255,255,255,.08) 17% 18%, transparent 18% 26%, rgba(255,255,255,.08) 26% 27%, transparent 27% 35%, rgba(255,255,255,.08) 35% 36%, transparent 36% 44%, rgba(255,255,255,.08) 44% 45%, transparent 45% 53%, rgba(255,255,255,.08) 53% 54%, transparent 54% 62%, rgba(255,255,255,.08) 62% 63%, transparent 63% 71%, rgba(255,255,255,.08) 71% 72%, transparent 72% 80%, rgba(255,255,255,.08) 80% 81%, transparent 81% 100%),
+        linear-gradient(180deg, transparent 0 43%, rgba(255,255,255,.08) 43% 57%, transparent 57% 100%);
+      opacity: .6;
+    }
+    .light-unit {
+      position: absolute; top: 0; width: 18%; height: 100%;
+      transform: rotate(var(--beam));
+    }
+    .light-unit .moving-head {
+      position: absolute; top: 12.2%; left: 50%;
+      width: 24px; height: 34px; border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.24));
+      box-shadow: 0 0 18px rgba(255,255,255,.16);
+      transform-origin: 50% 100%;
+      transform: translateX(-50%);
+      animation: headSweep 4.2s infinite ease-in-out;
+    }
+    .light-unit .moving-head::before {
+      content: ""; position: absolute; inset: 4px 5px 14px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(0,0,0,.38), rgba(255,255,255,.08));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+    .light-unit .moving-head::after {
+      content: ""; position: absolute; left: 50%; top: 100%; transform: translateX(-50%);
+      width: 4px; height: 12px; border-radius: 999px; background: rgba(255,255,255,.85);
+    }
+    .light-unit .beam-fan {
+      position: absolute; left: 50%; top: calc(12.2% + 32px);
+      width: 220px; height: 392px; margin-left: -110px;
+      background: linear-gradient(180deg, rgba(255,255,255,.52), rgba(255,255,255,.18) 18%, rgba(255,255,255,0) 82%);
+      clip-path: polygon(50% 0, 96% 100%, 4% 100%);
+      filter: blur(2px);
+      opacity: 0;
+      transform-origin: top center;
+      transform: translateX(-50%);
+      animation: headSweep 4.2s infinite ease-in-out;
+    }
+    .light-unit .beam-fan::before,
+    .light-unit .beam-fan::after {
+      content: ""; position: absolute; left: 50%; top: 0;
+      width: 100%; height: 100%;
+      clip-path: inherit;
+      transform: translateX(-50%);
+      animation: beamGlow 5.8s infinite ease-in-out;
+    }
+    .light-unit .beam-fan::before {
+      background: linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,0) 76%);
+      opacity: .92;
+    }
+    .light-unit .beam-fan::after {
+      width: 100%; height: 100%;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 82%);
+      animation-delay: 1.4s;
+    }
+    .u1 { left: 12%; --beam: -24deg; }
+    .u2 { left: 30%; --beam: -12deg; }
+    .u3 { left: 48%; --beam: 0deg; }
+    .u4 { left: 66%; --beam: 12deg; }
+    .u5 { left: 84%; --beam: 24deg; }
+    .haze {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 50% 72%, rgba(255,255,255,.08), transparent 24%),
+        radial-gradient(circle at 45% 78%, rgba(255,255,255,.05), transparent 18%),
+        radial-gradient(circle at 58% 80%, rgba(255,255,255,.06), transparent 16%);
+      filter: blur(10px);
+      mix-blend-mode: screen;
+      animation: hazeDrift 8s infinite ease-in-out;
+    }
+    .floor {
+      position: absolute; left: 10%; right: 10%; bottom: 12%; height: 18px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+      filter: blur(2px);
+    }
+    .floor-reflection {
+      position: absolute; left: 50%; bottom: 8%; width: 42%; height: 70px; transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(255,255,255,.14), transparent 68%);
+      filter: blur(18px);
+      opacity: .8;
+      animation: reflectionPulse 4.4s infinite ease-in-out;
+    }
+    .audio-grid {
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 22px;
+      padding: 76px 20px 22px;
+    }
+    .console, .speaker-bank {
+      position: relative;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      overflow: hidden;
+    }
+    .console::before {
+      content: ""; position: absolute; inset: 18px;
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
+        repeating-linear-gradient(90deg, transparent 0 16px, rgba(255,255,255,.06) 16px 17px, transparent 17px 30px);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+    }
+    .mixer-fader {
+      position: absolute; left: 22px; right: 22px; top: 68px; bottom: 22px;
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
+      align-items: end;
+    }
+    .fader {
+      position: relative; height: 100%;
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.06));
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.05);
+      overflow: hidden;
+    }
+    .fader::before {
+      content: ""; position: absolute; left: 50%; top: 12%; width: 2px; bottom: 12%;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.35), rgba(255,255,255,.08));
+    }
+    .fader::after {
+      content: ""; position: absolute; left: 50%; width: 26px; height: 26px; border-radius: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      box-shadow: 0 0 26px rgba(255,255,255,.45);
+      top: var(--knob, 62%);
+      animation: faderSlide var(--speed, 2.4s) infinite ease-in-out;
+      animation-delay: var(--delay, 0s);
+    }
+    .f1 { --knob: 80%; --delay: 0s; --speed: 2.4s; }
+    .f2 { --knob: 40%; --delay: .18s; --speed: 2.8s; }
+    .f3 { --knob: 70%; --delay: .32s; --speed: 2.6s; }
+    .f4 { --knob: 28%; --delay: .48s; --speed: 3.0s; }
+    .f5 { --knob: 62%; --delay: .14s; --speed: 2.5s; }
+    .f6 { --knob: 35%; --delay: .38s; --speed: 2.9s; }
+    .wave-panel {
+      position: absolute; left: 20px; right: 20px; top: 72px; height: 120px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.02);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.05);
+    }
+    .wave-panel svg { width: 100%; height: 100%; display: block; }
+    .wave {
+      fill: none; stroke: rgba(255,255,255,.78); stroke-width: 2.2;
+      stroke-dasharray: 14 10; animation: waveFlow 5s linear infinite;
+    }
+    .pulse {
+      fill: none; stroke: rgba(255,255,255,.18); stroke-width: 1.2;
+      animation: pulseFade 3.2s infinite ease-in-out;
+    }
+    .speaker-bank {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 74px 18px 18px;
+      position: relative;
+    }
+    .speaker {
+      position: relative; border-radius: 22px; background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.07);
+      overflow: hidden;
+    }
+    .speaker::before, .speaker::after {
+      content: ""; position: absolute; left: 50%; transform: translateX(-50%); border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.6), rgba(255,255,255,.14) 52%, rgba(255,255,255,.03) 70%, transparent 72%);
+      box-shadow: 0 0 24px rgba(255,255,255,.14);
+    }
+    .speaker::before { top: 18%; width: 52%; aspect-ratio: 1; }
+    .speaker::after { bottom: 14%; width: 26%; aspect-ratio: 1; }
+    .speaker .edge {
+      position: absolute; inset: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,.04);
+    }
+    .speaker.s1 { grid-column: span 2; min-height: 150px; }
+    .speaker.s2, .speaker.s3 { min-height: 125px; }
+    .speaker.s1::before { width: 34%; top: 16%; }
+    .speaker.s1::after { width: 16%; bottom: 12%; }
+    .speaker.s2::before, .speaker.s3::before { width: 48%; top: 19%; }
+    .speaker.s2::after, .speaker.s3::after { width: 20%; bottom: 12%; }
+    .sound-rings {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .sound-rings span {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 94%; height: 94%;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,.34);
+      box-shadow: 0 0 30px rgba(255,255,255,.12), inset 0 0 24px rgba(255,255,255,.08);
+      transform: translate(-50%, -50%) scale(.26);
+      opacity: 0;
+      animation: ringSpread 3.9s infinite ease-out;
+    }
+    .sound-rings span:nth-child(2) { animation-delay: .55s; }
+    .sound-rings span:nth-child(3) { animation-delay: 1.1s; }
+    .signal-run {
+      position: absolute; left: 20px; right: 20px; bottom: 18px; height: 4px;
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.26), rgba(255,255,255,0));
+      overflow: hidden;
+      z-index: 1;
+    }
+    .signal-run::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent);
+      transform: translateX(-80%);
+      animation: signalSweep 3.8s infinite ease-in-out;
+    }
+    .systems-outro {
+      font-size: clamp(15px, 1.5vw, 20px);
+      color: rgba(255,255,255,.76);
+      letter-spacing: -.02em;
+    }
+    @keyframes headSweep {
+      0%, 100% { transform: translateY(0) rotate(-18deg); opacity: .65; }
+      25% { transform: translateY(6px) rotate(22deg); opacity: 1; }
+      50% { transform: translateY(0) rotate(-8deg); opacity: .85; }
+      75% { transform: translateY(5px) rotate(28deg); opacity: 1; }
+    }
+    @keyframes beamGlow {
+      0%, 100% { opacity: .04; transform: translateX(-50%) scaleY(.72); }
+      50% { opacity: .92; transform: translateX(-50%) scaleY(1.02); }
+    }
+    @keyframes hazeDrift {
+      0%, 100% { opacity: .45; transform: translateX(-1%) translateY(0); }
+      50% { opacity: .8; transform: translateX(1%) translateY(-6px); }
+    }
+    @keyframes reflectionPulse {
+      0%, 100% { opacity: .35; transform: translateX(-50%) scale(.92); }
+      50% { opacity: .95; transform: translateX(-50%) scale(1.04); }
+    }
+    @keyframes faderSlide {
+      0%, 100% { transform: translateX(-50%) translateY(6px); }
+      50% { transform: translateX(-50%) translateY(-28px); }
+    }
+    @keyframes waveFlow {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: -120; }
+    }
+    @keyframes pulseFade {
+      0%, 100% { opacity: .15; }
+      50% { opacity: .9; }
+    }
+    @keyframes signalSweep {
+      0% { transform: translateX(-80%); opacity: 0; }
+      20% { opacity: 1; }
+      50% { transform: translateX(20%); opacity: 1; }
+      100% { transform: translateX(120%); opacity: 0; }
+    }
+    @keyframes ringSpread {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.24); }
+      18% { opacity: .95; }
+      60% { opacity: .36; }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.08); }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="quick-nav">
+    <button onclick="document.querySelector('.stage.grid').scrollIntoView({behavior:'smooth', block:'start'})">代码演示</button>
+    <button onclick="document.getElementById('systemsStage').scrollIntoView({behavior:'smooth', block:'start'})">舞台灯光 / 音响</button>
+  </div>
+
+  <div class="stage grid">
     <div class="title">
       <div class="eyebrow">代码能力展示</div>
       <h1>把代码，做成可运行的结果</h1>
@@ -648,7 +648,7 @@
             <div class="shell">
               <div class="shell-top"><div class="left-tag"><span class="tag-dot"></span><span>zsh</span></div><div>local</div></div>
               <div class="terminal-body">
-                <div class="term-line"><span class="prompt">$</span> <span class="cmd" id="cmdText"></span><span class="term-cursor" id="termCaret"></span></div>
+                <div class="term-line"><span class="prompt">$</span> <span class="cmd" id="cmdText"></span><span class="term-caret" id="termCaret"></span></div>
                 <div class="term-line out" id="out1">running dev server ...</div>
                 <div class="term-line out" id="out2">bundling assets ...</div>
                 <div class="term-line out" id="out3">✓ ready at http://localhost:3000</div>
@@ -704,17 +704,11 @@
       <div><span>展示方式</span><strong>动画比静态图更能说明能力</strong></div>
       <div class="hint"><span>说明</span><strong></strong></div>
     </div>
-
   </div>
 
   <!-- 舞台演唱模块 -->
   <div class="vocal-stage" id="vocalStage">
-    <img
-      class="vs-photo"
-      id="vsPhoto"
-      src=""
-      alt="舞台演唱"
-    />
+    <img class="vs-photo" id="vsPhoto" src="" alt="舞台演唱" />
     <div class="vs-overlay"></div>
     <div class="vs-text">
       <div class="vs-label">舞台演唱</div>
@@ -729,7 +723,6 @@
       <h2>舞台灯光与音响全链路设计</h2>
       <p>从灯位、信号链路，到现场输出，完整理解舞台是怎么被搭起来的。</p>
     </div>
-
     <div class="systems-grid">
       <div class="light-scene">
         <div class="scene-title">灯光</div>
@@ -745,7 +738,6 @@
           <div class="floor-reflection"></div>
         </div>
       </div>
-
       <div class="audio-scene">
         <div class="scene-title">音响链路</div>
         <div class="audio-grid">
@@ -757,12 +749,8 @@
               </svg>
             </div>
             <div class="mixer-fader">
-              <div class="fader f1"></div>
-              <div class="fader f2"></div>
-              <div class="fader f3"></div>
-              <div class="fader f4"></div>
-              <div class="fader f5"></div>
-              <div class="fader f6"></div>
+              <div class="fader f1"></div><div class="fader f2"></div><div class="fader f3"></div>
+              <div class="fader f4"></div><div class="fader f5"></div><div class="fader f6"></div>
             </div>
           </div>
           <div class="speaker-bank">
@@ -777,129 +765,129 @@
     </div>
   </div>
   <script>
-   890|    const editorText = document.getElementById('editorText');
-   891|    const activeLine = document.getElementById('activeLine');
-   892|    const cmdText = document.getElementById('cmdText');
-   893|    const termCaret = document.getElementById('termCaret');
-   894|    const out1 = document.getElementById('out1');
-   895|    const out2 = document.getElementById('out2');
-   896|    const out3 = document.getElementById('out3');
-   897|    const pill = document.getElementById('pill');
-   898|    const previewCursor = document.getElementById('previewCursor');
-   899|    const heroCard = document.getElementById('heroCard');
-   900|    const score = document.getElementById('score');
-   901|    const scanline = document.getElementById('scanline');
-   902|    const address = document.getElementById('address');
-   903|
-   904|    const editorLines = [
-   905|      "// main.ts",
-   906|      "import { createDemo } from './lib'",
-   907|      "",
-   908|      "const demo = createDemo({",
-   909|      "  mode: 'black-white',",
-   910|      "  motion: 'precise',",
-   911|      "  speed: 'smooth',",
-   912|      "  preview: true,",
-   913|      "  ship: true",
-   914|      "})"
-   915|    ];
-   916|    const terminalCmd = 'pnpm dev -- --host';
-   917|
-   918|    function clamp(v, a=0, b=1){ return Math.max(a, Math.min(b, v)); }
-   919|    function ease(t){ return 0.5 - 0.5 * Math.cos(Math.PI * clamp(t)); }
-   920|    function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-   921|    function typedCode(progress) {
-   922|      const p = ease(progress);
-   923|      const total = editorLines.join('\n').length;
-   924|      const typed = Math.max(1, Math.min(total, Math.floor(total * p)));
-   925|      const prefix = editorLines.join('\n').slice(0, typed);
-   926|      return prefix;
-   927|    }
-   928|    function renderEditor(progress) {
-   929|      const p = ease(progress);
-   930|      // Always render the full code so it never looks empty.
-   931|      // Only the cursor/highlight moves.
-   932|      const phaseIdx = Math.min(editorLines.length - 1, Math.floor(p * editorLines.length));
-   933|      const html = editorLines.map((ln, i) => {
-   934|        const line = esc(ln);
-   935|        return i === phaseIdx ? `<span class="line">${line}<span class="cursor"></span></span>` : `<span class="line">${line}</span>`;
-   936|      }).join('');
-   937|      editorText.innerHTML = html;
-   938|      activeLine.style.opacity = '1';
-   939|      activeLine.style.transform = `translateY(${16 + phaseIdx * 31}px)`;
-   940|    }
-   941|    function renderTerminal(progress) {
-   942|      const p = ease(progress);
-   943|      // Keep the command visible at all times.
-   944|      cmdText.textContent = terminalCmd;
-   945|      termCaret.style.opacity = p < 0.92 ? '1' : '0.35';
-   946|      termCaret.style.transform = `translateX(${Math.floor(p * 4)}px)`;
-   947|      out1.classList.toggle('show', p > 0.10);
-   948|      out2.classList.toggle('show', p > 0.22);
-   949|      out3.classList.toggle('show', p > 0.36);
-   950|      pill.style.opacity = p > 0.45 ? '1' : '0';
-   951|      pill.style.transform = `translateY(${(1 - clamp((p - 0.45)/0.15)) * 8}px)`;
-   952|    }
-   953|    function renderPreview(progress) {
-   954|      const p = ease(progress);
-   955|      previewCursor.style.opacity = p > 0.08 ? '1' : '0';
-   956|      previewCursor.style.left = `${28 + 28 * Math.sin(p * Math.PI * 1.2)}%`;
-   957|      previewCursor.style.top = `${26 + 18 * Math.sin(p * Math.PI * 1.0)}%`;
-   958|      heroCard.style.boxShadow = `0 0 ${24 * clamp((p - 0.12)/0.2)}px rgba(255,255,255,.12), inset 0 1px 0 rgba(255,255,255,.04)`;
-   959|      score.textContent = String(Math.min(99, 3 + Math.floor(p * 18))).padStart(2, '0');
-   960|      address.textContent = p < 0.22 ? 'localhost:3000' : p < 0.44 ? 'Loading preview ...' : 'localhost:3000';
-   961|      scanline.style.opacity = p > 0.42 ? String(0.35 * clamp((p - 0.42)/0.16)) : '0';
-   962|      scanline.style.transform = `translateY(${40 + clamp((p - 0.42)/0.18) * 160}px)`;
-   963|    }
-   964|    function renderAll(t) {
-   965|      if (t < 0.42) {
-   966|        renderEditor(t / 0.42);
-   967|        renderTerminal(0);
-   968|        renderPreview(0);
-   969|      } else if (t < 0.72) {
-   970|        renderEditor(1);
-   971|        renderTerminal((t - 0.42) / 0.30);
-   972|        renderPreview(0);
-   973|      } else {
-   974|        renderEditor(1);
-   975|        renderTerminal(1);
-   976|        renderPreview((t - 0.72) / 0.28);
-   977|      }
-   978|    }
-   979|    let t = 0;
-   980|    function tick(){
-   981|      t += 0.0018;
-   982|      if (t >= 1) t = 0;
-   983|      renderAll(t);
-   984|      document.querySelectorAll('.panel').forEach((el, i) => {
-   985|        el.style.transform = `translateY(${Math.sin(t * Math.PI * 2 + i * 0.2) * 2}px)`;
-   986|      });
-   987|      requestAnimationFrame(tick);
-   988|    }
-   989|    renderAll(0);
-   990|    tick();
-   991|
-   992|    // 舞台演唱模块入场动画
-   993|    const vsStage = document.getElementById('vocalStage');
-   994|    function triggerVocal() {
-   995|      setTimeout(() => vsStage.classList.add('show'), 400);
-   996|    }
-   997|    // Intersection Observer：进入视口时触发
-   998|    const vsObs = new IntersectionObserver((entries) => {
-   999|      entries.forEach(e => { if (e.isIntersecting) { triggerVocal(); vsObs.disconnect(); } });
-  1000|    }, { threshold: 0.2 });
-  1001|    if (vsStage) vsObs.observe(vsStage);
-  1002|    // 如果页面高度不够 viewport，直接等 1.2s 再触发
-  1003|    if (document.documentElement.scrollHeight <= window.innerHeight) {
-  1004|      setTimeout(triggerVocal, 1200);
-  1005|    }
-  1006|    window.addEventListener('pointermove', (e) => {
-  1007|      const x = (e.clientX / innerWidth) * 100;
-  1008|      const y = (e.clientY / innerHeight) * 100;
-  1009|      previewCursor.style.opacity = '1';
-  1010|      previewCursor.style.left = x + '%';
-  1011|      previewCursor.style.top = y + '%';
-  1012|    });
-  1013|  </script>
-  1014|</body>
-  1015|</html>
+    const editorText = document.getElementById('editorText');
+    const activeLine = document.getElementById('activeLine');
+    const cmdText = document.getElementById('cmdText');
+    const termCaret = document.getElementById('termCaret');
+    const out1 = document.getElementById('out1');
+    const out2 = document.getElementById('out2');
+    const out3 = document.getElementById('out3');
+    const pill = document.getElementById('pill');
+    const previewCursor = document.getElementById('previewCursor');
+    const heroCard = document.getElementById('heroCard');
+    const score = document.getElementById('score');
+    const scanline = document.getElementById('scanline');
+    const address = document.getElementById('address');
+
+    const editorLines = [
+      "// main.ts",
+      "import { createDemo } from './lib'",
+      "",
+      "const demo = createDemo({",
+      "  mode: 'black-white',",
+      "  motion: 'precise',",
+      "  speed: 'smooth',",
+      "  preview: true,",
+      "  ship: true",
+      "})"
+    ];
+    const terminalCmd = 'pnpm dev -- --host';
+
+    function clamp(v, a=0, b=1){ return Math.max(a, Math.min(b, v)); }
+    function ease(t){ return 0.5 - 0.5 * Math.cos(Math.PI * clamp(t)); }
+    function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function typedCode(progress) {
+      const p = ease(progress);
+      const total = editorLines.join('\n').length;
+      const typed = Math.max(1, Math.min(total, Math.floor(total * p)));
+      const prefix = editorLines.join('\n').slice(0, typed);
+      return prefix;
+    }
+    function renderEditor(progress) {
+      const p = ease(progress);
+      // Always render the full code so it never looks empty.
+      // Only the cursor/highlight moves.
+      const phaseIdx = Math.min(editorLines.length - 1, Math.floor(p * editorLines.length));
+      const html = editorLines.map((ln, i) => {
+        const line = esc(ln);
+        return i === phaseIdx ? `<span class="line">${line}<span class="cursor"></span></span>` : `<span class="line">${line}</span>`;
+      }).join('');
+      editorText.innerHTML = html;
+      activeLine.style.opacity = '1';
+      activeLine.style.transform = `translateY(${16 + phaseIdx * 31}px)`;
+    }
+    function renderTerminal(progress) {
+      const p = ease(progress);
+      // Keep the command visible at all times.
+      cmdText.textContent = terminalCmd;
+      termCaret.style.opacity = p < 0.92 ? '1' : '0.35';
+      termCaret.style.transform = `translateX(${Math.floor(p * 4)}px)`;
+      out1.classList.toggle('show', p > 0.10);
+      out2.classList.toggle('show', p > 0.22);
+      out3.classList.toggle('show', p > 0.36);
+      pill.style.opacity = p > 0.45 ? '1' : '0';
+      pill.style.transform = `translateY(${(1 - clamp((p - 0.45)/0.15)) * 8}px)`;
+    }
+    function renderPreview(progress) {
+      const p = ease(progress);
+      previewCursor.style.opacity = p > 0.08 ? '1' : '0';
+      previewCursor.style.left = `${28 + 28 * Math.sin(p * Math.PI * 1.2)}%`;
+      previewCursor.style.top = `${26 + 18 * Math.sin(p * Math.PI * 1.0)}%`;
+      heroCard.style.boxShadow = `0 0 ${24 * clamp((p - 0.12)/0.2)}px rgba(255,255,255,.12), inset 0 1px 0 rgba(255,255,255,.04)`;
+      score.textContent = String(Math.min(99, 3 + Math.floor(p * 18))).padStart(2, '0');
+      address.textContent = p < 0.22 ? 'localhost:3000' : p < 0.44 ? 'Loading preview ...' : 'localhost:3000';
+      scanline.style.opacity = p > 0.42 ? String(0.35 * clamp((p - 0.42)/0.16)) : '0';
+      scanline.style.transform = `translateY(${40 + clamp((p - 0.42)/0.18) * 160}px)`;
+    }
+    function renderAll(t) {
+      if (t < 0.42) {
+        renderEditor(t / 0.42);
+        renderTerminal(0);
+        renderPreview(0);
+      } else if (t < 0.72) {
+        renderEditor(1);
+        renderTerminal((t - 0.42) / 0.30);
+        renderPreview(0);
+      } else {
+        renderEditor(1);
+        renderTerminal(1);
+        renderPreview((t - 0.72) / 0.28);
+      }
+    }
+    let t = 0;
+    function tick(){
+      t += 0.0018;
+      if (t >= 1) t = 0;
+      renderAll(t);
+      document.querySelectorAll('.panel').forEach((el, i) => {
+        el.style.transform = `translateY(${Math.sin(t * Math.PI * 2 + i * 0.2) * 2}px)`;
+      });
+      requestAnimationFrame(tick);
+    }
+    renderAll(0);
+    tick();
+
+    // 舞台演唱模块入场动画
+    const vsStage = document.getElementById('vocalStage');
+    function triggerVocal() {
+      setTimeout(() => vsStage.classList.add('show'), 400);
+    }
+    // Intersection Observer：进入视口时触发
+    const vsObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { triggerVocal(); vsObs.disconnect(); } });
+    }, { threshold: 0.2 });
+    if (vsStage) vsObs.observe(vsStage);
+    // 如果页面高度不够 viewport，直接等 1.2s 再触发
+    if (document.documentElement.scrollHeight <= window.innerHeight) {
+      setTimeout(triggerVocal, 1200);
+    }
+    window.addEventListener('pointermove', (e) => {
+      const x = (e.clientX / innerWidth) * 100;
+      const y = (e.clientY / innerHeight) * 100;
+      previewCursor.style.opacity = '1';
+      previewCursor.style.left = x + '%';
+      previewCursor.style.top = y + '%';
+    });
+  </script>
+</body>
+</html>
