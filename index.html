@@ -2199,7 +2199,7 @@
         <div class="hero-eyebrow">portfolio · 2026</div>
         <h1 class="hero-name">藏天宇</h1>
         <p class="hero-tagline">
-          音乐表演出身，封项目喜欢落地。舞台、镜头、代码——<strong>每一样，都留了可以看见的东西。</strong>
+          音乐表演出身，做项目喜欢落地。舞台、镜头、代码——<strong>每一样，都留了可以看见的东西。</strong>
         </p>
         <p class="hero-philosophy">
           不是空口讲能力。而是把能力变成项目、页面、图表和可复用的流程——让下一个谁看到就能理解。
@@ -3018,6 +3018,38 @@
     if (document.documentElement.scrollHeight <= window.innerHeight) {
       setTimeout(triggerVocal, 1200);
     }
+
+    // ── 进入视口时重置 CSS animation ──────────────────────────────────
+    // 找到所有带 CSS keyframe 动画的板块元素，滚到可见时重播一次
+    function restartAnimations(container) {
+      // 所有直接使用 animation 的子元素
+      const animated = container.querySelectorAll(
+        '.data-bar-fill, .edit-head, .live-ind-dot, .live-ind-pulse, ' +
+        '.haze, .floor-reflection, .beam-fan, .moving-head, ' +
+        '.sound-rings span, .signal-run'
+      );
+      animated.forEach(el => {
+        el.style.animation = 'none';
+        // 强制 reflow
+        void el.offsetWidth;
+        el.style.animation = '';
+      });
+    }
+
+    // 需要监听的板块列表
+    const sectionsToWatch = [
+      'newMediaStage', 'systemsStage', 'productStage', 'musicStage', 'vocalStage', 'heroBio'
+    ].map(id => document.getElementById(id)).filter(Boolean);
+
+    const sectionObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          restartAnimations(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    sectionsToWatch.forEach(el => sectionObs.observe(el));
   </script>
 </body>
 </html>
