@@ -122,23 +122,23 @@
       /* ── Code demo panels: fix absolute→relative chain ── */
       .panel { border-radius: 22px; }
       .panel .head { padding: 12px 14px 10px; font-size: 12px; }
-      /* .body is position:absolute globally — override to flow */
-      .body { position: relative; inset: auto; height: auto; }
+      /* .body is position:absolute globally — must use !important due to cascade order */
+      .body { position: relative !important; inset: auto !important; height: auto !important; }
       /* wraps: relative, auto height */
       .editor-wrap, .terminal-wrap, .preview-wrap {
-        position: relative; inset: auto; padding: 14px;
-        height: auto; min-height: 0;
+        position: relative !important; inset: auto !important; padding: 14px;
+        height: auto !important; min-height: 0 !important;
       }
       /* shell: explicit height so children fill it */
-      .shell { height: 340px; min-height: 0; }
+      .shell { height: 340px !important; min-height: 0; }
       /* editor fills shell minus shell-top (34px) */
-      .editor { height: calc(340px - 34px); font-size: 14px; line-height: 1.7; }
+      .editor { height: calc(340px - 34px) !important; font-size: 14px; line-height: 1.7; }
       /* terminal scrolls inside shell */
-      .terminal-body { height: calc(340px - 34px); overflow-y: auto; font-size: 13px; line-height: 1.6; }
+      .terminal-body { height: calc(340px - 34px) !important; overflow-y: auto; font-size: 13px; line-height: 1.6; }
       /* preview body fills shell minus browser bar (28px) */
-      .preview-body { height: calc(340px - 28px); }
+      .preview-body { height: calc(340px - 28px) !important; }
       /* page-viewport uses full preview-body height */
-      .page-viewport { height: 100%; }
+      .page-viewport { height: 100% !important; }
       .headline { font-size: 20px; }
       .copy { min-height: auto; }
 
@@ -197,11 +197,11 @@
 
       /* ── Audio scene: make audio-grid flow so speaker-bank not clipped ── */
       .audio-grid {
-        position: relative; inset: auto;
-        display: flex; flex-direction: column;
+        position: relative !important; inset: auto !important;
+        display: flex !important; flex-direction: column;
         padding: 52px 14px 14px; gap: 12px;
       }
-      .console { border-radius: 22px; height: 180px; min-height: 0; position: relative; }
+      .console { border-radius: 22px; height: 180px; min-height: 0; position: relative !important; }
       .wave-panel { left: 14px; right: 14px; top: 46px; height: 66px; }
       .mixer-fader {
         left: 14px; right: 14px; top: 46px; bottom: 14px; gap: 8px;
@@ -210,7 +210,7 @@
       .fader::after { width: 20px; height: 20px; }
       .speaker-bank {
         border-radius: 22px;
-        position: relative; flex: none;
+        position: relative !important; flex: none;
         grid-template-columns: repeat(2, 1fr);
         padding: 14px; gap: 10px;
         height: auto;
@@ -223,12 +223,12 @@
       /* ── Product card: make product-grid flow so content not clipped ── */
       .product-card { min-height: auto; }
       .product-grid {
-        position: relative; inset: auto;
-        display: flex; flex-direction: column;
+        position: relative !important; inset: auto !important;
+        display: flex !important; flex-direction: column;
         padding: 14px; gap: 14px;
       }
-      .product-visual { border-radius: 22px; min-height: 200px; position: relative; }
-      .product-copy { border-radius: 22px; position: relative; padding: 20px; gap: 14px; }
+      .product-visual { border-radius: 22px; min-height: 200px; position: relative !important; }
+      .product-copy { border-radius: 22px; position: relative !important; padding: 20px; gap: 14px; }
       .product-desc { max-width: none; line-height: 1.7; }
       .product-title { font-size: clamp(24px, 8vw, 34px); }
       .product-row { flex-direction: column; gap: 4px; }
@@ -255,7 +255,7 @@
       .step-body { min-height: 0; height: auto; overflow: visible; position: relative; }
 
       /* Recording: daw-window is position:absolute globally → make relative */
-      .daw-window { position: relative; inset: auto; min-height: 0; height: auto; }
+      .daw-window { position: relative !important; inset: auto !important; min-height: 0; height: auto !important; }
       .recording-body { flex: none; height: auto; padding: 12px; gap: 10px; }
       .transport-bar, .tape-row { grid-template-columns: 1fr; justify-items: stretch; }
       .track-row { grid-template-columns: 1fr; gap: 8px; }
@@ -263,7 +263,7 @@
       .record-tracks { gap: 8px; }
 
       /* Mixing: mix-window was position:absolute globally → make relative */
-      .mix-window { position: relative; inset: auto; height: auto; display: flex; flex-direction: column; }
+      .mix-window { position: relative !important; inset: auto !important; height: auto !important; display: flex; flex-direction: column; }
       .mix-grid {
         flex: none;
         grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
@@ -277,7 +277,7 @@
       .eq-readout { grid-template-columns: 1fr; }
 
       /* Mastering: mastering-body is position:absolute globally → make relative */
-      .mastering-body { position: relative; inset: auto; height: auto; display: flex; flex-direction: column; }
+      .mastering-body { position: relative !important; inset: auto !important; height: auto !important; display: flex; flex-direction: column; }
       /* plugin-stack height so absolute plugin-windows have a container */
       .plugin-stack { flex: none; position: relative; height: 420px; padding: 10px; }
       /* plugin-windows are absolutely stacked; active one shows via JS */
