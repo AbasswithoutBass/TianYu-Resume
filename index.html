@@ -155,10 +155,13 @@
 
       /* ── Section stage padding ── */
       .systems-stage, .new-media-stage, .product-stage {
-        padding: 72px 16px 44px;
+        padding: 56px 16px 40px;
+        min-height: auto !important;
+        height: auto !important;
+        align-content: start;
       }
       .vocal-stage, .systems-stage, .new-media-stage, .product-stage {
-        min-height: auto; height: auto; padding-top: 72px; padding-bottom: 42px; align-content: start;
+        min-height: auto; height: auto; padding-top: 56px; padding-bottom: 40px; align-content: start;
       }
       .vocal-stage {
         height: 56vw; min-height: 260px; max-height: 58vh;
@@ -1529,9 +1532,9 @@
     .mix-grid {
       flex: 1;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      grid-template-rows: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-rows: 1fr;
+      gap: 8px;
       padding: 12px;
       align-content: stretch;
     }
@@ -2058,7 +2061,8 @@
     /* Mobile: single column for nm-pipeline */
     @media (max-width: 760px) {
       .nm-pipeline { grid-template-columns: 1fr; gap: 12px; }
-      .nm-card { padding: 18px 16px 14px; border-radius: 22px; }
+      .nm-card { padding: 18px 16px 14px; border-radius: 22px; overflow: visible; }
+      .nm-col-right .nm-card { flex: none; height: auto; }
       .nm-card-headline { font-size: clamp(16px, 5vw, 22px); }
       .live-indicators { grid-template-columns: 1fr 1fr; }
     }
