@@ -91,83 +91,85 @@
       .analog-panel { grid-template-columns: 1fr; }
     }
     @media (max-width: 760px) {
+      /* ── Navigation ── */
       .quick-nav {
         left: 10px; right: 10px; top: 10px; padding: 8px 10px;
-        gap: 8px; overflow-x: auto; scrollbar-width: none;
-        -ms-overflow-style: none;
+        gap: 8px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
       }
       .quick-nav::-webkit-scrollbar { display: none; }
       .quick-nav button { flex: 0 0 auto; padding: 9px 12px; font-size: 12px; }
 
-      .title { top: 88px; width: 88vw; }
+      /* ── Hero stage: flow layout, no absolute ── */
+      .stage {
+        height: auto; min-height: 100vh;
+        display: flex; flex-direction: column;
+        padding: 64px 0 40px; gap: 0; overflow-x: hidden;
+      }
+      .title {
+        position: relative; left: auto; top: auto; transform: none;
+        width: 88vw; margin: 0 auto 18px; text-align: center;
+      }
       .title h1 { font-size: clamp(30px, 8.2vw, 42px); }
       .title p { font-size: clamp(13px, 4vw, 16px); margin-top: 10px; }
-      .meta { top: calc(88px + 104px); font-size: 10px; letter-spacing: .18em; }
-      .bar { top: calc(48% - 220px); width: 88vw; }
+      .meta { display: none; }
+      .bar { display: none; }
       .workspace {
-        position: static; left: auto; top: auto; transform: none;
-        width: 100%; height: auto; display: grid; grid-template-columns: 1fr; gap: 12px;
-        padding-top: 132px;
+        position: relative; left: auto; top: auto; transform: none;
+        width: 92vw; margin: 0 auto;
+        height: auto; display: flex; flex-direction: column; gap: 12px;
       }
-      .stage {
-        height: auto;
-        min-height: 100vh;
-        padding-bottom: 28px;
-      }
+
+      /* ── Code demo panels: fix absolute→relative chain ── */
       .panel { border-radius: 22px; }
       .panel .head { padding: 12px 14px 10px; font-size: 12px; }
-      .editor-wrap, .terminal-wrap, .preview-wrap { position: relative; inset: auto; padding: 14px; }
-      .editor-wrap, .terminal-wrap, .preview-wrap { min-height: 340px; }
-      .shell { min-height: 320px; height: 100%; }
-      .body { position: relative; inset: auto; min-height: 292px; }
-      .editor, .preview-body { height: auto; min-height: 258px; }
-      .terminal-body { min-height: 258px; }
-      .editor { font-size: 14px; line-height: 1.7; }
-      .terminal-body { font-size: 13px; line-height: 1.6; }
+      /* .body is position:absolute globally — override to flow */
+      .body { position: relative; inset: auto; height: auto; }
+      /* wraps: relative, auto height */
+      .editor-wrap, .terminal-wrap, .preview-wrap {
+        position: relative; inset: auto; padding: 14px;
+        height: auto; min-height: 0;
+      }
+      /* shell: explicit height so children fill it */
+      .shell { height: 340px; min-height: 0; }
+      /* editor fills shell minus shell-top (34px) */
+      .editor { height: calc(340px - 34px); font-size: 14px; line-height: 1.7; }
+      /* terminal scrolls inside shell */
+      .terminal-body { height: calc(340px - 34px); overflow-y: auto; font-size: 13px; line-height: 1.6; }
+      /* preview body fills shell minus browser bar (28px) */
+      .preview-body { height: calc(340px - 28px); }
+      /* page-viewport uses full preview-body height */
+      .page-viewport { height: 100%; }
       .headline { font-size: 20px; }
       .copy { min-height: auto; }
+
+      /* ── Footer ── */
       .footer {
-        position: static; margin: 18px 0 0; padding: 0 14px 18px;
-        flex-direction: column; align-items: flex-start; gap: 12px;
+        position: relative; left: auto; bottom: auto; transform: none;
+        width: 88vw; margin: 20px auto 0; padding: 0;
+        flex-direction: column; align-items: flex-start; gap: 12px; font-size: 12px;
       }
       .hint { text-align: left; max-width: none; }
 
-      .hero,
-      .modules,
-      .page-hero,
-      .systems-grid,
-      .new-media-grid,
-      .product-grid,
-      .audio-grid,
-      .mix-grid,
-      .music-flow,
-      .analog-panel {
-        grid-template-columns: 1fr !important;
+      /* ── Section stage padding ── */
+      .systems-stage, .new-media-stage, .product-stage {
+        padding: 72px 16px 44px;
       }
-      .systems-grid,
-      .new-media-grid,
-      .product-grid,
-      .audio-grid {
-        gap: 14px;
+      .vocal-stage, .systems-stage, .new-media-stage, .product-stage {
+        min-height: auto; height: auto; padding-top: 72px; padding-bottom: 42px; align-content: start;
       }
-      .systems-stage,
-      .new-media-stage,
-      .product-stage {
-        padding: 92px 16px 44px;
+      .vocal-stage {
+        height: 82vh; min-height: 82vh; padding-top: 0; padding-bottom: 0;
       }
-      .systems-intro,
-      .new-media-stage .systems-intro {
-        gap: 8px;
-      }
-      .new-media-card,
-      .new-media-side,
-      .product-card,
-      .light-scene,
-      .audio-scene {
-        min-height: auto;
-      }
-      .new-media-card-main { padding: 12px; }
-      .new-media-window { min-height: 300px; }
+      /* ── Vocal stage photo: person is on right side ── */
+      .vs-photo { object-position: 82% 36%; }
+      .vs-text { left: 6%; right: 6%; bottom: 8%; }
+      .vs-title { font-size: clamp(24px, 8vw, 34px); }
+
+      /* ── New-media ── */
+      .systems-intro, .new-media-stage .systems-intro { gap: 8px; }
+      .new-media-card, .new-media-side { min-height: auto; }
+      .new-media-card-main { padding: 12px; height: auto; display: flex; flex-direction: column; }
+      .new-media-window { flex: none; height: 240px; min-height: 240px; position: relative; }
       .media-feed { padding: 12px; gap: 8px; }
       .feed-item { grid-template-columns: 48px 1fr; padding: 10px; }
       .feed-thumb { width: 48px; height: 48px; border-radius: 14px; }
@@ -178,152 +180,115 @@
       .metric-value { font-size: clamp(22px, 8vw, 30px); }
       .metric-desc { max-width: none; }
 
-      .nav,
-      .page-top,
-      .page-list .page-row,
-      .product-row,
-      .transport-bar,
-      .tape-row {
-        justify-content: flex-start;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      .nav,
-      .page-top,
-      .page-list .page-row,
-      .product-row {
-        flex-wrap: wrap;
-      }
-      .links {
-        flex-wrap: wrap;
-        row-gap: 6px;
-      }
-      .page-chip,
-      .readout-box span:first-child,
-      .readout-box span:last-child,
-      .analog-label {
-        white-space: normal;
-      }
-
-      .vocal-stage,
-      .systems-stage,
-      .new-media-stage,
-      .product-stage {
-        min-height: auto;
-        height: auto;
-        padding-top: 82px;
-        padding-bottom: 42px;
-        align-content: start;
-      }
-      .vocal-stage {
-        height: 82vh;
-        min-height: 82vh;
-      }
-      .vs-photo { object-position: 64% 36%; }
-      .vs-text {
-        left: 6%;
-        right: 6%;
-        bottom: 8%;
-      }
-      .vs-title { font-size: clamp(24px, 8vw, 34px); }
-      .light-scene,
-      .audio-scene,
-      .new-media-card,
-      .product-card,
-      .flow-step {
-        min-height: 0;
-        border-radius: 24px;
-      }
-      .new-media-grid,
-      .product-grid,
-      .audio-grid {
-        position: relative;
-        inset: auto;
-      }
-      .systems-grid,
-      .new-media-grid,
-      .product-grid {
-        gap: 14px;
-      }
-      .new-media-grid,
-      .systems-grid,
-      .product-grid,
-      .audio-grid,
-      .mix-grid,
-      .music-flow,
-      .analog-panel {
+      /* ── Grids: all single column ── */
+      .hero, .modules, .page-hero,
+      .systems-grid, .new-media-grid, .product-grid,
+      .audio-grid, .mix-grid, .music-flow, .analog-panel {
         grid-template-columns: 1fr !important;
       }
-      .step-body {
-        min-height: 0;
-      }
+      .systems-grid, .new-media-grid, .product-grid, .audio-grid { gap: 14px; }
+
+      /* ── Light & audio scene: static sizes, no min-height: 0 override ── */
+      .light-scene { min-height: 280px; border-radius: 24px; }
+      .audio-scene { min-height: auto; border-radius: 24px; }
+      .new-media-card { border-radius: 24px; }
+      .product-card { border-radius: 24px; }
+      .flow-step { border-radius: 24px; }
+
+      /* ── Audio scene: make audio-grid flow so speaker-bank not clipped ── */
       .audio-grid {
-        padding: 60px 14px 14px;
+        position: relative; inset: auto;
+        display: flex; flex-direction: column;
+        padding: 52px 14px 14px; gap: 12px;
       }
-      .console, .speaker-bank { border-radius: 22px; }
-      .console {
-        min-height: 320px;
-      }
-      .speaker-bank {
-        grid-template-columns: 1fr;
-        padding: 58px 14px 14px;
-        gap: 10px;
-        min-height: 320px;
-      }
+      .console { border-radius: 22px; height: 180px; min-height: 0; position: relative; }
+      .wave-panel { left: 14px; right: 14px; top: 46px; height: 66px; }
       .mixer-fader {
-        left: 14px; right: 14px; top: 56px; bottom: 14px; gap: 8px;
+        left: 14px; right: 14px; top: 46px; bottom: 14px; gap: 8px;
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
       .fader::after { width: 20px; height: 20px; }
-      .wave-panel {
-        left: 14px; right: 14px; top: 58px; height: 90px;
+      .speaker-bank {
+        border-radius: 22px;
+        position: relative; flex: none;
+        grid-template-columns: repeat(2, 1fr);
+        padding: 14px; gap: 10px;
+        height: auto;
       }
-      .speaker.s1 { grid-column: auto; min-height: 120px; }
-      .speaker.s2, .speaker.s3 { min-height: 104px; }
+      .speaker.s1 { grid-column: span 2; min-height: 100px; }
+      .speaker.s2, .speaker.s3 { min-height: 90px; }
+      .signal-run { position: relative; left: auto; right: auto; bottom: auto; margin-top: 8px; height: 4px; }
+      .sound-rings { position: absolute; inset: 0; pointer-events: none; }
 
-      .product-card { min-height: 0; }
-      .product-grid { padding: 14px; gap: 14px; }
-      .product-visual, .product-copy { border-radius: 22px; }
-      .product-copy { min-height: 320px; padding: 20px; gap: 14px; }
+      /* ── Product card: make product-grid flow so content not clipped ── */
+      .product-card { min-height: auto; }
+      .product-grid {
+        position: relative; inset: auto;
+        display: flex; flex-direction: column;
+        padding: 14px; gap: 14px;
+      }
+      .product-visual { border-radius: 22px; min-height: 200px; position: relative; }
+      .product-copy { border-radius: 22px; position: relative; padding: 20px; gap: 14px; }
       .product-desc { max-width: none; line-height: 1.7; }
       .product-title { font-size: clamp(24px, 8vw, 34px); }
-      .product-row { flex-direction: column; }
-      .midi-chain { width: min(360px, 92%); }
+      .product-row { flex-direction: column; gap: 4px; }
+      .product-row span:last-child { text-align: left; }
+      .midi-chain { width: min(320px, 88%); }
 
+      /* ── Misc inner elements ── */
+      .nav, .page-top, .page-list .page-row, .product-row,
+      .transport-bar, .tape-row {
+        justify-content: flex-start; align-items: flex-start; gap: 8px;
+      }
+      .nav, .page-top, .page-list .page-row, .product-row { flex-wrap: wrap; }
+      .links { flex-wrap: wrap; row-gap: 6px; }
+      .page-chip, .readout-box span:first-child, .readout-box span:last-child, .analog-label { white-space: normal; }
       .page-screen { padding: 8px; }
       .page-tag { flex-wrap: wrap; }
-      .track-row {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-      .track-name {
-        letter-spacing: .12em;
-      }
-      .transport-bar,
-      .tape-row {
-        grid-template-columns: 1fr;
-      }
-      .tape-row,
-      .transport-bar {
-        justify-items: stretch;
-      }
+      .window-topbar { flex-wrap: wrap; justify-content: flex-start; }
+
+      /* ── Music flow: each step self-contained ── */
+      .music-flow { gap: 14px; }
+      .flow-step { padding: 14px; }
+      .step-tag { margin-bottom: 10px; }
+      /* step-body: remove fixed min-height, let content define height */
+      .step-body { min-height: 0; height: auto; overflow: visible; position: relative; }
+
+      /* Recording: daw-window is position:absolute globally → make relative */
+      .daw-window { position: relative; inset: auto; min-height: 0; height: auto; }
+      .recording-body { flex: none; height: auto; padding: 12px; gap: 10px; }
+      .transport-bar, .tape-row { grid-template-columns: 1fr; justify-items: stretch; }
+      .track-row { grid-template-columns: 1fr; gap: 8px; }
+      .track-name { letter-spacing: .12em; }
+      .record-tracks { gap: 8px; }
+
+      /* Mixing: mix-window was position:absolute globally → make relative */
+      .mix-window { position: relative; inset: auto; height: auto; display: flex; flex-direction: column; }
       .mix-grid {
-        grid-template-columns: 1fr !important;
+        flex: none;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
         grid-template-rows: auto;
+        height: 340px;
+        padding: 10px;
       }
-      .mix-window {
-        position: relative;
-        min-height: 560px;
-      }
-      .channel-strip { grid-template-rows: auto auto auto minmax(156px, 1fr) auto; }
-      .fader-slot { height: 156px; }
-      .eq-readout {
-        grid-template-columns: 1fr;
-      }
-      .window-topbar {
-        flex-wrap: wrap;
-        justify-content: flex-start;
-      }
+      .channel-strip { grid-template-rows: auto auto auto minmax(80px, 1fr) auto; }
+      .fader-slot { height: 80px; }
+      .mini-meter { height: 52px; }
+      .eq-readout { grid-template-columns: 1fr; }
+
+      /* Mastering: mastering-body is position:absolute globally → make relative */
+      .mastering-body { position: relative; inset: auto; height: auto; display: flex; flex-direction: column; }
+      /* plugin-stack height so absolute plugin-windows have a container */
+      .plugin-stack { flex: none; position: relative; height: 420px; padding: 10px; }
+      /* plugin-windows are absolutely stacked; active one shows via JS */
+      .plugin-window { inset: 6px; }
+      /* Inside EQ plugin */
+      .eq-readout { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      /* Inside compressor/limiter: single column knobs */
+      .analog-panel { grid-template-columns: 1fr !important; grid-template-rows: repeat(3, auto); gap: 8px; }
+      .analog-strip { padding: 10px 8px; gap: 6px; }
+      .analog-knob { width: 38px; height: 38px; }
+      .vintage-meter { width: 58px; height: 34px; }
     }
     .panel {
       position: relative; border: 1px solid var(--line); border-radius: 30px; overflow: hidden;
@@ -1897,6 +1862,20 @@
       18% { opacity: .95; }
       60% { opacity: .36; }
       100% { opacity: 0; transform: translate(-50%, -50%) scale(1.08); }
+    }
+    @keyframes orbitMoveMobile {
+      0%   { transform: translate(105px, 0) scale(1); }
+      25%  { transform: translate(0, 105px) scale(.92); }
+      50%  { transform: translate(-105px, 0) scale(1); }
+      75%  { transform: translate(0, -105px) scale(.92); }
+      100% { transform: translate(105px, 0) scale(1); }
+    }
+    /* Short-viewport PC: prevent title / workspace overlap */
+    @media (max-height: 720px) and (min-width: 761px) {
+      .meta { display: none; }
+      .bar { display: none; }
+      .title { top: 58px; }
+      .workspace { top: 57%; height: min(460px, 48vh); }
     }
 
   </style>
