@@ -278,17 +278,31 @@
 
       /* Mastering: mastering-body is position:absolute globally → make relative */
       .mastering-body { position: relative !important; inset: auto !important; height: auto !important; display: flex; flex-direction: column; }
-      /* plugin-stack height so absolute plugin-windows have a container */
-      .plugin-stack { flex: none; position: relative; height: 420px; padding: 10px; }
-      /* plugin-windows are absolutely stacked; active one shows via JS */
-      .plugin-window { inset: 6px; }
-      /* Inside EQ plugin */
+      /* plugin-stack: no fixed height, flow layout */
+      .plugin-stack { flex: none; position: relative; height: auto; padding: 6px 10px 10px; }
+      /* plugin-windows: switch to flow (not absolute stack) on mobile */
+      .plugin-window {
+        position: relative !important; inset: auto !important;
+        transform: none !important;
+        display: none;
+        opacity: 1 !important;
+        margin-bottom: 0;
+      }
+      .plugin-window.active { display: flex; flex-direction: column; }
+      /* EQ screen needs explicit height */
+      .eq-screen { min-height: 160px; }
+      .eq-digital { height: auto; gap: 10px; }
       .eq-readout { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      /* Inside compressor/limiter: single column knobs */
-      .analog-panel { grid-template-columns: 1fr !important; grid-template-rows: repeat(3, auto); gap: 8px; }
-      .analog-strip { padding: 10px 8px; gap: 6px; }
-      .analog-knob { width: 38px; height: 38px; }
-      .vintage-meter { width: 58px; height: 34px; }
+      /* Compressor / Limiter: horizontal row of knob strips */
+      .analog-panel {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        grid-template-rows: auto;
+        gap: 10px; height: auto;
+      }
+      .analog-strip { padding: 10px 8px; gap: 8px; align-content: center; }
+      .analog-knob { width: 44px; height: 44px; }
+      .vintage-meter { width: 62px; height: 36px; }
+      .plugin-content { height: auto; min-height: 0; padding: 12px; }
     }
     .panel {
       position: relative; border: 1px solid var(--line); border-radius: 30px; overflow: hidden;
