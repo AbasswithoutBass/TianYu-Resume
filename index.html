@@ -293,16 +293,30 @@
       .eq-screen { min-height: 160px; }
       .eq-digital { height: auto; gap: 10px; }
       .eq-readout { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      /* Compressor / Limiter: horizontal row of knob strips */
+      /* Compressor / Limiter: 1-column panel, horizontal strip rows */
       .analog-panel {
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        grid-template-rows: auto;
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto auto auto;
         gap: 10px; height: auto;
       }
-      .analog-strip { padding: 10px 8px; gap: 8px; align-content: center; }
-      .analog-knob { width: 44px; height: 44px; }
-      .vintage-meter { width: 62px; height: 36px; }
-      .plugin-content { height: auto; min-height: 0; padding: 12px; }
+      .analog-strip {
+        height: auto !important;
+        display: flex !important;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 14px 18px;
+        overflow: hidden;
+      }
+      .analog-label {
+        flex: 1;
+        text-align: left;
+        font-size: 10px;
+        letter-spacing: .2em;
+      }
+      .analog-knob { flex: 0 0 auto; width: 48px; height: 48px; }
+      .vintage-meter { flex: 0 0 auto; width: 68px; height: 40px; }
     }
     .panel {
       position: relative; border: 1px solid var(--line); border-radius: 30px; overflow: hidden;
