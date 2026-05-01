@@ -702,6 +702,172 @@
       pointer-events: none;
       z-index: 2;
     }
+    .product-stage {
+      min-height: 100vh;
+      padding: 104px 8vw 88px;
+      background:
+        radial-gradient(circle at 50% 16%, rgba(255,255,255,.06), transparent 24%),
+        linear-gradient(180deg, #070709 0%, #0a0a0c 100%);
+      color: #fff;
+      display: grid;
+      gap: 32px;
+      align-content: center;
+    }
+    .product-stage .systems-intro p { max-width: 60ch; }
+    .product-card {
+      position: relative;
+      min-height: 420px;
+      border-radius: 34px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02), 0 0 80px rgba(255,255,255,.03);
+    }
+    .product-card::before {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0)),
+        repeating-linear-gradient(90deg, transparent 0 18px, rgba(255,255,255,.035) 18px 19px);
+      opacity: .9;
+      pointer-events: none;
+    }
+    .product-grid {
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 18px;
+      padding: 24px;
+    }
+    .product-visual,
+    .product-copy {
+      position: relative;
+      min-width: 0;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.03);
+      overflow: hidden;
+    }
+    .product-visual {
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(255,255,255,.09), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+    }
+    .midi-chain {
+      position: relative;
+      width: min(420px, 88%);
+      aspect-ratio: 1.25;
+    }
+    .device-rail {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 100%; height: 10px;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.42), rgba(255,255,255,.06));
+      box-shadow: 0 0 32px rgba(255,255,255,.08);
+    }
+    .midi-node {
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      aspect-ratio: 1.2;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.1);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), 0 0 34px rgba(255,255,255,.05);
+      transform: translateY(-50%);
+    }
+    .midi-node::before {
+      content: "";
+      position: absolute;
+      left: 50%; top: 18%;
+      width: 52%; height: 42%;
+      transform: translateX(-50%);
+      border-radius: 14px;
+      background: rgba(255,255,255,.16);
+    }
+    .midi-node::after {
+      content: "";
+      position: absolute;
+      left: 50%; bottom: 10%;
+      width: 22%; height: 8px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: rgba(255,255,255,.22);
+    }
+    .midi-node.left { left: 4%; }
+    .midi-node.right { right: 4%; }
+    .midi-node.center {
+      left: 50%;
+      width: 22%;
+      background: linear-gradient(180deg, rgba(255,255,255,.26), rgba(255,255,255,.08));
+      transform: translate(-50%, -50%);
+    }
+    .midi-wire {
+      position: absolute;
+      left: 19%; right: 19%; top: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.8), transparent);
+      transform: translateY(-50%);
+      box-shadow: 0 0 18px rgba(255,255,255,.24);
+      animation: wirePulse 3.2s ease-in-out infinite;
+    }
+    .midi-wire::before,
+    .midi-wire::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      transform: translateY(-50%);
+      box-shadow: 0 0 18px rgba(255,255,255,.6);
+    }
+    .midi-wire::before { left: 0; }
+    .midi-wire::after { right: 0; }
+    .product-copy {
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      padding: 28px;
+    }
+    .product-note {
+      font-size: 11px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.46);
+    }
+    .product-title {
+      margin: 0;
+      font-size: clamp(28px, 4.2vw, 52px);
+      letter-spacing: -.05em;
+      line-height: 1.02;
+    }
+    .product-desc {
+      margin: 0;
+      max-width: 34ch;
+      font-size: clamp(14px, 1.35vw, 18px);
+      line-height: 1.8;
+      color: rgba(255,255,255,.66);
+    }
+    .product-meta {
+      display: grid;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .product-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      font-size: 13px;
+      color: rgba(255,255,255,.72);
+    }
+    .product-row span:last-child { color: rgba(255,255,255,.95); text-align: right; }
     .sound-rings span {
       position: absolute;
       left: 50%; top: 50%;
@@ -1529,6 +1695,37 @@
             <div class="speaker s2"><div class="edge"></div></div>
             <div class="speaker s3"><div class="edge"></div></div>
             <div class="signal-run"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-stage" id="productStage">
+    <div class="systems-intro">
+      <div class="systems-kicker">product development / hardware</div>
+      <h2>产品开发经验</h2>
+      <p>我之前借助 ESP32 开发板做过一个无线 MIDI 模块，插在琴和电脑中间，负责转发 MIDI 信号，让设备之间无线联动。</p>
+    </div>
+    <div class="product-card">
+      <div class="product-grid">
+        <div class="product-visual">
+          <div class="midi-chain">
+            <div class="device-rail"></div>
+            <div class="midi-node left"></div>
+            <div class="midi-node center"></div>
+            <div class="midi-node right"></div>
+            <div class="midi-wire"></div>
+          </div>
+        </div>
+        <div class="product-copy">
+          <div class="product-note">wireless midi module</div>
+          <h3 class="product-title">ESP32 无线 MIDI 中继</h3>
+          <p class="product-desc">把琴的 MIDI 信号通过 ESP32 做无线转发，放在乐器和电脑之间，减少线材束缚，也方便现场和桌面工作流切换。</p>
+          <div class="product-meta">
+            <div class="product-row"><span>角色</span><span>硬件 + 连接协议</span></div>
+            <div class="product-row"><span>核心</span><span>无线转发 MIDI 信号</span></div>
+            <div class="product-row"><span>场景</span><span>琴 ↔ 电脑中间桥接</span></div>
           </div>
         </div>
       </div>
