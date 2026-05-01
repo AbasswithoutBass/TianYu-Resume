@@ -15,6 +15,7 @@
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; width: 100%; min-height: 100%; background: var(--bg); color: var(--text); overflow-x: hidden; overflow-y: auto; }
+    html { scroll-padding-top: 88px; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; }
     .stage {
       position: relative; width: 100vw; height: 100vh;
@@ -34,8 +35,9 @@
       mask-image: linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.65) 20%, rgba(0,0,0,0.35) 75%, rgba(0,0,0,0.0));
     }
     .title {
-      position: absolute; left: 50%; top: 5.8vh; transform: translateX(-50%);
+      position: absolute; left: 50%; top: 96px; transform: translateX(-50%);
       width: min(1200px, 92vw); text-align: center;
+      z-index: 3;
     }
     .eyebrow {
       margin: 0 0 14px;
@@ -51,23 +53,25 @@
       margin: 16px 0 0; font-size: clamp(16px, 1.4vw, 24px); color: var(--muted);
     }
     .meta {
-      position: absolute; left: 50%; top: calc(5.8vh + 120px); transform: translateX(-50%);
+      position: absolute; left: 50%; top: calc(96px + 120px); transform: translateX(-50%);
       color: rgba(255,255,255,.56); font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
     }
     .bar {
       position: absolute; left: 50%; top: calc(54% - 316px); transform: translateX(-50%);
       width: min(1360px, 92vw); height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+      z-index: 1;
     }
     .workspace {
       position: absolute; left: 50%; top: 54%; transform: translate(-50%, -50%);
       width: min(1360px, 92vw); height: min(620px, 61vh);
       display: grid; grid-template-columns: 1.12fr 0.72fr 1fr; gap: 18px;
+      z-index: 2;
     }
     @media (max-height: 760px), (max-width: 980px) {
-      .title { top: 3.5vh; }
+      .title { top: 84px; }
       .title h1 { font-size: clamp(34px, 4vw, 64px); }
       .title p { margin-top: 12px; font-size: clamp(14px, 1.15vw, 18px); }
-      .meta { top: calc(3.5vh + 116px); }
+      .meta { top: calc(84px + 116px); }
       .bar { top: calc(51% - 290px); }
       .workspace {
         top: 52%;
@@ -95,20 +99,29 @@
       .quick-nav::-webkit-scrollbar { display: none; }
       .quick-nav button { flex: 0 0 auto; padding: 9px 12px; font-size: 12px; }
 
-      .title { top: 4.5vh; width: 88vw; }
+      .title { top: 88px; width: 88vw; }
       .title h1 { font-size: clamp(30px, 8.2vw, 42px); }
       .title p { font-size: clamp(13px, 4vw, 16px); margin-top: 10px; }
-      .meta { top: calc(4.5vh + 104px); font-size: 10px; letter-spacing: .18em; }
+      .meta { top: calc(88px + 104px); font-size: 10px; letter-spacing: .18em; }
       .bar { top: calc(48% - 220px); width: 88vw; }
       .workspace {
         position: static; left: auto; top: auto; transform: none;
         width: 100%; height: auto; display: grid; grid-template-columns: 1fr; gap: 12px;
-        padding-top: 116px;
+        padding-top: 132px;
+      }
+      .stage {
+        height: auto;
+        min-height: 100vh;
+        padding-bottom: 28px;
       }
       .panel { border-radius: 22px; }
       .panel .head { padding: 12px 14px 10px; font-size: 12px; }
       .editor-wrap, .terminal-wrap, .preview-wrap { position: relative; inset: auto; padding: 14px; }
-      .shell { min-height: 320px; }
+      .editor-wrap, .terminal-wrap, .preview-wrap { min-height: 340px; }
+      .shell { min-height: 320px; height: 100%; }
+      .body { position: relative; inset: auto; min-height: 292px; }
+      .editor, .preview-body { height: auto; min-height: 258px; }
+      .terminal-body { min-height: 258px; }
       .editor { font-size: 14px; line-height: 1.7; }
       .terminal-body { font-size: 13px; line-height: 1.6; }
       .headline { font-size: 20px; }
@@ -203,9 +216,10 @@
         align-content: start;
       }
       .vocal-stage {
-        height: 78vh;
-        min-height: 78vh;
+        height: 82vh;
+        min-height: 82vh;
       }
+      .vs-photo { object-position: 64% 36%; }
       .vs-text {
         left: 6%;
         right: 6%;
@@ -270,7 +284,9 @@
       .product-card { min-height: 0; }
       .product-grid { padding: 14px; gap: 14px; }
       .product-visual, .product-copy { border-radius: 22px; }
-      .product-copy { min-height: 260px; }
+      .product-copy { min-height: 320px; padding: 20px; gap: 14px; }
+      .product-desc { max-width: none; line-height: 1.7; }
+      .product-title { font-size: clamp(24px, 8vw, 34px); }
       .product-row { flex-direction: column; }
       .midi-chain { width: min(360px, 92%); }
 
@@ -297,8 +313,10 @@
       }
       .mix-window {
         position: relative;
-        min-height: 420px;
+        min-height: 560px;
       }
+      .channel-strip { grid-template-rows: auto auto auto minmax(156px, 1fr) auto; }
+      .fader-slot { height: 156px; }
       .eq-readout {
         grid-template-columns: 1fr;
       }
@@ -628,6 +646,7 @@
       background: rgba(10,10,12,.72);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255,255,255,.08);
+      max-width: calc(100vw - 36px);
     }
     .quick-nav button {
       appearance: none; border: 0; cursor: pointer;
@@ -647,6 +666,7 @@
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
+      object-position: center 38%;
       opacity: 0;
       transition: opacity 1.6s ease;
     }
@@ -1209,9 +1229,10 @@
     .midi-wire::after { right: 0; }
     .product-copy {
       display: grid;
-      align-content: center;
+      align-content: start;
       gap: 18px;
       padding: 28px;
+      min-height: 0;
     }
     .product-note {
       font-size: 11px;
@@ -1502,6 +1523,7 @@
       inset: 0;
       display: flex;
       flex-direction: column;
+      min-height: 0;
     }
     .mix-grid {
       flex: 1;
@@ -1521,7 +1543,7 @@
       overflow: hidden;
       padding: 10px 8px 8px;
       display: grid;
-      grid-template-rows: auto auto auto 1fr auto;
+      grid-template-rows: auto auto auto minmax(132px, 1fr) auto;
       justify-items: center;
       gap: 8px;
     }
@@ -1578,10 +1600,11 @@
     .fader-slot {
       position: relative;
       width: 16px;
-      height: 106px;
+      height: 132px;
       border-radius: 999px;
       background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.12), rgba(255,255,255,.04));
       margin: 0 auto;
+      overflow: visible;
     }
     .fader-cap {
       position: absolute;
@@ -1876,11 +1899,11 @@
   </style>
 </head>
 <body>
-  <div class="quick-nav">
-    <button onclick="document.querySelector('.stage.grid').scrollIntoView({behavior:'smooth', block:'start'})">代码演示</button>
-    <button onclick="document.getElementById('newMediaStage').scrollIntoView({behavior:'smooth', block:'start'})">新媒体运营</button>
-    <button onclick="document.getElementById('systemsStage').scrollIntoView({behavior:'smooth', block:'start'})">舞台灯光 / 音响</button>
-    <button onclick="document.getElementById('musicStage').scrollIntoView({behavior:'smooth', block:'start'})">音乐制作 / 混音</button>
+    <div class="quick-nav">
+    <button onclick="window.scrollTo({ top: document.querySelector('.stage.grid').offsetTop - 84, behavior:'smooth' })">代码演示</button>
+    <button onclick="window.scrollTo({ top: document.getElementById('newMediaStage').offsetTop - 84, behavior:'smooth' })">新媒体运营</button>
+    <button onclick="window.scrollTo({ top: document.getElementById('systemsStage').offsetTop - 84, behavior:'smooth' })">舞台灯光 / 音响</button>
+    <button onclick="window.scrollTo({ top: document.getElementById('musicStage').offsetTop - 84, behavior:'smooth' })">音乐制作 / 混音</button>
   </div>
 
   <div class="stage grid">
@@ -2538,7 +2561,7 @@
         fill.style.height = `${v.toFixed(1)}%`;
       });
       faderCaps.forEach((cap, i) => {
-        const y = 72 - Math.sin((p * Math.PI * 2) + i * 0.55) * 23 - i * 1.5;
+        const y = 68 - Math.sin((p * Math.PI * 2) + i * 0.55) * 18 - i * 1.1;
         cap.style.top = `${y.toFixed(1)}%`;
       });
 
@@ -2549,11 +2572,14 @@
       const low = 42 - Math.sin(p * Math.PI * 2) * 9;
       const mid = 64 + Math.sin(p * Math.PI * 2.4 + 1.1) * 7;
       const high = 26 - Math.sin(p * Math.PI * 2.1 + 2.2) * 10;
-      if (eqBandLow) eqBandLow.style.top = `${low.toFixed(1)}%`;
-      if (eqBandMid) eqBandMid.style.top = `${mid.toFixed(1)}%`;
-      if (eqBandHigh) eqBandHigh.style.top = `${high.toFixed(1)}%`;
+      const lowX = 28;
+      const midX = 60;
+      const highX = 80;
+      if (eqBandLow) { eqBandLow.style.left = `${lowX}%`; eqBandLow.style.top = `${low.toFixed(1)}%`; }
+      if (eqBandMid) { eqBandMid.style.left = `${midX}%`; eqBandMid.style.top = `${mid.toFixed(1)}%`; }
+      if (eqBandHigh) { eqBandHigh.style.left = `${highX}%`; eqBandHigh.style.top = `${high.toFixed(1)}%`; }
       if (eqCurvePath) {
-        eqCurvePath.setAttribute('d', `M0,58 C12,58 18,${low.toFixed(1)} 28,${low.toFixed(1)} C40,${((low + mid) / 2).toFixed(1)} 48,${mid.toFixed(1)} 60,${mid.toFixed(1)} C72,${mid.toFixed(1)} 78,${high.toFixed(1)} 100,${high.toFixed(1)}`);
+        eqCurvePath.setAttribute('d', `M0,58 C12,58 18,${low.toFixed(1)} 28,${low.toFixed(1)} C40,${((low + mid) / 2).toFixed(1)} 48,${mid.toFixed(1)} 60,${mid.toFixed(1)} C70,${mid.toFixed(1)} 75,${high.toFixed(1)} ${highX},${high.toFixed(1)}`);
       }
       if (eqLowVal) eqLowVal.textContent = `${(58 - low) >= 0 ? '+' : ''}${(58 - low).toFixed(1)} dB`;
       if (eqMidVal) eqMidVal.textContent = `${(58 - mid) >= 0 ? '+' : ''}${(58 - mid).toFixed(1)} dB`;
