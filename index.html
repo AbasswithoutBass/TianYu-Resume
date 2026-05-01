@@ -51,7 +51,7 @@
       color: rgba(255,255,255,.56);
     }
     .title h1 {
-      margin: 0; font-size: clamp(42px, 4.8vw, 84px); line-height: 0.96; letter-spacing: -0.05em; font-weight: 800;
+      margin: 0; font-size: clamp(36px, 4.8vw, 72px); line-height: 0.98; letter-spacing: -0.05em; font-weight: 800;
     }
     .title p {
       margin: 16px 0 0; font-size: clamp(16px, 1.4vw, 24px); color: var(--muted);
@@ -74,7 +74,7 @@
     @media (max-height: 760px), (max-width: 980px) {
       .stage { padding: 72px 0 40px; }
       .title { margin-bottom: 20px; }
-      .title h1 { font-size: clamp(34px, 4vw, 64px); }
+      .title h1 { font-size: clamp(28px, 5.6vw, 56px); }
       .title p { margin-top: 12px; font-size: clamp(14px, 1.15vw, 18px); }
       .bar { margin-bottom: 14px; }
       .workspace {
@@ -170,10 +170,11 @@
       /* ── Vocal stage photo: person is on right side ── */
       .vs-photo { object-position: 92% 30%; object-fit: cover; }
       .vs-text { left: 6%; right: 6%; bottom: 8%; }
-      .vs-title { font-size: clamp(24px, 8vw, 34px); }
+      .vs-title { font-size: clamp(28px, 8vw, 40px); }
 
       /* ── New-media ── */
       .systems-intro, .new-media-stage .systems-intro { gap: 8px; }
+      .systems-intro h2 { font-size: clamp(28px, 8vw, 40px); }
       .new-media-card, .new-media-side { min-height: auto; }
       .new-media-card-main { padding: 12px; height: auto; display: flex; flex-direction: column; }
       .new-media-window { flex: none; height: 240px; min-height: 240px; position: relative; }
@@ -692,8 +693,8 @@
       color: rgba(255,255,255,.5); margin-bottom: 14px;
     }
     .vs-title {
-      margin: 0 0 12px; font-size: clamp(28px, 4vw, 56px);
-      letter-spacing: -.04em; font-weight: 800; color: #fff; line-height: 1;
+      margin: 0 0 12px; font-size: clamp(36px, 4.8vw, 72px);
+      letter-spacing: -.05em; font-weight: 800; color: #fff; line-height: 1;
     }
     .systems-stage {
       min-height: 100vh;
@@ -708,7 +709,7 @@
     }
     .systems-intro h2 {
       margin: 10px 0 12px;
-      font-size: clamp(34px, 4.8vw, 68px);
+      font-size: clamp(36px, 4.8vw, 72px);
       letter-spacing: -.05em;
       line-height: 1.02;
     }
