@@ -706,11 +706,13 @@
       letter-spacing: -.02em;
     }
     .music-flow {
-      position: absolute; inset: 0;
-      padding: 84px 20px 22px;
+      position: relative;
+      padding: 0;
       display: grid;
       grid-template-columns: 1.05fr .9fr .95fr;
       gap: 14px;
+      width: 100%;
+      margin-top: 2px;
     }
     .flow-step {
       position: relative;
@@ -718,7 +720,7 @@
       border: 1px solid rgba(255,255,255,.08);
       background: rgba(255,255,255,.03);
       overflow: hidden;
-      min-height: 390px;
+      min-height: 300px;
     }
     .flow-step::before {
       content: ""; position: absolute; inset: 0;
