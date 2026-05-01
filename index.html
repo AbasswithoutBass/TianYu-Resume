@@ -909,6 +909,7 @@
     }
     .light-stage {
       position: absolute; inset: 0;
+      overflow: hidden;
     }
     .truss {
       position: absolute; left: 6%; right: 6%; top: 16%; height: 16px;
@@ -924,17 +925,17 @@
       opacity: .6;
     }
     .light-unit {
-      position: absolute; top: 0; width: 18%; height: 100%;
-      transform: rotate(var(--beam));
+      position: absolute; top: 0; width: 10%; height: 100%;
+      /* No rotation on the whole unit — pivot is handled per-element */
     }
     .light-unit .moving-head {
-      position: absolute; top: 12.2%; left: 50%;
+      position: absolute; top: 12.2%; left: calc(50% - 12px);
       width: 24px; height: 34px; border-radius: 10px;
       background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.24));
       box-shadow: 0 0 18px rgba(255,255,255,.16);
-      transform-origin: 50% 100%;
-      transform: translateX(-50%);
-      animation: headSweep 4.2s infinite ease-in-out;
+      transform-origin: 50% 0%;
+      animation: headTilt 4.2s infinite ease-in-out;
+      animation-delay: var(--phase, 0s);
     }
     .light-unit .moving-head::before {
       content: ""; position: absolute; inset: 4px 5px 14px;
@@ -947,15 +948,15 @@
       width: 4px; height: 12px; border-radius: 999px; background: rgba(255,255,255,.85);
     }
     .light-unit .beam-fan {
-      position: absolute; left: 50%; top: calc(12.2% + 32px);
+      position: absolute; left: 50%; top: calc(12.2% + 34px);
       width: 220px; height: 392px; margin-left: -110px;
       background: linear-gradient(180deg, rgba(255,255,255,.52), rgba(255,255,255,.18) 18%, rgba(255,255,255,0) 82%);
       clip-path: polygon(50% 0, 96% 100%, 4% 100%);
       filter: blur(2px);
       opacity: 0;
       transform-origin: top center;
-      transform: translateX(-50%);
-      animation: headSweep 4.2s infinite ease-in-out;
+      animation: headTilt 4.2s infinite ease-in-out;
+      animation-delay: var(--phase, 0s);
     }
     .light-unit .beam-fan::before,
     .light-unit .beam-fan::after {
@@ -974,11 +975,11 @@
       background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 82%);
       animation-delay: 1.4s;
     }
-    .u1 { left: 12%; --beam: -24deg; }
-    .u2 { left: 30%; --beam: -12deg; }
-    .u3 { left: 48%; --beam: 0deg; }
-    .u4 { left: 66%; --beam: 12deg; }
-    .u5 { left: 84%; --beam: 24deg; }
+    .u1 { left: 10%; --phase: 0s; }
+    .u2 { left: 26%; --phase: -0.9s; }
+    .u3 { left: 44%; --phase: -1.8s; }
+    .u4 { left: 60%; --phase: -0.5s; }
+    .u5 { left: 76%; --phase: -1.3s; }
     .haze {
       position: absolute; inset: 0;
       background:
@@ -1856,11 +1857,11 @@
       50% { transform: translateX(100%); opacity: 1; }
       100% { transform: translateX(100%); opacity: 0; }
     }
-    @keyframes headSweep {
-      0%, 100% { transform: translateY(0) rotate(-18deg); opacity: .65; }
-      25% { transform: translateY(6px) rotate(22deg); opacity: 1; }
-      50% { transform: translateY(0) rotate(-8deg); opacity: .85; }
-      75% { transform: translateY(5px) rotate(28deg); opacity: 1; }
+    @keyframes headTilt {
+      0%, 100% { transform: rotate(-18deg); opacity: .65; }
+      25%       { transform: rotate(20deg);  opacity: 1; }
+      50%       { transform: rotate(-8deg);  opacity: .85; }
+      75%       { transform: rotate(24deg);  opacity: 1; }
     }
     @keyframes beamGlow {
       0%, 100% { opacity: .04; transform: translateX(-50%) scaleY(.72); }
