@@ -1912,12 +1912,13 @@
       grid-template-columns: 1.1fr 0.9fr;
       gap: 18px;
       width: 100%;
-      align-items: stretch;
+      align-items: start;
     }
-    .nm-col { display: flex; flex-direction: column; gap: 14px; align-self: stretch; }
+    .nm-col { display: flex; flex-direction: column; gap: 14px; }
+    .nm-col-right { align-self: stretch; }
+    .nm-col-right .nm-card { flex: 1; }
     .nm-card {
       position: relative;
-      flex: 1;
       border-radius: 28px;
       border: 1px solid rgba(255,255,255,.08);
       background: rgba(255,255,255,.035);
