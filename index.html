@@ -234,9 +234,6 @@
         min-height: 0;
         border-radius: 24px;
       }
-      .scene-title { left: 16px; top: 16px; font-size: 11px; }
-
-      .systems-grid,
       .new-media-grid,
       .product-grid,
       .audio-grid {
@@ -256,6 +253,9 @@
       .music-flow,
       .analog-panel {
         grid-template-columns: 1fr !important;
+      }
+      .step-body {
+        min-height: 0;
       }
       .audio-grid {
         padding: 60px 14px 14px;
@@ -1332,7 +1332,7 @@
     }
     .step-body {
       position: relative;
-      min-height: 278px;
+      min-height: 360px;
       border-radius: 22px;
       background: rgba(255,255,255,.02);
       border: 1px solid rgba(255,255,255,.04);
@@ -1686,6 +1686,7 @@
       padding: 10px;
       min-width: 0;
       min-height: 0;
+      box-sizing: border-box;
     }
     .eq-digital {
       display: grid;
@@ -1762,7 +1763,8 @@
     }
     .analog-panel {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(3, minmax(0, 1fr));
       gap: 8px;
       height: 100%;
       align-items: stretch;
@@ -1775,6 +1777,7 @@
       border: 1px solid rgba(255,255,255,.06);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
       display: grid;
+      grid-template-rows: auto auto auto;
       justify-items: center;
       align-content: center;
       gap: 8px;
