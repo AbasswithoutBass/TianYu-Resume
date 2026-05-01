@@ -198,6 +198,8 @@
 
       /* ── Light & audio scene: static sizes, no min-height: 0 override ── */
       .light-scene { min-height: 280px; border-radius: 24px; }
+      .scene-skills, .step-skills { padding: 8px 2px 0; }
+      .skill-item { font-size: 11px; }
       .audio-scene { min-height: auto; border-radius: 24px; }
       .new-media-card { border-radius: 24px; }
       .product-card { border-radius: 24px; }
@@ -2158,28 +2160,77 @@
     }
     /* Edit timeline */
     .edit-timeline {
-      display: flex; flex-direction: column; gap: 6px;
-      background: rgba(255,255,255,.02);
-      border: 1px solid rgba(255,255,255,.05);
+      display: flex; flex-direction: column; gap: 5px;
+      background: #0d0d0f;
+      border: 1px solid rgba(255,255,255,.08);
       border-radius: 16px; padding: 10px 12px;
       position: relative;
     }
+    .edit-toolbar {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
+    }
+    .edit-tool-btn {
+      width: 20px; height: 20px; border-radius: 6px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; color: rgba(255,255,255,.5);
+    }
+    .edit-tool-btn.active { background: rgba(255,255,255,.18); color: #fff; }
+    .edit-ruler {
+      height: 12px; display: flex; align-items: flex-end;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      margin-bottom: 4px; gap: 0;
+    }
+    .edit-ruler-tick {
+      flex: 1; height: 4px; border-left: 1px solid rgba(255,255,255,.15);
+    }
+    .edit-ruler-tick:nth-child(4n) { height: 8px; }
     .edit-track {
-      display: flex; gap: 4px; height: 18px; align-items: center;
+      display: flex; gap: 3px; height: 16px; align-items: center; position: relative;
+    }
+    .edit-track-label {
+      font-size: 8px; letter-spacing: .08em; color: rgba(255,255,255,.3);
+      width: 24px; flex: 0 0 auto; text-align: right; padding-right: 4px;
     }
     .edit-clip {
-      height: 100%; border-radius: 6px;
+      height: 100%; border-radius: 4px;
       border: 1px solid rgba(255,255,255,.06);
+      position: relative; overflow: hidden;
     }
-    .ec1 { width: 24%; background: linear-gradient(90deg, rgba(255,255,255,.22), rgba(255,255,255,.10)); }
-    .ec2 { width: 32%; background: linear-gradient(90deg, rgba(255,255,255,.16), rgba(255,255,255,.07)); }
-    .ec3 { width: 20%; background: linear-gradient(90deg, rgba(255,255,255,.12), rgba(255,255,255,.05)); }
-    .ec4 { width: 18%; background: linear-gradient(90deg, rgba(255,255,255,.20), rgba(255,255,255,.08)); }
+    .edit-clip::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, transparent 1px 6px);
+    }
+    .ec1 { width: 24%; background: linear-gradient(90deg, rgba(100,180,255,.25), rgba(100,180,255,.10)); border-color: rgba(100,180,255,.2); }
+    .ec2 { width: 32%; background: linear-gradient(90deg, rgba(180,140,255,.22), rgba(180,140,255,.09)); border-color: rgba(180,140,255,.18); }
+    .ec3 { width: 20%; background: linear-gradient(90deg, rgba(100,220,180,.2), rgba(100,220,180,.08)); border-color: rgba(100,220,180,.15); }
+    .ec4 { width: 18%; background: linear-gradient(90deg, rgba(255,180,100,.2), rgba(255,180,100,.08)); border-color: rgba(255,180,100,.15); }
+    .edit-cut-mark {
+      position: absolute; top: -2px; bottom: -2px; width: 2px;
+      background: rgba(255,80,80,.9);
+      box-shadow: 0 0 8px rgba(255,80,80,.6);
+      animation: cutBlink 3.2s infinite;
+      pointer-events: none;
+    }
+    @keyframes cutBlink {
+      0%, 100% { opacity: 0; }
+      45%, 55% { opacity: 1; }
+    }
     .edit-head {
-      position: absolute; top: 6px; bottom: 6px; left: 20%;
+      position: absolute; top: -4px; bottom: -4px; left: 20%;
       width: 2px; background: rgba(255,255,255,.9);
       box-shadow: 0 0 10px rgba(255,255,255,.4);
       animation: editScrub 4s infinite ease-in-out;
+      pointer-events: none;
+    }
+    .edit-head::before {
+      content: '';
+      position: absolute; top: 0; left: -4px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid rgba(255,255,255,.9);
     }
     @keyframes editScrub {
       0%, 100% { left: 8%; }
@@ -2209,6 +2260,62 @@
       to { width: var(--w, 60%); }
     }
     .data-val { font-size: 10px; color: rgba(255,255,255,.72); width: 36px; text-align: right; flex: 0 0 auto; }
+    /* Live flow signal chain */
+    .live-flow { display: flex; flex-direction: column; gap: 8px; }
+    .live-chain { display: flex; align-items: center; gap: 0; }
+    .live-node { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+    .live-node-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .live-node-label { font-size: 9px; color: rgba(255,255,255,.42); letter-spacing: .06em; text-align: center; }
+    .live-arrow {
+      width: 20px; height: 2px; position: relative; flex: 0 0 auto; margin-bottom: 16px;
+      background: rgba(255,255,255,.10);
+    }
+    .live-arrow::after {
+      content: '';
+      position: absolute;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.9);
+      box-shadow: 0 0 8px rgba(255,255,255,.5);
+      top: 50%; transform: translateY(-50%);
+      animation: flowPulse 2s linear infinite;
+    }
+    .live-arrow:nth-child(2)::after { animation-delay: .5s; }
+    .live-arrow:nth-child(4)::after { animation-delay: 1s; }
+    .live-arrow:nth-child(6)::after { animation-delay: 1.5s; }
+    @keyframes flowPulse {
+      from { left: 0; opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      to { left: 100%; opacity: 0; }
+    }
+    .live-node-icon.active {
+      background: rgba(255,80,80,.18);
+      border-color: rgba(255,80,80,.4);
+      box-shadow: 0 0 12px rgba(255,80,80,.2);
+      position: relative;
+    }
+    .live-node-icon.active::after {
+      content: ''; display: block;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #ff5050; box-shadow: 0 0 8px #ff5050;
+      animation: liveDot 1s ease-in-out infinite alternate;
+    }
+    @keyframes liveDot { from { opacity: .4; } to { opacity: 1; } }
+    /* scene-skills / step-skills */
+    .scene-skills, .step-skills {
+      padding: 10px 4px 0;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .skill-item {
+      font-size: 12px; line-height: 1.6;
+      color: rgba(255,255,255,.58);
+    }
     /* Live indicators */
     .live-indicators { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .live-ind { display: flex; align-items: center; gap: 8px; font-size: 11px; color: rgba(255,255,255,.64); }
@@ -2581,7 +2688,7 @@
             <div class="ai-tools">
               <div class="ai-tool-row">
                 <span class="ai-badge">AI 写脚本</span>
-                <span class="ai-badge">AI 排镇头</span>
+                <span class="ai-badge">AI 画分镜</span>
                 <span class="ai-badge ai-badge-on">Suno Studio</span>
               </div>
               <div class="ai-tool-row">
@@ -2599,22 +2706,46 @@
           <div class="nm-card-headline">拍出好画面，<br>剪出好节奏</div>
           <div class="nm-card-body">
             <div class="edit-timeline">
+              <div class="edit-toolbar">
+                <div class="edit-tool-btn active">✂</div>
+                <div class="edit-tool-btn">▶</div>
+                <div class="edit-tool-btn">M</div>
+                <div style="flex:1"></div>
+                <div style="font-size:9px;color:rgba(255,255,255,.3)">00:02:14</div>
+              </div>
+              <div class="edit-ruler">
+                <div class="edit-ruler-tick"></div><div class="edit-ruler-tick"></div>
+                <div class="edit-ruler-tick"></div><div class="edit-ruler-tick"></div>
+                <div class="edit-ruler-tick"></div><div class="edit-ruler-tick"></div>
+                <div class="edit-ruler-tick"></div><div class="edit-ruler-tick"></div>
+                <div class="edit-ruler-tick"></div><div class="edit-ruler-tick"></div>
+                <div class="edit-ruler-tick"></div><div class="edit-ruler-tick"></div>
+              </div>
               <div class="edit-track">
+                <div class="edit-track-label">V1</div>
                 <div class="edit-clip ec1"></div>
-                <div class="edit-clip ec2"></div>
-                <div class="edit-clip ec3"></div>
-                <div class="edit-clip ec4"></div>
-                <div class="edit-head" id="editHead"></div>
+                <div class="edit-clip ec2" style="width:30%"></div>
+                <div class="edit-clip ec3" style="width:18%"></div>
+                <div class="edit-cut-mark" style="left:34%"></div>
               </div>
               <div class="edit-track">
-                <div class="edit-clip ec2" style="width:18%"></div>
-                <div class="edit-clip ec4" style="width:28%"></div>
-                <div class="edit-clip ec1" style="width:20%"></div>
+                <div class="edit-track-label">V2</div>
+                <div class="edit-clip ec4" style="width:22%"></div>
+                <div class="edit-clip ec1" style="width:28%"></div>
+                <div class="edit-clip ec2" style="width:20%"></div>
               </div>
               <div class="edit-track">
-                <div class="edit-clip ec3" style="width:36%; opacity:.72"></div>
-                <div class="edit-clip ec2" style="width:22%; opacity:.72"></div>
+                <div class="edit-track-label">A1</div>
+                <div class="edit-clip ec3" style="width:40%; opacity:.8"></div>
+                <div class="edit-clip ec4" style="width:28%; opacity:.8"></div>
               </div>
+              <div class="edit-track">
+                <div class="edit-track-label">A2</div>
+                <div class="edit-clip ec2" style="width:18%; opacity:.6"></div>
+                <div class="edit-clip ec1" style="width:32%; opacity:.6"></div>
+                <div class="edit-clip ec3" style="width:16%; opacity:.6"></div>
+              </div>
+              <div class="edit-head" id="editHead"></div>
             </div>
             <p class="nm-card-desc">多机位现场拍摄，用达芬奇和 PR 剪辑。这条视频展示的不就是我的成品。</p>
           </div>
@@ -2659,25 +2790,30 @@
           <div class="nm-card-tag">05 · 直播间搭建与运营</div>
           <div class="nm-card-headline">直播不是<br>拉个设备开就行</div>
           <div class="nm-card-body">
-            <div class="live-indicators">
-              <div class="live-ind">
-                <div class="live-ind-dot live-ind-on"></div>
-                <span>信号链路</span>
-              </div>
-              <div class="live-ind">
-                <div class="live-ind-dot live-ind-on"></div>
-                <span>设备摆位</span>
-              </div>
-              <div class="live-ind">
-                <div class="live-ind-dot" id="liveIndRhythm"></div>
-                <span>节奏把控</span>
-              </div>
-              <div class="live-ind">
-                <div class="live-ind-dot" id="liveIndConvert"></div>
-                <span>互动转化</span>
+            <div class="live-flow">
+              <div class="live-chain">
+                <div class="live-node">
+                  <div class="live-node-icon">🎤</div>
+                  <div class="live-node-label">声音采集</div>
+                </div>
+                <div class="live-arrow"></div>
+                <div class="live-node">
+                  <div class="live-node-icon">📹</div>
+                  <div class="live-node-label">画面采集</div>
+                </div>
+                <div class="live-arrow"></div>
+                <div class="live-node">
+                  <div class="live-node-icon">💻</div>
+                  <div class="live-node-label">软件合成</div>
+                </div>
+                <div class="live-arrow"></div>
+                <div class="live-node">
+                  <div class="live-node-icon active"></div>
+                  <div class="live-node-label">导播推流</div>
+                </div>
               </div>
             </div>
-            <p class="nm-card-desc">从零搭建直播间，信号链路·灯光·收音·场控全部亲手配置，开播前一个人能验收完。</p>
+            <p class="nm-card-desc">从零搭建直播间：麦克风收音、采集卡画面、OBS 导播合成、推流平台——每个环节都亲手配过，开播前一个人能验收完。</p>
           </div>
         </div>
 
@@ -2705,6 +2841,11 @@
           <div class="floor"></div>
           <div class="floor-reflection"></div>
         </div>
+        <div class="scene-skills">
+          <div class="skill-item">• 灯位规划与架设，知道怎么摆点不射眼</div>
+          <div class="skill-item">• 动式灯头编程，用控制台自己打场景</div>
+          <div class="skill-item">• 演出开演前灯光诊断，能自行排查常见故障</div>
+        </div>
       </div>
       <div class="audio-scene">
         <div class="scene-title">音响链路</div>
@@ -2729,6 +2870,11 @@
             <div class="signal-run"></div>
           </div>
         </div>
+        <div class="scene-skills">
+          <div class="skill-item">• 读得懂音响权线图，能搞清麦克风、调音台、返听、主音</div>
+          <div class="skill-item">• 现场调音，处理延迟、啸叫、音量不均等常见问题</div>
+          <div class="skill-item">• 小型演出可独立完成音响全链路搭建</div>
+        </div>
       </div>
     </div>
   </div>
@@ -2736,8 +2882,8 @@
   <div class="product-stage" id="productStage">
     <div class="systems-intro">
       <div class="systems-kicker">应用开发小项目</div>
-      <h2>做过两个真正跑起来的东西</h2>
-      <p>一个硬件项目，一个软件应用——都是自己从零做到能用的。</p>
+      <h2>做过真正跑起来的东西</h2>
+      <p>不管是硬件项目，还是软件应用——都是自己从零做到能用的。</p>
     </div>
     <div class="product-cards">
     <div class="product-card">
@@ -2924,6 +3070,11 @@
             </div>
           </div>
         </div>
+        <div class="step-skills">
+          <div class="skill-item">• 掌握麦克风摆位技巧，进振截断、足迹响处理、多条轨分层录制</div>
+          <div class="skill-item">• 知道怎么摆麦克风、如何避免干扰和底噪</div>
+          <div class="skill-item">• 使用 Logic Pro 进行 DAW 录制工作流</div>
+        </div>
       </div>
       <div class="flow-step">
         <div class="step-tag">02 · mixing</div>
@@ -2979,6 +3130,11 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="step-skills">
+          <div class="skill-item">• 各轨道音量平衡、EQ 频段处理、动态压缩控制</div>
+          <div class="skill-item">• 人声突出、底鼓清晰、各乐器层次分明</div>
+          <div class="skill-item">• 知道什么叫"听感舒服"，并能主动调整到那个状态</div>
         </div>
       </div>
       <div class="flow-step">
@@ -3065,6 +3221,11 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="step-skills">
+          <div class="skill-item">• 整体响度控制（LUFS 标准）、限制器防止削波</div>
+          <div class="skill-item">• 让最终文件在平台上听起来音量合格、不刺耳</div>
+          <div class="skill-item">• 完整跑过从素材录制到可发布成品的全流程</div>
         </div>
       </div>
     </div>
