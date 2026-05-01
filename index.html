@@ -2073,15 +2073,155 @@
       .bar { display: none; }
       .workspace { height: min(440px, 48vh); }
     }
+    /* ── Personal Hero Page ── */
+    .hero-page {
+      position: relative;
+      width: 100vw;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 72% 56% at 60% 50%, rgba(255,255,255,.04), transparent 70%),
+        linear-gradient(180deg, #04040600 0%, #050506 100%),
+        #050506;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 0;
+      align-items: center;
+      width: min(1280px, 90vw);
+      padding: 100px 0 80px;
+    }
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding-right: 60px;
+    }
+    .hero-eyebrow {
+      font-size: 11px; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(255,255,255,.38); margin-bottom: 22px;
+    }
+    .hero-name {
+      font-size: clamp(56px, 6.5vw, 96px);
+      font-weight: 900; letter-spacing: -.06em; line-height: .96;
+      color: #fff; margin: 0 0 28px;
+    }
+    .hero-tagline {
+      font-size: clamp(16px, 1.55vw, 22px);
+      line-height: 1.56; color: rgba(255,255,255,.72);
+      font-weight: 400; max-width: 42ch;
+      margin: 0 0 32px;
+    }
+    .hero-tagline strong { color: #fff; font-weight: 600; }
+    .hero-philosophy {
+      font-size: clamp(13px, 1.1vw, 15px);
+      line-height: 1.8; color: rgba(255,255,255,.44);
+      max-width: 44ch; margin: 0 0 44px;
+      border-left: 1px solid rgba(255,255,255,.12);
+      padding-left: 18px;
+    }
+    .hero-meta {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .hero-meta-row {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px; color: rgba(255,255,255,.52);
+    }
+    .hero-meta-icon {
+      width: 20px; height: 20px; opacity: .38; flex: 0 0 auto;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+    .hero-meta-val { color: rgba(255,255,255,.88); font-size: 13px; }
+    .hero-photo-wrap {
+      position: relative;
+      width: 420px; height: 560px;
+      border-radius: 36px;
+      overflow: hidden;
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 48px 120px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .hero-photo {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      filter: grayscale(8%);
+    }
+    .hero-photo-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(5,5,6,.72) 100%);
+      pointer-events: none;
+    }
+    /* Mobile hero */
+    @media (max-width: 760px) {
+      .hero-page { min-height: auto; }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        padding: 80px 0 48px;
+        gap: 36px;
+        width: 92vw;
+      }
+      .hero-photo-wrap {
+        width: 100%; height: 56vw; min-height: 220px;
+        border-radius: 28px;
+        order: -1;
+      }
+      .hero-photo { object-position: center 20%; }
+      .hero-copy { padding-right: 0; }
+      .hero-name { font-size: clamp(44px, 12vw, 64px); margin-bottom: 18px; }
+      .hero-tagline { font-size: clamp(15px, 4.2vw, 18px); margin-bottom: 22px; }
+      .hero-philosophy { margin-bottom: 28px; }
+    }
 
   </style>
 </head>
 <body>
-    <div class="quick-nav">
+    <div class="quick-nav" id="quickNav">
+    <button onclick="document.getElementById('heroBio').scrollIntoView({behavior:'smooth'})">关于我</button>
     <button onclick="window.scrollTo({ top: document.querySelector('.stage.grid').offsetTop - 84, behavior:'smooth' })">代码演示</button>
+    <button onclick="window.scrollTo({ top: document.getElementById('vocalStage').offsetTop - 84, behavior:'smooth' })">舞台演出</button>
     <button onclick="window.scrollTo({ top: document.getElementById('newMediaStage').offsetTop - 84, behavior:'smooth' })">新媒体运营</button>
-    <button onclick="window.scrollTo({ top: document.getElementById('systemsStage').offsetTop - 84, behavior:'smooth' })">舞台灯光 / 音响</button>
-    <button onclick="window.scrollTo({ top: document.getElementById('musicStage').offsetTop - 84, behavior:'smooth' })">音乐制作 / 混音</button>
+    <button onclick="window.scrollTo({ top: document.getElementById('systemsStage').offsetTop - 84, behavior:'smooth' })">灯光 / 音响</button>
+    <button onclick="window.scrollTo({ top: document.getElementById('productStage').offsetTop - 84, behavior:'smooth' })">产品开发</button>
+    <button onclick="window.scrollTo({ top: document.getElementById('musicStage').offsetTop - 84, behavior:'smooth' })">音乐制作</button>
+  </div>
+
+  <!-- ── Personal Hero Page ── -->
+  <div class="hero-page" id="heroBio">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="hero-eyebrow">portfolio · 2026</div>
+        <h1 class="hero-name">藏天宇</h1>
+        <p class="hero-tagline">
+          音乐表演出身，封项目喜欢落地。舞台、镜头、代码——<strong>每一样，都留了可以看见的东西。</strong>
+        </p>
+        <p class="hero-philosophy">
+          不是空口讲能力。而是把能力变成项目、页面、图表和可复用的流程——让下一个谁看到就能理解。
+        </p>
+        <div class="hero-meta">
+          <div class="hero-meta-row">
+            <span class="hero-meta-icon">📍</span>
+            <span class="hero-meta-val">兰州 &nbsp;·&nbsp; 西北师范大学 · 音乐表演本科</span>
+          </div>
+          <div class="hero-meta-row">
+            <span class="hero-meta-icon">📞</span>
+            <span class="hero-meta-val">17693365826</span>
+          </div>
+          <div class="hero-meta-row">
+            <span class="hero-meta-icon">✉️</span>
+            <span class="hero-meta-val">zty1696761994@163.com</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-photo-wrap">
+        <img class="hero-photo" src="assets/profile.jpg" alt="藏天宇" />
+      </div>
+    </div>
   </div>
 
   <div class="stage grid">
