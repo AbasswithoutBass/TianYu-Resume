@@ -1118,7 +1118,81 @@
       align-content: center;
     }
     .product-stage .systems-intro p { max-width: 60ch; }
-    .product-card {
+    /* ── Two-card layout ── */
+    .product-cards { display: flex; flex-direction: column; gap: 28px; }
+    /* ── VocalSmart staff visual ── */
+    .vs-staff-wrap {
+      width: min(460px, 88%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .vs-staff {
+      position: relative;
+      height: 64px;
+    }
+    .vs-staff-line {
+      position: absolute; left: 0; right: 0;
+      height: 1px;
+      background: rgba(255,255,255,.22);
+    }
+    .vs-staff-line:nth-child(1){ top: 8px; }
+    .vs-staff-line:nth-child(2){ top: 20px; }
+    .vs-staff-line:nth-child(3){ top: 32px; }
+    .vs-staff-line:nth-child(4){ top: 44px; }
+    .vs-staff-line:nth-child(5){ top: 56px; }
+    .vs-note {
+      position: absolute;
+      width: 14px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.8);
+      transform: translateY(-50%);
+    }
+    .vs-note.active {
+      background: #5b9cf6;
+      box-shadow: 0 0 10px rgba(91,156,246,.8);
+      animation: notePulse 1.4s ease-in-out infinite;
+    }
+    @keyframes notePulse {
+      0%,100%{ box-shadow: 0 0 10px rgba(91,156,246,.7); }
+      50%{ box-shadow: 0 0 22px rgba(91,156,246,1); }
+    }
+    .vs-pitch-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .vs-pitch-label { font-size: 11px; color: rgba(255,255,255,.45); width: 28px; flex-shrink: 0; }
+    .vs-pitch-track {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255,255,255,.08);
+      overflow: hidden;
+    }
+    .vs-pitch-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #5b9cf6, #a78bfa);
+      transform-origin: left;
+      animation: pitchFill 2.6s ease-in-out infinite alternate;
+    }
+    .vs-pitch-fill.f2 { animation-delay: -.7s; animation-duration: 3s; }
+    .vs-pitch-fill.f3 { animation-delay: -1.4s; animation-duration: 2.2s; }
+    @keyframes pitchFill {
+      0%{ width: 55%; }
+      60%{ width: 88%; }
+      100%{ width: 72%; }
+    }
+    .vs-tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .vs-tag {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(91,156,246,.12);
+      border: 1px solid rgba(91,156,246,.25);
+      color: #5b9cf6;
+    }
       position: relative;
       min-height: 420px;
       border-radius: 34px;
@@ -2293,10 +2367,10 @@
         <div class="hero-eyebrow">个人作品集 · 2026</div>
         <h1 class="hero-name">藏天宇</h1>
         <p class="hero-tagline">
-          音乐表演专业，做事想要落地。上得了舞台、拍得了视频、打得了编程——<strong>每样都不是说说而已，是有真东西。</strong>
+          音乐表演专业，做事想要落地。上得了舞台、拍得了视频、做得了编程——<strong>每样都不是说说而已，是有真东西。</strong>
         </p>
         <p class="hero-philosophy">
-          这个页面就是我的简历。每一板块都有真实做过的项目展示在里面，不是光说能力。
+          这个页面就是我的简历。每一板块都有真实做过的项目展示在里面。
         </p>
         <div class="hero-meta">
           <div class="hero-meta-row">
@@ -2658,10 +2732,11 @@
 
   <div class="product-stage" id="productStage">
     <div class="systems-intro">
-      <div class="systems-kicker">硬件开发小项目</div>
-      <h2>ESP32 无线 MIDI 中继</h2>
-      <p>用一块开发板就解决了——电子琴的信号通过它发到电脑，不用拖线。</p>
+      <div class="systems-kicker">应用开发小项目</div>
+      <h2>做过两个真正跑起来的东西</h2>
+      <p>一个硬件项目，一个软件应用——都是自己从零做到能用的。</p>
     </div>
+    <div class="product-cards">
     <div class="product-card">
       <div class="product-grid">
         <div class="product-visual">
@@ -2729,7 +2804,59 @@
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- VocalSmart 项目卡片 -->
+    <div class="product-card">
+      <div class="product-grid">
+        <div class="product-visual">
+          <div class="vs-staff-wrap">
+            <div class="vs-staff">
+              <div class="vs-staff-line"></div>
+              <div class="vs-staff-line"></div>
+              <div class="vs-staff-line"></div>
+              <div class="vs-staff-line"></div>
+              <div class="vs-staff-line"></div>
+              <div class="vs-note" style="left:8%;top:32px;"></div>
+              <div class="vs-note active" style="left:24%;top:20px;"></div>
+              <div class="vs-note" style="left:40%;top:44px;"></div>
+              <div class="vs-note" style="left:56%;top:32px;"></div>
+              <div class="vs-note" style="left:72%;top:20px;"></div>
+              <div class="vs-note" style="left:88%;top:44px;"></div>
+            </div>
+            <div class="vs-pitch-bar">
+              <span class="vs-pitch-label">音准</span>
+              <div class="vs-pitch-track"><div class="vs-pitch-fill"></div></div>
+            </div>
+            <div class="vs-pitch-bar">
+              <span class="vs-pitch-label">节奏</span>
+              <div class="vs-pitch-track"><div class="vs-pitch-fill f2"></div></div>
+            </div>
+            <div class="vs-pitch-bar">
+              <span class="vs-pitch-label">音量</span>
+              <div class="vs-pitch-track"><div class="vs-pitch-fill f3"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="product-copy">
+          <div class="product-note">iOS / macOS 应用</div>
+          <h3 class="product-title">VocalSmart 视唱练耳</h3>
+          <p class="product-desc">帮学生检测自己唱得准不准、节奏对不对的软件。实时分析音高，对照五线谱显示偏差，让视唱练习有具体反馈而不是光靠耳朵判断。</p>
+          <div class="product-meta">
+            <div class="product-row"><span>核心功能</span><span>音准 / 节奏实时检测</span></div>
+            <div class="product-row"><span>展示方式</span><span>五线谱 + 偏差标注</span></div>
+            <div class="product-row"><span>适用对象</span><span>音乐专业学生 / 初学者</span></div>
+          </div>
+          <div class="vs-tag-row">
+            <span class="vs-tag">音高识别</span>
+            <span class="vs-tag">节奏检测</span>
+            <span class="vs-tag">五线谱输出</span>
+            <span class="vs-tag">实时反馈</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- /.product-cards -->
 
   <div class="systems-stage" id="musicStage">
     <div class="systems-intro">
