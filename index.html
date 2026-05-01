@@ -937,23 +937,28 @@
     .mix-grid {
       flex: 1;
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 10px;
       padding: 12px;
+      align-content: stretch;
     }
     .channel-strip {
       position: relative;
+      min-width: 0;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.06);
       background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
       overflow: hidden;
-      padding: 12px 8px 10px;
+      padding: 10px 8px 8px;
       display: grid;
-      grid-template-rows: auto auto 1fr auto auto;
+      grid-template-rows: auto auto auto 1fr auto;
       justify-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     .channel-label {
+      width: 100%;
+      text-align: center;
       font-size: 9px;
       letter-spacing: .18em;
       text-transform: uppercase;
@@ -961,11 +966,12 @@
     }
     .mini-meter {
       width: 14px;
-      height: 76px;
+      height: 72px;
       border-radius: 999px;
       background: rgba(255,255,255,.06);
       overflow: hidden;
       position: relative;
+      margin: 0 auto;
     }
     .mini-meter-fill {
       position: absolute;
@@ -976,17 +982,19 @@
     }
     .eq-knobs {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 7px;
       width: 100%;
       justify-items: center;
+      align-items: center;
     }
     .eq-knob {
-      width: 24px; height: 24px;
+      width: 22px; height: 22px;
       border-radius: 50%;
       border: 1px solid rgba(255,255,255,.08);
       background: radial-gradient(circle at 40% 35%, rgba(255,255,255,.18), rgba(255,255,255,.03));
       position: relative;
+      margin: 0 auto;
     }
     .eq-knob::after {
       content: "";
@@ -1001,9 +1009,10 @@
     .fader-slot {
       position: relative;
       width: 16px;
-      height: 118px;
+      height: 106px;
       border-radius: 999px;
       background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.12), rgba(255,255,255,.04));
+      margin: 0 auto;
     }
     .fader-cap {
       position: absolute;
@@ -1056,13 +1065,13 @@
     }
     .plugin-window {
       position: absolute;
-      inset: 12px;
+      inset: 8px;
       border-radius: 20px;
       border: 1px solid rgba(255,255,255,.06);
       background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.016));
       overflow: hidden;
       opacity: 0;
-      transform: translateY(12px) scale(.985);
+      transform: translateY(10px) scale(.99);
       transition: opacity .28s ease, transform .28s ease;
       pointer-events: none;
     }
@@ -1070,23 +1079,45 @@
       opacity: 1;
       transform: translateY(0) scale(1);
     }
+    .plugin-stack {
+      position: relative;
+      flex: 1;
+      padding: 8px;
+    }
+    .plugin-window {
+      position: absolute;
+      inset: 8px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.06);
+      background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.016));
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(10px) scale(.99);
+      transition: opacity .28s ease, transform .28s ease;
+      pointer-events: none;
+    }
     .plugin-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 14px;
+      gap: 10px;
+      padding: 10px 12px;
       border-bottom: 1px solid rgba(255,255,255,.06);
       background: rgba(255,255,255,.03);
+      min-width: 0;
     }
     .plugin-content {
-      height: calc(100% - 46px);
-      padding: 16px;
+      height: calc(100% - 42px);
+      padding: 10px;
+      min-width: 0;
+      min-height: 0;
     }
     .eq-digital {
       display: grid;
-      grid-template-rows: 1fr auto;
-      gap: 14px;
+      grid-template-rows: minmax(0, 1fr) auto;
+      gap: 10px;
       height: 100%;
+      min-height: 0;
     }
     .eq-screen {
       position: relative;
@@ -1097,54 +1128,51 @@
         repeating-linear-gradient(180deg, transparent 0 24px, rgba(255,255,255,.04) 24px 25px);
       border: 1px solid rgba(255,255,255,.06);
       overflow: hidden;
+      min-height: 0;
     }
     .eq-curve {
       position: absolute;
       left: 12px; right: 12px; top: 18px; bottom: 18px;
-    }
-    .eq-band {
-      position: absolute;
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 10px rgba(255,255,255,.35);
-      transform: translate(-50%, -50%);
-    }
-    .eq-line {
-      position: absolute;
-      inset: 0;
+      min-width: 0;
     }
     .eq-readout {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      min-width: 0;
     }
     .readout-box {
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.06);
       background: rgba(255,255,255,.035);
-      padding: 10px;
+      padding: 8px 9px;
       display: grid;
-      gap: 4px;
+      gap: 3px;
+      min-width: 0;
+      overflow: hidden;
     }
     .readout-box span:first-child {
-      font-size: 9px;
-      letter-spacing: .18em;
+      font-size: 8px;
+      letter-spacing: .16em;
       text-transform: uppercase;
       color: rgba(255,255,255,.46);
+      white-space: nowrap;
     }
     .readout-box span:last-child {
-      font-size: 18px;
+      font-size: 15px;
       letter-spacing: -.03em;
+      white-space: nowrap;
     }
     .analog-panel {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
       height: 100%;
-      align-items: center;
+      align-items: stretch;
+      min-height: 0;
     }
     .analog-strip {
+      min-width: 0;
       height: 100%;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.06);
@@ -1152,12 +1180,21 @@
       display: grid;
       justify-items: center;
       align-content: center;
-      gap: 14px;
-      padding: 14px 10px;
+      gap: 8px;
+      padding: 9px 7px;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+      overflow: hidden;
+    }
+    .analog-label {
+      font-size: 8px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      white-space: nowrap;
     }
     .analog-knob {
-      width: 54px; height: 54px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       border: 1px solid rgba(255,255,255,.1);
       background: radial-gradient(circle at 42% 34%, rgba(255,255,255,.2), rgba(255,255,255,.03));
@@ -1168,7 +1205,7 @@
       content: "";
       position: absolute;
       left: 50%; top: 50%;
-      width: 3px; height: 20px;
+      width: 3px; height: 18px;
       border-radius: 999px;
       background: rgba(255,255,255,.88);
       transform-origin: 50% 100%;
@@ -1176,7 +1213,8 @@
     }
     .vintage-meter {
       position: relative;
-      width: 88px; height: 50px;
+      width: 72px;
+      height: 42px;
       border-radius: 999px 999px 12px 12px;
       border: 1px solid rgba(255,255,255,.08);
       background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
@@ -1185,25 +1223,19 @@
     .vintage-meter::before {
       content: "";
       position: absolute;
-      left: 10px; right: 10px; bottom: 10px; top: 12px;
+      left: 8px; right: 8px; bottom: 8px; top: 10px;
       border-top: 1px solid rgba(255,255,255,.22);
       border-radius: 50%;
     }
     .vintage-needle {
       position: absolute;
-      left: 50%; bottom: 12px;
-      width: 2px; height: 22px;
+      left: 50%; bottom: 10px;
+      width: 2px; height: 18px;
       border-radius: 999px;
       background: #fff;
       transform-origin: 50% 100%;
       transform: translateX(-50%) rotate(-42deg);
       box-shadow: 0 0 10px rgba(255,255,255,.3);
-    }
-    .analog-label {
-      font-size: 9px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.5);
     }
     @keyframes captureBars {
       0%, 100% { transform: scaleY(.32); opacity: .45; }
