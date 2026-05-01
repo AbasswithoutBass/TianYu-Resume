@@ -192,35 +192,77 @@
         white-space: normal;
       }
 
+      .vocal-stage,
+      .systems-stage,
+      .new-media-stage,
+      .product-stage {
+        min-height: auto;
+        height: auto;
+        padding-top: 82px;
+        padding-bottom: 42px;
+        align-content: start;
+      }
+      .vocal-stage {
+        height: 78vh;
+        min-height: 78vh;
+      }
+      .vs-text {
+        left: 6%;
+        right: 6%;
+        bottom: 8%;
+      }
+      .vs-title { font-size: clamp(24px, 8vw, 34px); }
       .light-scene,
       .audio-scene,
       .new-media-card,
       .product-card,
       .flow-step {
-        min-height: 340px;
+        min-height: 0;
         border-radius: 24px;
       }
       .scene-title { left: 16px; top: 16px; font-size: 11px; }
 
-      .audio-grid,
-      .product-grid {
+      .systems-grid,
+      .new-media-grid,
+      .product-grid,
+      .audio-grid {
         position: relative;
         inset: auto;
+      }
+      .systems-grid,
+      .new-media-grid,
+      .product-grid {
+        gap: 14px;
+      }
+      .new-media-grid,
+      .systems-grid,
+      .product-grid,
+      .audio-grid,
+      .mix-grid,
+      .music-flow,
+      .analog-panel {
+        grid-template-columns: 1fr !important;
       }
       .audio-grid {
         padding: 60px 14px 14px;
       }
       .console, .speaker-bank { border-radius: 22px; }
-      .mixer-fader {
-        left: 14px; right: 14px; top: 56px; gap: 8px;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+      .console {
+        min-height: 320px;
       }
-      .fader::after { width: 20px; height: 20px; }
-      .wave-panel { left: 14px; right: 14px; top: 58px; height: 90px; }
       .speaker-bank {
         grid-template-columns: 1fr;
         padding: 58px 14px 14px;
         gap: 10px;
+        min-height: 320px;
+      }
+      .mixer-fader {
+        left: 14px; right: 14px; top: 56px; bottom: 14px; gap: 8px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .fader::after { width: 20px; height: 20px; }
+      .wave-panel {
+        left: 14px; right: 14px; top: 58px; height: 90px;
       }
       .speaker.s1 { grid-column: auto; min-height: 120px; }
       .speaker.s2, .speaker.s3 { min-height: 104px; }
@@ -228,6 +270,7 @@
       .product-card { min-height: 0; }
       .product-grid { padding: 14px; gap: 14px; }
       .product-visual, .product-copy { border-radius: 22px; }
+      .product-copy { min-height: 260px; }
       .product-row { flex-direction: column; }
       .midi-chain { width: min(360px, 92%); }
 
@@ -249,8 +292,12 @@
         justify-items: stretch;
       }
       .mix-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-template-columns: 1fr !important;
         grid-template-rows: auto;
+      }
+      .mix-window {
+        position: relative;
+        min-height: 420px;
       }
       .eq-readout {
         grid-template-columns: 1fr;
