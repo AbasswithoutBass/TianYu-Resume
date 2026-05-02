@@ -892,11 +892,12 @@
     }
     .light-scene, .audio-scene {
       position: relative;
-      min-height: 500px;
       border-radius: 34px;
       overflow: hidden;
       background: rgba(255,255,255,.03);
       border: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      flex-direction: column;
     }
     .light-scene {
       background:
@@ -912,9 +913,12 @@
       position: absolute; left: 24px; top: 22px; z-index: 4;
       font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
       color: rgba(255,255,255,.46);
+      pointer-events: none;
     }
     .light-stage {
-      position: absolute; inset: 0;
+      position: relative;
+      min-height: 420px;
+      flex: 1;
       overflow: hidden;
     }
     .truss {
@@ -1009,7 +1013,8 @@
       animation: reflectionPulse 4.4s infinite ease-in-out;
     }
     .audio-grid {
-      position: absolute; inset: 0;
+      position: relative;
+      min-height: 420px;
       display: grid;
       grid-template-columns: 1fr 1.3fr;
       gap: 22px;
@@ -2309,7 +2314,7 @@
     @keyframes liveDot { from { opacity: .4; } to { opacity: 1; } }
     /* scene-skills / step-skills */
     .scene-skills, .step-skills {
-      padding: 10px 4px 0;
+      padding: 16px 20px 20px;
       display: flex; flex-direction: column; gap: 6px;
     }
     .skill-item {
@@ -2477,7 +2482,7 @@
         <div class="hero-eyebrow">个人作品集 · 2026</div>
         <h1 class="hero-name">藏天宇</h1>
         <p class="hero-tagline">
-          音乐表演专业，做事想要落地。上得了舞台、拍得了视频、做得了编程——<strong>每样都不是说说而已，是有真东西。</strong>
+          音乐表演专业，做事喜欢能落地。上得了舞台、拍得了视频、做得了编程——<strong>每样都不是说说而已，是有真东西。</strong>
         </p>
         <p class="hero-philosophy">
           这个页面就是我的简历。每一板块都有真实做过的项目展示在里面。
@@ -2510,7 +2515,7 @@
       <p>擅长 iOS / macOS 原生应用开发，也做 Web 前端。</p>
       <div class="step-skills" style="margin-top:16px">
         <div class="skill-item">• Swift / SwiftUI：独立开发并上架过 iOS + macOS 双平台应用（VocalSmart 视唱练耳）</div>
-        <div class="skill-item">• TypeScript / React：能从零搭建前端项目，这个作品集页面就是纯手写的</div>
+        <div class="skill-item">• TypeScript / React：能从零搭建前端项目，这个作品集页面就是代码敲出来的</div>
         <div class="skill-item">• 有完整的从需求→设计→开发→上架的独立完成经验，不需要手把手</div>
       </div>
     </div>
@@ -2654,7 +2659,7 @@
     <div class="vs-text">
       <div class="vs-label">舞台演出</div>
       <h2 class="vs-title">能上就上，毫不怯场</h2>
-      <p class="vs-desc">学校演出、比赛、展演——站定位、开幕、上台，都跑过。</p>
+      <p class="vs-desc">演出、比赛、展演——站定位、开幕、上台，都跑过。</p>
     </div>
   </div>
 
@@ -2834,8 +2839,8 @@
     </div>
     <div class="systems-grid">
       <div class="light-scene">
-        <div class="scene-title">灯光</div>
         <div class="light-stage">
+          <div class="scene-title">灯光</div>
           <div class="truss"></div>
           <div class="light-unit u1"><div class="moving-head"></div><div class="beam-fan"></div></div>
           <div class="light-unit u2"><div class="moving-head"></div><div class="beam-fan"></div></div>
@@ -2853,8 +2858,8 @@
         </div>
       </div>
       <div class="audio-scene">
-        <div class="scene-title">音响链路</div>
         <div class="audio-grid">
+          <div class="scene-title">音响链路</div>
           <div class="console">
             <div class="wave-panel">
               <svg viewBox="0 0 600 160" preserveAspectRatio="none" aria-hidden="true">
