@@ -2462,17 +2462,874 @@
       .hero-philosophy { margin-bottom: 28px; }
     }
 
+
+    /* ══════════════════════════════════════════════
+       LIGHT MODE  (body.light-mode)
+    ══════════════════════════════════════════════ */
+    body.light-mode {
+      --bg: #f2f2f4;
+      --panel: rgba(255,255,255,0.88);
+      --text: #1d1d1f;
+      --muted: #555;
+      background: #f2f2f4; color: #1d1d1f;
+    }
+    body.light-mode .hero-page {
+      background: radial-gradient(ellipse 72% 56% at 60% 50%, rgba(0,0,0,.04), transparent 70%), #f2f2f4;
+    }
+    body.light-mode .hero-name { color: #1d1d1f; }
+    body.light-mode .hero-eyebrow { color: rgba(0,0,0,.38); }
+    body.light-mode .hero-tagline { color: rgba(0,0,0,.72); }
+    body.light-mode .hero-tagline strong { color: #1d1d1f; }
+    body.light-mode .hero-philosophy { color: rgba(0,0,0,.44); border-color: rgba(0,0,0,.12); }
+    body.light-mode .hero-meta-row { color: rgba(0,0,0,.52); }
+    body.light-mode .hero-meta-val { color: rgba(0,0,0,.88); }
+    body.light-mode .stage.grid {
+      background: radial-gradient(circle at 70% 25%, rgba(0,0,0,.04), transparent 22%),
+        radial-gradient(circle at 20% 18%, rgba(0,0,0,.02), transparent 18%),
+        #f2f2f4;
+    }
+    body.light-mode .systems-stage, body.light-mode .new-media-stage, body.light-mode .product-stage {
+      background: radial-gradient(circle at 50% 18%, rgba(0,0,0,.03), transparent 26%), #f2f2f4;
+      color: #1d1d1f;
+    }
+    body.light-mode .systems-kicker, body.light-mode .step-tag, body.light-mode .scene-title,
+    body.light-mode .metric-kicker, body.light-mode .product-note, body.light-mode .nm-card-tag { color: rgba(0,0,0,.42); }
+    body.light-mode .systems-intro h2, body.light-mode .nm-card-headline,
+    body.light-mode .product-title, body.light-mode .metric-value { color: #1d1d1f; }
+    body.light-mode .systems-intro p, body.light-mode .skill-item, body.light-mode .nm-card-desc,
+    body.light-mode .product-desc, body.light-mode .metric-desc { color: rgba(0,0,0,.58); }
+    body.light-mode .systems-outro { color: rgba(0,0,0,.76); }
+    body.light-mode .eyebrow { color: rgba(0,0,0,.56); }
+    body.light-mode .title h1 { color: #1d1d1f; }
+    body.light-mode .title p { color: rgba(0,0,0,.56); }
+    body.light-mode .footer { color: rgba(0,0,0,.56); }
+    body.light-mode .footer strong { color: rgba(0,0,0,.88); }
+    body.light-mode .bar { background: linear-gradient(90deg, transparent, rgba(0,0,0,.18), transparent); }
+    /* nav */
+    body.light-mode .quick-nav { background: rgba(235,235,238,.88); border-color: rgba(0,0,0,.10); }
+    body.light-mode .quick-nav button { color: rgba(0,0,0,.9); background: rgba(0,0,0,.07); }
+    body.light-mode .quick-nav button:hover { background: rgba(0,0,0,.13); }
+    /* panels */
+    body.light-mode .panel { background: rgba(255,255,255,.85); border-color: rgba(0,0,0,.10); }
+    body.light-mode .panel .head { color: rgba(0,0,0,.78); border-color: rgba(0,0,0,.07); }
+    body.light-mode .dots span { background: rgba(0,0,0,.18); }
+    body.light-mode .shell { background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.08); }
+    body.light-mode .shell-top { color: rgba(0,0,0,.72); border-color: rgba(0,0,0,.08); }
+    body.light-mode .editor { background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.02)); color: rgba(0,0,0,.95); border-color: rgba(0,0,0,.06); }
+    body.light-mode .gutter { color: rgba(0,0,0,.36); border-color: rgba(0,0,0,.06); }
+    body.light-mode .cursor, body.light-mode .term-cursor { background: rgba(0,0,0,.98); }
+    body.light-mode .terminal-body { color: rgba(0,0,0,.96); }
+    body.light-mode .prompt { color: rgba(0,0,0,.68); }
+    body.light-mode .browser-bar { color: rgba(0,0,0,.52); border-color: rgba(0,0,0,.07); }
+    body.light-mode .tab { border-color: rgba(0,0,0,.07); background: rgba(0,0,0,.04); color: rgba(0,0,0,.68); }
+    body.light-mode .address { background: rgba(0,0,0,.035); border-color: rgba(0,0,0,.06); }
+    body.light-mode .page-viewport { background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.02)); border-color: rgba(0,0,0,.07); }
+    body.light-mode .copy, body.light-mode .stats, body.light-mode .card { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.08); }
+    body.light-mode .stat { background: rgba(0,0,0,.05); border-color: rgba(0,0,0,.08); }
+    body.light-mode .stat strong, body.light-mode .headline { color: #1d1d1f; }
+    body.light-mode .kicker, body.light-mode .label { color: rgba(0,0,0,.46); }
+    body.light-mode .value { color: rgba(0,0,0,.9); }
+    body.light-mode .desc { color: rgba(0,0,0,.58); }
+    body.light-mode .btn { border-color: rgba(0,0,0,.12); background: rgba(0,0,0,.06); color: #1d1d1f; }
+    body.light-mode .btn.primary { background: rgba(0,0,0,.92); color: #fff; }
+    body.light-mode .page-chip { background: rgba(0,0,0,.07); border-color: rgba(0,0,0,.08); color: rgba(0,0,0,.56); }
+    body.light-mode .page-tag { color: rgba(0,0,0,.64); }
+    body.light-mode .page-list .page-row { color: rgba(0,0,0,.72); border-color: rgba(0,0,0,.07); }
+    body.light-mode .page-card { background: rgba(0,0,0,.05); border-color: rgba(0,0,0,.06); }
+    body.light-mode .page-card strong { color: #1d1d1f; }
+    body.light-mode .links { color: rgba(0,0,0,.58); }
+    body.light-mode .cta { background: rgba(0,0,0,.92); color: #fff; }
+    body.light-mode .live-room { background: radial-gradient(circle at 50% 28%, rgba(0,0,0,.06), transparent 34%), linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.02)); border-color: rgba(0,0,0,.08); }
+    body.light-mode .live-window { background: linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.02)); border-color: rgba(0,0,0,.10); }
+    body.light-mode .live-stage { background: rgba(0,0,0,.05); border-color: rgba(0,0,0,.06); }
+    /* light/audio scene */
+    body.light-mode .light-scene { background: radial-gradient(circle at 50% 12%, rgba(0,0,0,.04), transparent 20%), linear-gradient(180deg, rgba(0,0,0,.01), rgba(0,0,0,.005)); border-color: rgba(0,0,0,.08); }
+    body.light-mode .audio-scene { background: linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.02)); border-color: rgba(0,0,0,.08); }
+    body.light-mode .truss { border-top-color: rgba(0,0,0,.15); border-bottom-color: rgba(0,0,0,.08); }
+    body.light-mode .moving-head { background: linear-gradient(180deg, rgba(0,0,0,.82), rgba(0,0,0,.22)); box-shadow: 0 0 18px rgba(0,0,0,.12); }
+    body.light-mode .beam-fan { background: linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.10) 18%, rgba(0,0,0,0) 82%); }
+    body.light-mode .floor { background: linear-gradient(90deg, transparent, rgba(0,0,0,.12), transparent); }
+    body.light-mode .console { border-color: rgba(0,0,0,.08); background: rgba(0,0,0,.03); }
+    body.light-mode .wave { stroke: rgba(0,0,0,.78); }
+    body.light-mode .pulse { stroke: rgba(0,0,0,.18); }
+    body.light-mode .fader { background: linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.06)); border-color: rgba(0,0,0,.05); }
+    body.light-mode .fader::after { background: #333; box-shadow: 0 0 26px rgba(0,0,0,.35); }
+    body.light-mode .speaker { background: rgba(0,0,0,.05); border-color: rgba(0,0,0,.07); }
+    body.light-mode .speaker::before, body.light-mode .speaker::after { background: radial-gradient(circle, rgba(0,0,0,.5), rgba(0,0,0,.12) 52%, rgba(0,0,0,.02) 70%, transparent 72%); }
+    body.light-mode .signal-run { background: linear-gradient(90deg, transparent, rgba(0,0,0,.26), transparent); }
+    body.light-mode .signal-run::before { background: linear-gradient(90deg, transparent, rgba(0,0,0,.7), transparent); }
+    body.light-mode .sound-rings span { border-color: rgba(0,0,0,.3); }
+    /* nm cards */
+    body.light-mode .nm-card { background: rgba(255,255,255,.72); border-color: rgba(0,0,0,.08); }
+    body.light-mode .topic-chip { border-color: rgba(0,0,0,.10); background: rgba(0,0,0,.05); color: rgba(0,0,0,.72); }
+    body.light-mode .tc-active { background: rgba(0,0,0,.12); border-color: rgba(0,0,0,.20); color: #1d1d1f; }
+    body.light-mode .tc-done { background: rgba(0,0,0,.04); color: rgba(0,0,0,.5); }
+    body.light-mode .topic-arrow { color: rgba(0,0,0,.28); }
+    body.light-mode .ai-badge { border-color: rgba(0,0,0,.08); background: rgba(0,0,0,.04); color: rgba(0,0,0,.56); }
+    body.light-mode .ai-badge-on { background: rgba(0,0,0,.12); border-color: rgba(0,0,0,.18); color: rgba(0,0,0,.9); }
+    body.light-mode .edit-timeline { background: #e4e4e6; border-color: rgba(0,0,0,.08); }
+    body.light-mode .edit-tool-btn { background: rgba(0,0,0,.07); border-color: rgba(0,0,0,.10); color: rgba(0,0,0,.5); }
+    body.light-mode .edit-tool-btn.active { background: rgba(0,0,0,.18); color: #1d1d1f; }
+    body.light-mode .edit-ruler-tick { border-color: rgba(0,0,0,.15); }
+    body.light-mode .edit-track-label { color: rgba(0,0,0,.3); }
+    body.light-mode .data-bar-track { background: rgba(0,0,0,.06); }
+    body.light-mode .data-bar-fill { background: linear-gradient(90deg, rgba(0,0,0,.18), rgba(0,0,0,.82)); }
+    body.light-mode .data-label { color: rgba(0,0,0,.46); }
+    body.light-mode .data-val { color: rgba(0,0,0,.72); }
+    body.light-mode .live-node-icon { background: rgba(0,0,0,.07); border-color: rgba(0,0,0,.12); }
+    body.light-mode .live-node-label { color: rgba(0,0,0,.42); }
+    body.light-mode .live-arrow { background: rgba(0,0,0,.10); }
+    body.light-mode .live-arrow::after { background: rgba(0,0,0,.9); box-shadow: 0 0 8px rgba(0,0,0,.4); }
+    body.light-mode .live-ind { color: rgba(0,0,0,.64); }
+    body.light-mode .live-ind-dot { background: rgba(0,0,0,.18); }
+    body.light-mode .live-ind-on, body.light-mode .live-ind-pulse { background: #333; box-shadow: 0 0 10px rgba(0,0,0,.4); }
+    /* new-media metric cards */
+    body.light-mode .media-metric { background: rgba(255,255,255,.7); border-color: rgba(0,0,0,.08); }
+    body.light-mode .orbit-ring { border-color: rgba(0,0,0,.08); }
+    body.light-mode .orbit-dot { background: rgba(0,0,0,.82); box-shadow: 0 0 18px rgba(0,0,0,.3); }
+    body.light-mode .feed-thumb { background: linear-gradient(145deg, rgba(0,0,0,.12), rgba(0,0,0,.04)); border-color: rgba(0,0,0,.08); }
+    body.light-mode .feed-item { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.06); }
+    body.light-mode .feed-line { background: rgba(0,0,0,.14); }
+    /* product */
+    body.light-mode .product-card { background: rgba(255,255,255,.6); border-color: rgba(0,0,0,.08); }
+    body.light-mode .product-visual { background: radial-gradient(circle at 50% 40%, rgba(0,0,0,.06), transparent 34%), linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.01)); border-color: rgba(0,0,0,.06); }
+    body.light-mode .product-copy { background: rgba(255,255,255,.8); border-color: rgba(0,0,0,.06); }
+    body.light-mode .product-row { color: rgba(0,0,0,.72); border-color: rgba(0,0,0,.08); }
+    body.light-mode .product-row span:last-child { color: rgba(0,0,0,.95); }
+    body.light-mode .mc-icon { border-color: rgba(0,0,0,.12); background: linear-gradient(160deg, rgba(0,0,0,.08), rgba(0,0,0,.03)); }
+    body.light-mode .mc-label { color: rgba(0,0,0,.42); }
+    body.light-mode .mc-wire { background: linear-gradient(90deg, rgba(0,0,0,.06), rgba(0,0,0,.18), rgba(0,0,0,.06)); }
+    body.light-mode .mc-jack { background: rgba(0,0,0,.78); box-shadow: 0 0 8px rgba(0,0,0,.3); }
+    body.light-mode .mc-pulse { background: #333; box-shadow: 0 0 12px 4px rgba(0,0,0,.4); }
+    body.light-mode .mc-chip { background: rgba(0,0,0,.12); border-color: rgba(0,0,0,.16); }
+    body.light-mode .mc-chip::before { color: rgba(0,0,0,.72); }
+    body.light-mode .mc-chip-pin { background: rgba(0,0,0,.38); }
+    body.light-mode .mc-led { background: rgba(0,0,0,.9); box-shadow: 0 0 8px rgba(0,0,0,.5); }
+    body.light-mode .mc-screen { background: rgba(0,0,0,.06); border-color: rgba(0,0,0,.14); }
+    body.light-mode .mc-screen-bar { background: rgba(0,0,0,.3); }
+    body.light-mode .mc-laptop-base { background: rgba(0,0,0,.10); border-color: rgba(0,0,0,.08); }
+    body.light-mode .mc-key { background: rgba(20,20,22,.82); border-color: rgba(0,0,0,.18); }
+    body.light-mode .mc-key.black { background: #0a0a0e; }
+    body.light-mode .mc-key.active { background: #0a0a0e; box-shadow: 0 0 10px rgba(0,0,0,.5); }
+    body.light-mode .vs-staff-line { background: rgba(0,0,0,.22); }
+    body.light-mode .vs-note { background: rgba(0,0,0,.8); }
+    body.light-mode .vs-pitch-track { background: rgba(0,0,0,.08); }
+    body.light-mode .vs-pitch-label { color: rgba(0,0,0,.45); }
+    /* music flow */
+    body.light-mode .flow-step { background: rgba(255,255,255,.6); border-color: rgba(0,0,0,.08); }
+    body.light-mode .step-body { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.04); }
+    body.light-mode .daw-window { background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.02)); }
+    body.light-mode .window-topbar { background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.06); }
+    body.light-mode .window-dots span { background: rgba(0,0,0,.18); }
+    body.light-mode .window-label, body.light-mode .transport-time { color: rgba(0,0,0,.5); }
+    body.light-mode .rec-pill { background: rgba(0,0,0,.08); color: rgba(0,0,0,.9); }
+    body.light-mode .rec-led { background: #333; box-shadow: 0 0 12px rgba(0,0,0,.4); }
+    body.light-mode .progress-lane { background: rgba(0,0,0,.08); }
+    body.light-mode .progress-fill { background: linear-gradient(90deg, rgba(0,0,0,.18), rgba(0,0,0,.72)); }
+    body.light-mode .playhead { background: #333; box-shadow: 0 0 16px rgba(0,0,0,.4); }
+    body.light-mode .tape-row { background: linear-gradient(180deg, rgba(0,0,0,.03), rgba(0,0,0,.01)); border-color: rgba(0,0,0,.06); }
+    body.light-mode .reel { background: radial-gradient(circle, rgba(0,0,0,.14), rgba(0,0,0,.02) 56%, transparent 57%); border-color: rgba(0,0,0,.10); }
+    body.light-mode .reel::before, body.light-mode .reel::after { background: rgba(0,0,0,.9); }
+    body.light-mode .reel-spokes { border-color: rgba(0,0,0,.22); }
+    body.light-mode .tape-track { background: linear-gradient(90deg, rgba(0,0,0,.18), rgba(0,0,0,.06)); }
+    body.light-mode .tape-flow { background: repeating-linear-gradient(90deg, rgba(0,0,0,.2) 0 8px, rgba(0,0,0,.04) 8px 16px); }
+    body.light-mode .track-row { background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.05); }
+    body.light-mode .track-name { color: rgba(0,0,0,.46); }
+    body.light-mode .clip-lane { background: rgba(0,0,0,.03); }
+    body.light-mode .clip-block { background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.03)); border-color: rgba(0,0,0,.06); }
+    body.light-mode .record-cursor { background: rgba(0,0,0,.85); box-shadow: 0 0 14px rgba(0,0,0,.3); }
+    body.light-mode .channel-strip { background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.01)); border-color: rgba(0,0,0,.06); }
+    body.light-mode .channel-label { color: rgba(0,0,0,.5); }
+    body.light-mode .mini-meter { background: rgba(0,0,0,.06); }
+    body.light-mode .mini-meter-fill { background: linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.18)); }
+    body.light-mode .eq-knob { border-color: rgba(0,0,0,.08); background: radial-gradient(circle at 40% 35%, rgba(0,0,0,.18), rgba(0,0,0,.03)); }
+    body.light-mode .eq-knob::after { background: rgba(0,0,0,.88); }
+    body.light-mode .fader-slot { background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.12), rgba(0,0,0,.04)); }
+    body.light-mode .fader-cap { background: linear-gradient(180deg, rgba(0,0,0,.88), rgba(0,0,0,.22)); }
+    body.light-mode .channel-footer { background: rgba(0,0,0,.08); }
+    body.light-mode .plugin-window { background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.01)); border-color: rgba(0,0,0,.06); }
+    body.light-mode .plugin-header { background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.06); }
+    body.light-mode .plugin-title { color: rgba(0,0,0,.5); }
+    body.light-mode .plugin-tab { border-color: rgba(0,0,0,.08); background: rgba(0,0,0,.04); color: rgba(0,0,0,.5); }
+    body.light-mode .plugin-tab.active { color: #1d1d1f; background: rgba(0,0,0,.12); }
+    body.light-mode .eq-screen { background: linear-gradient(180deg, rgba(0,0,0,.03), rgba(0,0,0,.01)), repeating-linear-gradient(90deg, transparent 0 32px, rgba(0,0,0,.04) 32px 33px), repeating-linear-gradient(180deg, transparent 0 24px, rgba(0,0,0,.04) 24px 25px); border-color: rgba(0,0,0,.06); }
+    body.light-mode #eqCurvePath { stroke: rgba(0,0,0,.9); }
+    body.light-mode .eq-band { background: rgba(0,0,0,.85); box-shadow: 0 0 14px rgba(0,0,0,.14); }
+    body.light-mode .readout-box { background: rgba(0,0,0,.035); border-color: rgba(0,0,0,.06); }
+    body.light-mode .readout-box span:first-child { color: rgba(0,0,0,.46); }
+    body.light-mode .analog-strip { background: linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.025)); border-color: rgba(0,0,0,.06); }
+    body.light-mode .analog-label { color: rgba(0,0,0,.5); }
+    body.light-mode .analog-knob { border-color: rgba(0,0,0,.1); background: radial-gradient(circle at 42% 34%, rgba(0,0,0,.2), rgba(0,0,0,.03)); }
+    body.light-mode .analog-knob::after { background: rgba(0,0,0,.88); }
+    body.light-mode .vintage-meter { background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.02)); border-color: rgba(0,0,0,.08); }
+    body.light-mode .vintage-meter::before { border-color: rgba(0,0,0,.22); }
+    body.light-mode .vintage-needle { background: #333; box-shadow: 0 0 10px rgba(0,0,0,.25); }
+    body.light-mode .grid::before { background-image: linear-gradient(rgba(0,0,0,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.025) 1px, transparent 1px); }
+    /* scroll beam glow in light */
+    body.light-mode .haze { background: radial-gradient(circle at 50% 72%, rgba(0,0,0,.05), transparent 24%), radial-gradient(circle at 45% 78%, rgba(0,0,0,.04), transparent 18%), radial-gradient(circle at 58% 80%, rgba(0,0,0,.04), transparent 16%); }
+    body.light-mode .floor-reflection { background: radial-gradient(circle, rgba(0,0,0,.08), transparent 68%); }
+    /* vs photo: 照片背景是深色，文字保持白色 */
+    body.light-mode .vs-label { color: rgba(255,255,255,.6); }
+    body.light-mode .vs-title { color: #fff; }
+    body.light-mode .vs-desc  { color: rgba(255,255,255,.82); }
+
+    /* ══════════════════════════════════════════════
+       LIGHT MODE — 色彩系统 (Apple accent palette)
+       主色 blue #0071e3 / 绿 #30d158 / 紫 #5e5ce6
+    ══════════════════════════════════════════════ */
+
+    /* — 进度 / 播放头 — */
+    body.light-mode .progress-fill {
+      background: linear-gradient(90deg, #5ac8fa, #0071e3);
+    }
+    body.light-mode .playhead {
+      background: #0071e3;
+      box-shadow: 0 0 14px rgba(0,113,227,.5);
+    }
+    body.light-mode .record-cursor {
+      background: #ff3b30;
+      box-shadow: 0 0 12px rgba(255,59,48,.45);
+    }
+    body.light-mode .rec-led {
+      background: #ff3b30;
+      box-shadow: 0 0 12px rgba(255,59,48,.55);
+    }
+
+    /* — 音频电平仪表 — */
+    body.light-mode .mini-meter-fill {
+      background: linear-gradient(180deg, #30d158, #34c759 60%, #ffd60a);
+    }
+
+    /* — EQ 曲线 & 控制点 — */
+    body.light-mode #eqCurvePath { stroke: #5e5ce6; }
+    body.light-mode .eq-band {
+      background: #5e5ce6;
+      box-shadow: 0 0 10px rgba(94,92,230,.5);
+    }
+
+    /* — 数据条 — */
+    body.light-mode .data-bar-fill {
+      background: linear-gradient(90deg, #5ac8fa, #0071e3);
+    }
+
+    /* — 音高/节奏条 (VocalSmart) — already blue-purple, keep — */
+
+    /* — Orbit 轨道点 — */
+    body.light-mode .orbit-dot {
+      background: #0071e3;
+      box-shadow: 0 0 16px rgba(0,113,227,.55);
+    }
+
+    /* — MIDI 脉冲 — */
+    body.light-mode .mc-pulse {
+      background: #0071e3;
+      box-shadow: 0 0 12px 4px rgba(0,113,227,.45);
+    }
+    body.light-mode .mc-jack { background: #1d1d1f; }
+    body.light-mode .mc-led {
+      background: #30d158;
+      box-shadow: 0 0 8px rgba(48,209,88,.6);
+    }
+
+    /* — 音响音波 — */
+    body.light-mode .wave { stroke: #0071e3; }
+    body.light-mode .pulse { stroke: rgba(0,113,227,.22); }
+    body.light-mode .signal-run::before {
+      background: linear-gradient(90deg, transparent, #0071e3, transparent);
+    }
+    body.light-mode .sound-rings span {
+      border-color: rgba(0,113,227,.3);
+    }
+
+    /* — 信号流动箭头 — */
+    body.light-mode .live-arrow::after {
+      background: #0071e3;
+      box-shadow: 0 0 8px rgba(0,113,227,.5);
+    }
+
+    /* — 录制游标 — */
+    body.light-mode .edit-head {
+      background: #0071e3;
+      box-shadow: 0 0 8px rgba(0,113,227,.45);
+    }
+    body.light-mode .edit-head::before {
+      border-top-color: #0071e3;
+    }
+
+    /* — 推子帽 & 旋钮指针 — */
+    body.light-mode .fader-cap {
+      background: linear-gradient(180deg, #1d1d1f, #444);
+    }
+    body.light-mode .analog-knob::after { background: #0071e3; }
+    body.light-mode .eq-knob::after     { background: #5e5ce6; }
+    body.light-mode .vintage-needle     { background: #ff3b30; box-shadow: 0 0 8px rgba(255,59,48,.3); }
+
+    /* — 卡片高亮边框 (极细蓝线) — */
+    body.light-mode .nm-card.nm-card-data { border-color: rgba(0,113,227,.18); }
+    body.light-mode .tc-active {
+      background: rgba(0,113,227,.10);
+      border-color: rgba(0,113,227,.28);
+      color: #0071e3;
+    }
+    body.light-mode .ai-badge-on {
+      background: rgba(94,92,230,.10);
+      border-color: rgba(94,92,230,.28);
+      color: #5e5ce6;
+    }
+    body.light-mode .vs-tag {
+      background: rgba(0,113,227,.08);
+      border-color: rgba(0,113,227,.22);
+      color: #0071e3;
+    }
+
+    /* — live 指示灯 — */
+    body.light-mode .live-ind-on, body.light-mode .live-ind-pulse {
+      background: #30d158;
+      box-shadow: 0 0 10px rgba(48,209,88,.45);
+    }
+
+    /* — 灯光射束在亮色下用蓝紫光 — */
+    body.light-mode .beam-fan {
+      background: linear-gradient(180deg, rgba(94,92,230,.28), rgba(94,92,230,.10) 18%, rgba(94,92,230,0) 82%);
+    }
+    body.light-mode .floor-reflection {
+      background: radial-gradient(circle, rgba(94,92,230,.12), transparent 68%);
+    }
+
+    /* — 主题切换按钮在亮色下加蓝边 — */
+    body.light-mode .theme-toggle { border: 1px solid rgba(0,113,227,.18); }
+    body.light-mode .print-btn    { border: 1px solid rgba(0,0,0,.10); }
+
+    /* ══════════════════════════════════════════════
+       PRINT STYLES
+    ══════════════════════════════════════════════ */
+    /* Toggle + print buttons hidden in print */
+    @media print {
+      .quick-nav, .theme-toggle, .print-btn { display: none !important; }
+
+      /* Force light background */
+      html, body {
+        background: #fff !important;
+        color: #1d1d1f !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* Print header shown */
+      .print-header { display: block !important; }
+
+      /* Page breaks */
+      .hero-page { page-break-after: always; }
+      .vocal-stage { page-break-inside: avoid; }
+      .systems-stage, .new-media-stage, .product-stage { page-break-inside: avoid; }
+
+      /* ── Freeze all animations ── */
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      /* ── Force visibility of all initially-hidden elements ── */
+      .vs-photo { opacity: 1 !important; }
+      .vs-text { opacity: 1 !important; transform: none !important; }
+      .out { opacity: 1 !important; transform: none !important; }
+      .pill { opacity: 1 !important; transform: none !important; }
+      .page-screen { opacity: 1 !important; transform: none !important; }
+      .page-screen.prev, .page-screen.next { display: none !important; }
+      .page-screen.active { display: block !important; }
+
+      /* ── Show all plugin windows ── */
+      .plugin-window { opacity: 1 !important; transform: none !important; pointer-events: auto !important; position: relative !important; inset: auto !important; margin-bottom: 8px !important; }
+      .plugin-stack { position: relative !important; height: auto !important; }
+
+      /* ── Freeze beam lights at 0deg ── */
+      .moving-head { transform: rotate(-10deg) !important; opacity: 1 !important; }
+      .beam-fan { opacity: 0.6 !important; transform: rotate(-10deg) !important; }
+
+      /* ── Record progress at 80% ── */
+      .progress-fill { width: 80% !important; }
+      .playhead { left: 80% !important; }
+      .record-cursor { left: 80% !important; }
+      .tape-flow { transform: translateX(-38px) !important; }
+
+      /* ── Mix faders at fixed positions ── */
+      .fader-cap { top: 60% !important; }
+      .mini-meter-fill { height: 55% !important; }
+      .vintage-needle { transform: translateX(-50%) rotate(18deg) !important; }
+
+      /* ── Data bars at full width ── */
+      .data-bar-fill { width: var(--w) !important; animation: none !important; }
+
+      /* ── Orbital rings static ── */
+      .orbit-dot { animation: none !important; transform: translate(135px, 0) !important; }
+
+      /* ── Feed items visible ── */
+      .feed-item { opacity: 1 !important; transform: none !important; }
+
+      /* ── Edit head static ── */
+      .edit-head { left: 50% !important; }
+      .edit-cut-mark { opacity: 1 !important; }
+
+      /* ── Light mode colors for print ── */
+      body, body.light-mode { --bg: #fff; --panel: #f5f5f7; --text: #1d1d1f; --muted: #555; }
+      .hero-page, .stage.grid, .systems-stage, .new-media-stage, .product-stage,
+      .work-stage, .project-stage, .ai-tools-stage, .vocal-stage { background: #fff !important; color: #1d1d1f !important; }
+      .hero-name { color: #1d1d1f !important; }
+      .hero-tagline, .hero-philosophy { color: #333 !important; }
+      .hero-meta-val { color: #1d1d1f !important; }
+      .systems-intro h2, .nm-card-headline, .product-title { color: #1d1d1f !important; }
+      .systems-intro p, .skill-item, .nm-card-desc, .product-desc, .metric-desc, .systems-outro { color: #444 !important; }
+      .systems-kicker, .step-tag, .product-note, .nm-card-tag, .metric-kicker { color: #888 !important; }
+      .panel, .nm-card, .product-card, .flow-step, .media-metric { background: #f5f5f7 !important; border-color: #d8d8de !important; }
+      .light-scene, .audio-scene { background: #f0f0f2 !important; border-color: #d8d8de !important; }
+      .step-body { background: #ebebed !important; border-color: #d0d0d6 !important; }
+      .daw-window { background: #f0f0f2 !important; }
+      .window-topbar { background: #e8e8ea !important; border-color: #d0d0d6 !important; }
+      .window-dots span { background: #aaa !important; }
+      .track-row { background: #e8e8ea !important; border-color: #d0d0d6 !important; }
+      .track-name, .window-label, .transport-time, .channel-label { color: #666 !important; }
+      .clip-block { background: #d8d8de !important; border-color: #c8c8ce !important; }
+      .fader { background: #e0e0e2 !important; }
+      .fader::after { background: #444 !important; }
+      .fader-slot { background: #d8d8de !important; }
+      .fader-cap { background: #444 !important; }
+      .channel-strip { background: #ebebed !important; border-color: #d0d0d6 !important; }
+      .mini-meter { background: #d8d8de !important; }
+      .mini-meter-fill { background: #555 !important; }
+      .eq-knob { background: #ddd !important; border-color: #bbb !important; }
+      .eq-knob::after { background: #333 !important; }
+      .plugin-header { background: #e8e8ea !important; border-color: #d0d0d6 !important; }
+      .plugin-tab { background: #e0e0e2 !important; border-color: #ccc !important; color: #666 !important; }
+      .plugin-tab.active { background: #c8c8ce !important; color: #1d1d1f !important; }
+      .eq-screen { background: #ebebed !important; border-color: #ccc !important; }
+      #eqCurvePath { stroke: #333 !important; }
+      .eq-band { background: #333 !important; }
+      .readout-box { background: #e8e8ea !important; border-color: #ccc !important; }
+      .readout-box span:first-child { color: #888 !important; }
+      .analog-strip { background: #e8e8ea !important; border-color: #ccc !important; }
+      .analog-knob { background: #ddd !important; border-color: #bbb !important; }
+      .analog-knob::after { background: #333 !important; }
+      .vintage-meter { background: #e0e0e2 !important; border-color: #ccc !important; }
+      .vintage-needle { background: #333 !important; }
+      .product-visual { background: #ebebed !important; border-color: #d0d0d6 !important; }
+      .product-copy { background: #f5f5f7 !important; border-color: #d8d8de !important; }
+      .product-row { border-color: #d0d0d6 !important; color: #444 !important; }
+      .product-row span:last-child { color: #1d1d1f !important; }
+      .mc-icon { background: #e0e0e2 !important; border-color: #ccc !important; }
+      .mc-wire { background: #bbb !important; }
+      .mc-jack { background: #555 !important; }
+      .mc-pulse { background: #444 !important; }
+      .mc-key { background: #333 !important; }
+      .mc-key.black { background: #111 !important; }
+      .vs-staff-line { background: rgba(0,0,0,.2) !important; }
+      .vs-note { background: rgba(0,0,0,.75) !important; }
+      .vs-pitch-track { background: rgba(0,0,0,.08) !important; }
+      .wave { stroke: rgba(0,0,0,.7) !important; }
+      .pulse { stroke: rgba(0,0,0,.15) !important; }
+      .signal-run { background: rgba(0,0,0,.2) !important; }
+      .sound-rings span { border-color: rgba(0,0,0,.25) !important; }
+      .console { background: #ebebed !important; border-color: #ccc !important; }
+      .speaker { background: #e0e0e2 !important; border-color: #ccc !important; }
+      .data-bar-track { background: #d8d8de !important; }
+      .data-bar-fill { background: #555 !important; }
+      .nm-card { background: #f5f5f7 !important; border-color: #d8d8de !important; }
+      .topic-chip { background: #e8e8ea !important; border-color: #ccc !important; color: #444 !important; }
+      .tc-active { background: #d8d8de !important; color: #1d1d1f !important; }
+      .ai-badge { background: #e8e8ea !important; border-color: #ccc !important; color: #555 !important; }
+      .ai-badge-on { background: #d0d0d6 !important; color: #1d1d1f !important; }
+      .edit-timeline { background: #e0e0e2 !important; border-color: #ccc !important; }
+      .edit-tool-btn { background: #d8d8de !important; border-color: #ccc !important; color: #666 !important; }
+      .edit-tool-btn.active { background: #bbb !important; color: #1d1d1f !important; }
+      .media-metric { background: #f5f5f7 !important; border-color: #d8d8de !important; }
+      .live-node-icon { background: #e8e8ea !important; border-color: #ccc !important; }
+      .live-arrow { background: #ccc !important; }
+      .rec-pill { background: #e0e0e2 !important; color: #333 !important; }
+      .rec-led { background: #333 !important; }
+      .progress-lane { background: #d8d8de !important; }
+      .tape-row { background: #ebebed !important; border-color: #d0d0d6 !important; }
+      .reel { border-color: #aaa !important; background: #ddd !important; }
+      .tape-track { background: #d0d0d6 !important; }
+      .quick-nav { display: none !important; }
+      .footer { color: #888 !important; }
+      .footer strong { color: #333 !important; }
+      .bar { background: linear-gradient(90deg, transparent, rgba(0,0,0,.18), transparent) !important; }
+    }
+
+    /* ── Print Header (shown only in print) ── */
+    .print-header {
+      display: none;
+      padding: 32px 48px 24px;
+      border-bottom: 2px solid #1d1d1f;
+      margin-bottom: 24px;
+    }
+    .ph-name {
+      font-size: 36px; font-weight: 900; letter-spacing: -.04em;
+      color: #1d1d1f; margin: 0 0 6px;
+    }
+    .ph-target {
+      font-size: 14px; color: #555; letter-spacing: .06em;
+      margin: 0 0 16px;
+    }
+    .ph-contacts {
+      display: flex; gap: 24px; flex-wrap: wrap;
+      font-size: 12px; color: #333;
+    }
+    .ph-contacts span { display: flex; align-items: center; gap: 6px; }
+
+    /* ── Toggle & Print buttons ── */
+    .theme-toggle, .print-btn {
+      appearance: none; border: 0; cursor: pointer;
+      padding: 10px 14px; border-radius: 999px;
+      font-size: 13px; line-height: 1;
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.9);
+    }
+    body.light-mode .theme-toggle, body.light-mode .print-btn {
+      background: rgba(0,0,0,.07);
+      color: rgba(0,0,0,.9);
+    }
+    .theme-toggle:hover, .print-btn:hover {
+      background: rgba(255,255,255,.14);
+    }
+    body.light-mode .theme-toggle:hover, body.light-mode .print-btn:hover {
+      background: rgba(0,0,0,.13);
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       工作经历 · Timeline Section
+    ═══════════════════════════════════════════════ */
+    .work-stage {
+      padding: 100px 0 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background:
+        radial-gradient(circle at 80% 50%, rgba(94,92,230,0.07), transparent 40%),
+        var(--bg);
+    }
+    .work-stage .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .work-stage .section-kicker {
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+      margin-bottom: 12px;
+    }
+    .work-stage .section-title {
+      font-size: clamp(28px, 3.2vw, 48px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin: 0;
+    }
+    .timeline {
+      position: relative;
+      width: min(860px, 90vw);
+    }
+    .timeline-line {
+      position: absolute;
+      left: 148px;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,.15) 10%, rgba(255,255,255,.15) 90%, transparent);
+      transform-origin: top;
+      transform: scaleY(0);
+      transition: transform 1.2s cubic-bezier(.16,1,.3,1);
+    }
+    .work-stage.show .timeline-line { transform: scaleY(1); }
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      gap: 0 32px;
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s cubic-bezier(.16,1,.3,1);
+    }
+    /* nth-child(2..5) because .timeline-line is the first child of .timeline */
+    .work-stage.show .timeline-item:nth-child(2) { transition-delay: .2s;  opacity:1; transform:none; }
+    .work-stage.show .timeline-item:nth-child(3) { transition-delay: .38s; opacity:1; transform:none; }
+    .work-stage.show .timeline-item:nth-child(4) { transition-delay: .54s; opacity:1; transform:none; }
+    .work-stage.show .timeline-item:nth-child(5) { transition-delay: .70s; opacity:1; transform:none; }
+    .timeline-date {
+      text-align: right;
+      padding-top: 18px;
+      font-size: 11px;
+      letter-spacing: .06em;
+      color: rgba(255,255,255,.35);
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+    .timeline-card {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px 24px;
+      margin-left: 0;
+    }
+    .timeline-card::before {
+      content: '';
+      position: absolute;
+      left: -40px; top: 24px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: #5e5ce6;
+      box-shadow: 0 0 0 3px rgba(94,92,230,.25);
+    }
+    .timeline-role {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 4px;
+      color: var(--text);
+    }
+    .timeline-company {
+      font-size: 13px;
+      color: #5e5ce6;
+      margin: 0 0 10px;
+      font-weight: 500;
+    }
+    .timeline-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+    /* light mode */
+    body.light-mode .work-stage { background: radial-gradient(circle at 80% 50%, rgba(94,92,230,.06), transparent 40%), #f5f5f7; }
+    body.light-mode .timeline-card { background: rgba(255,255,255,.9); border-color: rgba(0,0,0,.08); }
+    body.light-mode .timeline-desc { color: #555; }
+
+    /* ═══════════════════════════════════════════════
+       核心项目 · Project Cards
+    ═══════════════════════════════════════════════ */
+    .project-stage {
+      padding: 100px 0 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background:
+        radial-gradient(circle at 20% 60%, rgba(48,209,88,.06), transparent 38%),
+        var(--bg);
+    }
+    .project-stage .section-header { text-align: center; margin-bottom: 56px; }
+    .project-stage .section-kicker {
+      font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(255,255,255,.4); margin-bottom: 12px;
+    }
+    .project-stage .section-title {
+      font-size: clamp(28px, 3.2vw, 48px); font-weight: 800;
+      letter-spacing: -0.04em; margin: 0;
+    }
+    .project-grid {
+      width: min(1060px, 92vw);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 720px) { .project-grid { grid-template-columns: 1fr; } }
+    .proj-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 28px 28px 24px;
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .65s ease, transform .65s cubic-bezier(.16,1,.3,1), border-color .3s;
+      overflow: hidden;
+      position: relative;
+    }
+    .proj-card:hover { border-color: rgba(255,255,255,.26); transform: translateY(-3px) !important; }
+    .project-stage.show .proj-card:nth-child(1) { transition-delay: .1s; opacity:1; transform:none; }
+    .project-stage.show .proj-card:nth-child(2) { transition-delay: .22s; opacity:1; transform:none; }
+    .proj-card-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      border-radius: 24px 24px 0 0;
+    }
+    .proj-card-accent.green { background: linear-gradient(90deg, #30d158, #34c759); }
+    .proj-card-accent.blue  { background: linear-gradient(90deg, #0071e3, #30a8ff); }
+    .proj-tag {
+      display: inline-block;
+      font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 14px; font-weight: 600;
+    }
+    .proj-tag.green { background: rgba(48,209,88,.15); color: #30d158; }
+    .proj-tag.blue  { background: rgba(0,113,227,.15); color: #30a8ff; }
+    .proj-name {
+      font-size: 22px; font-weight: 800; letter-spacing: -.03em;
+      margin: 0 0 6px; color: var(--text);
+    }
+    .proj-year {
+      font-size: 12px; color: rgba(255,255,255,.3); margin-bottom: 14px;
+    }
+    .proj-desc {
+      font-size: 14px; color: var(--muted); line-height: 1.75; margin: 0 0 18px;
+    }
+    /* VocalSmart waveform background */
+    .proj-waveform {
+      height: 40px;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      margin-bottom: 16px;
+      opacity: .55;
+    }
+    .proj-waveform .wf-bar {
+      flex: 1;
+      border-radius: 2px 2px 0 0;
+      background: linear-gradient(to top, #0071e3, #30a8ff);
+      animation: wfBounce 1.1s ease-in-out infinite alternate;
+    }
+    @keyframes wfBounce {
+      from { height: 20%; }
+      to   { height: 100%; }
+    }
+    .proj-waveform .wf-bar:nth-child(1)  { animation-delay: 0s; }
+    .proj-waveform .wf-bar:nth-child(2)  { animation-delay: .08s; }
+    .proj-waveform .wf-bar:nth-child(3)  { animation-delay: .16s; }
+    .proj-waveform .wf-bar:nth-child(4)  { animation-delay: .24s; }
+    .proj-waveform .wf-bar:nth-child(5)  { animation-delay: .10s; }
+    .proj-waveform .wf-bar:nth-child(6)  { animation-delay: .32s; }
+    .proj-waveform .wf-bar:nth-child(7)  { animation-delay: .05s; }
+    .proj-waveform .wf-bar:nth-child(8)  { animation-delay: .28s; }
+    .proj-waveform .wf-bar:nth-child(9)  { animation-delay: .14s; }
+    .proj-waveform .wf-bar:nth-child(10) { animation-delay: .20s; }
+    .proj-waveform .wf-bar:nth-child(11) { animation-delay: .38s; }
+    .proj-waveform .wf-bar:nth-child(12) { animation-delay: .03s; }
+    .proj-chips {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .proj-chip {
+      font-size: 11px; padding: 4px 10px; border-radius: 20px;
+      background: rgba(255,255,255,.07); color: rgba(255,255,255,.6);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    body.light-mode .project-stage { background: radial-gradient(circle at 20% 60%, rgba(48,209,88,.05), transparent 38%), #f5f5f7; }
+    body.light-mode .proj-card { background: rgba(255,255,255,.9); border-color: rgba(0,0,0,.08); }
+    body.light-mode .proj-card:hover { border-color: rgba(0,0,0,.18); }
+    body.light-mode .proj-year { color: rgba(0,0,0,.3); }
+    body.light-mode .proj-desc { color: #555; }
+    body.light-mode .proj-chip { background: rgba(0,0,0,.06); color: rgba(0,0,0,.55); border-color: rgba(0,0,0,.08); }
+
+    /* ═══════════════════════════════════════════════
+       AI 工具与工作流
+    ═══════════════════════════════════════════════ */
+    .ai-tools-stage {
+      padding: 100px 0 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(255,159,10,.06), transparent 40%),
+        var(--bg);
+    }
+    .ai-tools-stage .section-header { text-align: center; margin-bottom: 56px; position: relative; z-index: 2; }
+    .ai-tools-stage .section-kicker {
+      font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(255,255,255,.4); margin-bottom: 12px;
+    }
+    .ai-tools-stage .section-title {
+      font-size: clamp(28px, 3.2vw, 48px); font-weight: 800;
+      letter-spacing: -0.04em; margin: 0 0 14px;
+    }
+    .ai-tools-stage .section-sub {
+      font-size: 15px; color: var(--muted); max-width: 560px;
+      line-height: 1.7; margin: 0 auto;
+    }
+    #aiNodesCanvas {
+      position: absolute;
+      inset: 0; width: 100%; height: 100%;
+      pointer-events: none; opacity: .5;
+    }
+    .ai-tools-grid {
+      position: relative; z-index: 2;
+      width: min(1060px, 92vw);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 860px) { .ai-tools-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .ai-tools-grid { grid-template-columns: 1fr; } }
+    .ai-tool-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px 20px 20px;
+      opacity: 0;
+      transform: scale(.94) translateY(20px);
+      transition: opacity .55s ease, transform .55s cubic-bezier(.16,1,.3,1), border-color .3s;
+    }
+    .ai-tool-card:hover { border-color: rgba(255,255,255,.22); transform: scale(1.02) translateY(-2px) !important; }
+    .ai-tools-stage.show .ai-tool-card:nth-child(1) { transition-delay: .1s; opacity:1; transform:none; }
+    .ai-tools-stage.show .ai-tool-card:nth-child(2) { transition-delay: .2s;  opacity:1; transform:none; }
+    .ai-tools-stage.show .ai-tool-card:nth-child(3) { transition-delay: .3s;  opacity:1; transform:none; }
+    .ai-tools-stage.show .ai-tool-card:nth-child(4) { transition-delay: .4s;  opacity:1; transform:none; }
+    .ai-tool-icon {
+      font-size: 28px; margin-bottom: 12px; display: block;
+    }
+    .ai-tool-name {
+      font-size: 14px; font-weight: 700; color: var(--text); margin: 0 0 8px;
+    }
+    .ai-tool-desc {
+      font-size: 13px; color: var(--muted); line-height: 1.65; margin: 0 0 14px;
+    }
+    .ai-tool-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .ai-tool-tag {
+      font-size: 10px; padding: 3px 8px; border-radius: 12px;
+      font-weight: 600; letter-spacing: .04em;
+    }
+    .ai-tool-tag.orange { background: rgba(255,159,10,.15); color: #ff9f0a; }
+    .ai-tool-tag.purple { background: rgba(94,92,230,.15); color: #a78bfa; }
+    .ai-tool-tag.blue   { background: rgba(0,113,227,.15);  color: #30a8ff; }
+    .ai-tool-tag.green  { background: rgba(48,209,88,.15);  color: #30d158; }
+    body.light-mode .ai-tools-stage { background: radial-gradient(circle at 50% 40%, rgba(255,159,10,.05), transparent 40%), #f5f5f7; }
+    body.light-mode .ai-tool-card { background: rgba(255,255,255,.9); border-color: rgba(0,0,0,.08); }
+    body.light-mode .ai-tool-card:hover { border-color: rgba(0,0,0,.18); }
+    body.light-mode .ai-tool-desc { color: #555; }
+
+    /* print overrides for new sections */
+    @media print {
+      .work-stage, .project-stage, .ai-tools-stage { break-inside: avoid; }
+      .timeline-item { opacity:1 !important; transform:none !important; }
+      .proj-card { opacity:1 !important; transform:none !important; }
+      .ai-tool-card { opacity:1 !important; transform:none !important; }
+      .timeline-line { transform: scaleY(1) !important; }
+      .proj-waveform .wf-bar { animation: none !important; height: 60% !important; }
+      #aiNodesCanvas { display: none; }
+    }
+
   </style>
 </head>
 <body>
     <div class="quick-nav" id="quickNav">
     <button onclick="document.getElementById('heroBio').scrollIntoView({behavior:'smooth'})">关于我</button>
-    <button onclick="window.scrollTo({ top: document.querySelector('.stage.grid').offsetTop - 84, behavior:'smooth' })">代码演示</button>
-    <button onclick="window.scrollTo({ top: document.getElementById('vocalStage').offsetTop - 84, behavior:'smooth' })">舞台演出</button>
-    <button onclick="window.scrollTo({ top: document.getElementById('newMediaStage').offsetTop - 84, behavior:'smooth' })">新媒体运营</button>
-    <button onclick="window.scrollTo({ top: document.getElementById('systemsStage').offsetTop - 84, behavior:'smooth' })">灯光 / 音响</button>
-    <button onclick="window.scrollTo({ top: document.getElementById('productStage').offsetTop - 84, behavior:'smooth' })">产品开发</button>
-    <button onclick="window.scrollTo({ top: document.getElementById('musicStage').offsetTop - 84, behavior:'smooth' })">音乐制作</button>
+    <button onclick="document.getElementById('workStage').scrollIntoView({behavior:'smooth'})">工作经历</button>
+    <button onclick="document.getElementById('projectStage').scrollIntoView({behavior:'smooth'})">核心项目</button>
+    <button onclick="document.getElementById('aiToolsStage').scrollIntoView({behavior:'smooth'})">AI 工作流</button>
+    <button onclick="document.getElementById('musicStage').scrollIntoView({behavior:'smooth'})">演出技术</button>
+    <button onclick="document.getElementById('newMediaStage').scrollIntoView({behavior:'smooth'})">新媒体</button>
+    <button onclick="document.getElementById('productStage').scrollIntoView({behavior:'smooth'})">应用开发</button>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切换明暗模式" aria-label="切换明暗模式" aria-pressed="false">🌙</button>
+    <button class="print-btn" onclick="printResume()" title="导出 PDF / 打印" aria-label="导出 PDF 或打印">🖨 导出</button>
+  </div>
+
+  <!-- 打印专用头部（仅 @media print 可见） -->
+  <div class="print-header" id="printHeader">
+    <div class="ph-name">藏天宇</div>
+    <div class="ph-target">演出技术制作 · 音频 AI · 应用开发 &nbsp;·&nbsp; 2026</div>
+    <div class="ph-contacts">
+      <span>📞 19140533909</span>
+      <span>✉️ zty1696761994@163.com</span>
+      <span>🎓 西北师范大学 · 音乐表演 · 2023届</span>
+      <span>🌐 tianyu-resume.art</span>
+    </div>
   </div>
 
   <!-- ── Personal Hero Page ── -->
@@ -2482,19 +3339,19 @@
         <div class="hero-eyebrow">个人作品集 · 2026</div>
         <h1 class="hero-name">藏天宇</h1>
         <p class="hero-tagline">
-          西北师大音乐表演本科，做事喜欢能落地。演出上过国家大剧院、视频做过10+项目、应用独立上过架——<strong>每样都不是说说而已，是有真东西。</strong>
+          西北师范大学音乐表演本科，毕业后在学校独立跑过几百场演出的全套技术制作，也做过 AI 提示词工程师，还在开发一个视唱练耳工具——<strong>做的每件事都是从真实问题出发。</strong>
         </p>
         <p class="hero-philosophy">
-          这个页面就是我的简历。每一板块都有真实做过的项目在里面。求职方向：产品经理。
+          这个页面就是我的简历。每一板块都有真实做过的事情在里面。
         </p>
         <div class="hero-meta">
           <div class="hero-meta-row">
-            <span class="hero-meta-icon">📍</span>
-            <span class="hero-meta-val">兰州 &nbsp;·&nbsp; 西北师范大学 · 音乐表演本科</span>
+            <span class="hero-meta-icon">🎓</span>
+            <span class="hero-meta-val">西北师范大学 · 音乐表演 · 2023 届</span>
           </div>
           <div class="hero-meta-row">
             <span class="hero-meta-icon">📞</span>
-            <span class="hero-meta-val">17693365826</span>
+            <span class="hero-meta-val">19140533909</span>
           </div>
           <div class="hero-meta-row">
             <span class="hero-meta-icon">✉️</span>
@@ -2508,15 +3365,165 @@
     </div>
   </div>
 
+  <!-- ── 工作经历 ── -->
+  <div class="work-stage" id="workStage">
+    <div class="section-header">
+      <div class="section-kicker">Work Experience</div>
+      <h2 class="section-title">工作经历</h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-line"></div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2025.06<br>—<br>2026.03</div>
+        <div class="timeline-card">
+          <div class="timeline-role">AI 提示词工程师</div>
+          <div class="timeline-company">冲上云霄 · 远程</div>
+          <p class="timeline-desc">为音频类 AI 模型设计提示词模板，负责音频内容标注与质量评估，输出可用于模型训练的结构化数据集。熟悉音频标注任务的质检流程，理解训练数据对模型质量的影响。</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2023.06<br>—<br>至今</div>
+        <div class="timeline-card">
+          <div class="timeline-role">招生咨询教师</div>
+          <div class="timeline-company">兰州润德艺术学校</div>
+          <p class="timeline-desc">负责器乐、声乐方向课程咨询与学员转化，累计服务学员 200+ 人次。</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2022<br>—<br>至今</div>
+        <div class="timeline-card">
+          <div class="timeline-role">音乐制作 · 视唱练耳教师</div>
+          <div class="timeline-company">兰州润德艺术学校</div>
+          <p class="timeline-desc">自主研发混音制作与视唱练耳课程，教授学员 200+ 人。在教学过程中发现出题效率的真实痛点，进而独立开发了听记生成器与节奏生成器，解决备课中的重复劳动问题。</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2022<br>暑期</div>
+        <div class="timeline-card">
+          <div class="timeline-role">演员（实习）</div>
+          <div class="timeline-company">甘肃话剧院</div>
+          <p class="timeline-desc">参与话剧剧目排演与正式演出，积累舞台表演经验。</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 核心项目 ── -->
+  <div class="project-stage" id="projectStage">
+    <div class="section-header">
+      <div class="section-kicker">Projects</div>
+      <h2 class="section-title">核心项目</h2>
+    </div>
+    <div class="project-grid">
+
+      <div class="proj-card">
+        <div class="proj-card-accent green"></div>
+        <div class="proj-tag green">独立开发 · 2022—2024</div>
+        <div class="proj-name">听记生成器 · 节奏生成器</div>
+        <div class="proj-year">从教学痛点出发的第一个工具</div>
+        <p class="proj-desc">做视唱练耳老师的时候，备课出题是高频重复劳动——找谱例、手写节奏、设计听写内容，每次都在做同样的事。于是自己写了两个工具：听记生成器把音频转成带结构的文字稿直接用于出题，节奏生成器按难度参数自动生成练习素材。解决了自己的真实痛点，也成为后来接触 AI 数据生产的技术起点。</p>
+        <div class="proj-chips">
+          <span class="proj-chip">Python</span>
+          <span class="proj-chip">音频处理</span>
+          <span class="proj-chip">教学工具</span>
+          <span class="proj-chip">AI 数据生产</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-card-accent blue"></div>
+        <div class="proj-tag blue">Flutter 跨平台 · 2025—至今</div>
+        <div class="proj-name">VocalSmart</div>
+        <div class="proj-year">视唱练耳科目的数字化辅助工具 · 开发中</div>
+        <div class="proj-waveform">
+          <div class="wf-bar"></div><div class="wf-bar"></div><div class="wf-bar"></div>
+          <div class="wf-bar"></div><div class="wf-bar"></div><div class="wf-bar"></div>
+          <div class="wf-bar"></div><div class="wf-bar"></div><div class="wf-bar"></div>
+          <div class="wf-bar"></div><div class="wf-bar"></div><div class="wf-bar"></div>
+        </div>
+        <p class="proj-desc">学生练音准，全靠老师在场，没有即时反馈机制。VocalSmart 做的就是这件事：实时音高检测、节奏训练模块、可视化反馈，目标覆盖视唱练耳核心练习场景。在前两个工具的技术积累上更进一步，融合了更完整的音频算法。Flutter 跨 iOS / Android / macOS / Windows / Web 五端，目前测试阶段。</p>
+        <div class="proj-chips">
+          <span class="proj-chip">Flutter / Dart</span>
+          <span class="proj-chip">音高检测</span>
+          <span class="proj-chip">FFT 算法</span>
+          <span class="proj-chip">跨 5 端</span>
+          <span class="proj-chip">测试阶段</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── AI 工具与工作流 ── -->
+  <div class="ai-tools-stage" id="aiToolsStage">
+    <canvas id="aiNodesCanvas"></canvas>
+    <div class="section-header">
+      <div class="section-kicker">AI Tools &amp; Workflow</div>
+      <h2 class="section-title">AI 工具与工作流</h2>
+      <p class="section-sub">从 GPT-3 发布就开始跟进，是最早一批深度使用者。三年多下来，AI 工具已经完全融入日常工作流，对 AI 产业生态有持续关注和独立判断。</p>
+    </div>
+    <div class="ai-tools-grid">
+
+      <div class="ai-tool-card">
+        <span class="ai-tool-icon">🧠</span>
+        <div class="ai-tool-name">大语言模型</div>
+        <p class="ai-tool-desc">提示词工程有体系，不只是「会用」。在冲上云霄做过系统性的音频领域提示词设计，理解模型训练对数据质量的要求。GPT-3 起步，跟进至今。</p>
+        <div class="ai-tool-tags">
+          <span class="ai-tool-tag orange">GPT 系列</span>
+          <span class="ai-tool-tag orange">Claude</span>
+          <span class="ai-tool-tag orange">提示词工程</span>
+        </div>
+      </div>
+
+      <div class="ai-tool-card">
+        <span class="ai-tool-icon">🎨</span>
+        <div class="ai-tool-name">文生图</div>
+        <p class="ai-tool-desc">Midjourney、Stable Diffusion 有实际使用经验，用于内容创作和视觉设计辅助，了解不同模型的风格特点和适用边界。</p>
+        <div class="ai-tool-tags">
+          <span class="ai-tool-tag purple">Midjourney</span>
+          <span class="ai-tool-tag purple">Stable Diffusion</span>
+        </div>
+      </div>
+
+      <div class="ai-tool-card">
+        <span class="ai-tool-icon">🎬</span>
+        <div class="ai-tool-name">文生视频</div>
+        <p class="ai-tool-desc">持续跟进主流文生视频工具，了解其能力边界与适用场景，用于内容创作辅助。</p>
+        <div class="ai-tool-tags">
+          <span class="ai-tool-tag blue">Sora</span>
+          <span class="ai-tool-tag blue">Seedance</span>
+          <span class="ai-tool-tag blue">即梦</span>
+          <span class="ai-tool-tag blue">可灵</span>
+        </div>
+      </div>
+
+      <div class="ai-tool-card">
+        <span class="ai-tool-icon">⚡</span>
+        <div class="ai-tool-name">工作流整合</div>
+        <p class="ai-tool-desc">听记生成器、VocalSmart 的开发过程中大量使用 AI 辅助编程与需求拆解，形成了自己的人机协作工作方式。同样的事情，产出效率至少翻三倍。</p>
+        <div class="ai-tool-tags">
+          <span class="ai-tool-tag green">AI 辅助编程</span>
+          <span class="ai-tool-tag green">工作流自动化</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <div class="stage grid">
     <div class="title">
       <div class="eyebrow">编程能力展示</div>
       <h1>把想法，通过代码落地</h1>
-      <p>iOS / macOS 原生开发 + Web 前端，有独立上架经验。</p>
+      <p>Flutter 跨平台开发 + Python 工具开发 + Web 前端，从零到可运行产品独立完成。</p>
       <div class="step-skills" style="margin-top:16px">
-        <div class="skill-item">• Swift / SwiftUI：独立开发上架 VocalSmart 视唱练耳（iOS + macOS 双平台）</div>
-        <div class="skill-item">• TypeScript / React：能从零搭前端，这个作品集页面就是纯手写的</div>
-        <div class="skill-item">• 完整跑通需求→设计→开发→上架全流程，不需要手把手</div>
+        <div class="skill-item">• Flutter / Dart：开发 VocalSmart 视唱练耳，跨 iOS / Android / macOS / Windows / Web 五端，测试阶段</div>
+        <div class="skill-item">• Python：独立开发听记生成器、节奏生成器，解决教学出题效率问题</div>
+        <div class="skill-item">• 完整跑通需求→设计→开发→测试全流程，不需要手把手</div>
       </div>
     </div>
     <div class="meta">PROGRAMMING · MOTION DEMO</div>
@@ -2667,7 +3674,7 @@
     <div class="systems-intro">
       <div class="systems-kicker">新媒体内容创作</div>
       <h2>做过真正有播放量的内容</h2>
-      <p>担任"音"为有你新媒工作室总负责人，年产精品视频10+，作品3次获评学院优秀案例，获2021年文化传播先进工作者称号。每个环节自己上，从选题到发布全流程亲手跑。</p>
+      <p>参与西北师大传媒中心（学校官方视频号）内容制作，从拍摄剪辑做起，逐步承担分镜设计、现场收音，最后成为负责人，主导账号内容策划与发布节奏。账号粉丝规模达 10 万+，也负责过多场学校大型活动的舞台直播。</p>
     </div>
     <div class="nm-pipeline">
 
@@ -2889,11 +3896,190 @@
     </div>
   </div>
 
+  <div class="systems-stage" id="musicStage">
+    <div class="systems-intro">
+      <div class="systems-kicker">音乐制作</div>
+      <h2>录音混音一体，87份商业作品亲手交付</h2>
+      <p>Logic Pro 全流程独立完成——从素材录制、人声分轨、多轨混音到母带处理，87份商业制谱全部亲自混音后交付；12首作品从录音到成品全程独立完成。掌握 EQ、压缩、空间效果、响度控制等核心混音环节，能清楚描述并解决听感问题。</p>
+    </div>
+    <div class="music-flow">
+      <div class="flow-step">
+        <div class="step-tag">01 · recording</div>
+        <div class="step-body">
+          <div class="daw-window recording-window">
+            <div class="window-topbar">
+              <div class="window-dots"><span></span><span></span><span></span></div>
+              <div class="window-label">recording lane</div>
+              <div class="transport-time" id="transportTime">00:00:00</div>
+            </div>
+            <div class="recording-body">
+              <div class="transport-bar">
+                <div class="rec-pill"><span class="rec-led"></span><span>rec</span></div>
+                <div class="progress-lane">
+                  <div class="progress-fill" id="recordProgress"></div>
+                  <div class="playhead" id="recordPlayhead"></div>
+                </div>
+                <div class="transport-time" id="transportBars">bar 001</div>
+              </div>
+              <div class="tape-row">
+                <div class="reel reel-left" id="reelLeft"><div class="reel-spokes"></div></div>
+                <div class="tape-track"><div class="tape-flow" id="tapeFlow"></div></div>
+                <div class="reel reel-right" id="reelRight"><div class="reel-spokes"></div></div>
+              </div>
+              <div class="record-tracks">
+                <div class="track-row">
+                  <div class="track-name">Lead Vox</div>
+                  <div class="clip-lane"><div class="clip-block"><div class="clip-wave"></div></div><div class="record-cursor"></div></div>
+                </div>
+                <div class="track-row">
+                  <div class="track-name">Harmony</div>
+                  <div class="clip-lane"><div class="clip-block"><div class="clip-wave" style="opacity:.75"></div></div><div class="record-cursor"></div></div>
+                </div>
+                <div class="track-row">
+                  <div class="track-name">Room Mic</div>
+                  <div class="clip-lane"><div class="clip-block"><div class="clip-wave" style="opacity:.52"></div></div><div class="record-cursor"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="step-skills">
+          <div class="skill-item">• 分层录制：主轨 / 和声 / 即兴声部独立管理，不混在一条上</div>
+          <div class="skill-item">• 麦克风摆位、防喷罩处理、底噪控制，进棚前先把环境搞对</div>
+          <div class="skill-item">• Logic Pro 多场景工作流：棚内、居家、现场直录均有实操</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-tag">02 · mixing — 核心</div>
+        <div class="step-body">
+          <div class="mix-window">
+            <div class="window-topbar">
+              <div class="window-dots"><span></span><span></span><span></span></div>
+              <div class="window-label">mixing console · 87 projects</div>
+              <div class="transport-time">bus a / stereo out</div>
+            </div>
+            <div class="mix-grid">
+              <div class="channel-strip">
+                <div class="channel-label">kick</div>
+                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
+                <div class="eq-knobs"><div class="eq-knob" style="--knob:-28deg"></div><div class="eq-knob" style="--knob:30deg"></div></div>
+                <div class="fader-slot"><div class="fader-cap"></div></div>
+                <div class="channel-footer"></div>
+              </div>
+              <div class="channel-strip">
+                <div class="channel-label">snr</div>
+                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
+                <div class="eq-knobs"><div class="eq-knob" style="--knob:-18deg"></div><div class="eq-knob" style="--knob:18deg"></div></div>
+                <div class="fader-slot"><div class="fader-cap"></div></div>
+                <div class="channel-footer"></div>
+              </div>
+              <div class="channel-strip">
+                <div class="channel-label">bass</div>
+                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
+                <div class="eq-knobs"><div class="eq-knob" style="--knob:-12deg"></div><div class="eq-knob" style="--knob:34deg"></div></div>
+                <div class="fader-slot"><div class="fader-cap"></div></div>
+                <div class="channel-footer"></div>
+              </div>
+              <div class="channel-strip">
+                <div class="channel-label">syn</div>
+                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
+                <div class="eq-knobs"><div class="eq-knob" style="--knob:-36deg"></div><div class="eq-knob" style="--knob:10deg"></div></div>
+                <div class="fader-slot"><div class="fader-cap"></div></div>
+                <div class="channel-footer"></div>
+              </div>
+              <div class="channel-strip">
+                <div class="channel-label">harm</div>
+                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
+                <div class="eq-knobs"><div class="eq-knob" style="--knob:-20deg"></div><div class="eq-knob" style="--knob:24deg"></div></div>
+                <div class="fader-slot"><div class="fader-cap"></div></div>
+                <div class="channel-footer"></div>
+              </div>
+              <div class="channel-strip">
+                <div class="channel-label">vox</div>
+                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
+                <div class="eq-knobs"><div class="eq-knob" style="--knob:-8deg"></div><div class="eq-knob" style="--knob:38deg"></div></div>
+                <div class="fader-slot"><div class="fader-cap"></div></div>
+                <div class="channel-footer"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="step-skills">
+          <div class="skill-item">• 87份商业制谱全部经过完整混音后交付，不是只出谱</div>
+          <div class="skill-item">• 核心操作：音量平衡 / 频段 EQ / 动态压缩 / 混响延迟 / Bus 路由</div>
+          <div class="skill-item">• 能诊断并处理：人声失真、底鼓撞低音、高频刺耳、声场过窄</div>
+          <div class="skill-item">• 知道 Vocal Bus / Drum Bus / FX Send 的标准调音台路由逻辑</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-tag">03 · mastering</div>
+        <div class="step-body">
+          <div class="mastering-body">
+            <div class="window-topbar">
+              <div class="plugin-tabs">
+                <div class="plugin-tab active">eq</div>
+                <div class="plugin-tab">comp</div>
+                <div class="plugin-tab">limit</div>
+              </div>
+              <div class="transport-time">master chain</div>
+            </div>
+            <div class="plugin-stack">
+              <div class="plugin-window active">
+                <div class="plugin-header">
+                  <div class="plugin-title">digital eq</div>
+                  <div class="transport-time">linear phase</div>
+                </div>
+                <div class="plugin-content eq-digital">
+                  <div class="eq-screen">
+                    <svg class="eq-line" viewBox="0 0 100 100" preserveAspectRatio="none">
+                      <path id="eqCurvePath" d="M0,58 C12,58 18,46 28,42 C40,36 48,64 60,64 C72,64 78,26 100,26" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.8" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                    <div class="eq-curve">
+                      <div class="eq-band" id="eqBandLow" style="left:30%; top:54%"></div>
+                      <div class="eq-band" id="eqBandMid" style="left:58%; top:56%"></div>
+                      <div class="eq-band" id="eqBandHigh" style="left:80%; top:36%"></div>
+                    </div>
+                  </div>
+                  <div class="eq-readout">
+                    <div class="readout-box"><span>low</span><span id="eqLowVal">+2.4 dB</span></div>
+                    <div class="readout-box"><span>mid</span><span id="eqMidVal">-1.2 dB</span></div>
+                    <div class="readout-box"><span>air</span><span id="eqHighVal">+3.8 dB</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="plugin-window">
+                <div class="plugin-header"><div class="plugin-title">vintage compressor</div><div class="transport-time">glue / opto</div></div>
+                <div class="plugin-content analog-panel">
+                  <div class="analog-strip"><div class="analog-label">threshold</div><div class="analog-knob" style="--analog:-26deg"></div><div class="vintage-meter"><div class="vintage-needle"></div></div></div>
+                  <div class="analog-strip"><div class="analog-label">ratio</div><div class="analog-knob" style="--analog:18deg"></div><div class="vintage-meter"><div class="vintage-needle"></div></div></div>
+                  <div class="analog-strip"><div class="analog-label">make up</div><div class="analog-knob" style="--analog:34deg"></div><div class="vintage-meter"><div class="vintage-needle"></div></div></div>
+                </div>
+              </div>
+              <div class="plugin-window">
+                <div class="plugin-header"><div class="plugin-title">vintage limiter</div><div class="transport-time">ceiling / drive</div></div>
+                <div class="plugin-content analog-panel">
+                  <div class="analog-strip"><div class="analog-label">input</div><div class="analog-knob" style="--analog:-14deg"></div><div class="vintage-meter"><div class="vintage-needle"></div></div></div>
+                  <div class="analog-strip"><div class="analog-label">ceiling</div><div class="analog-knob" style="--analog:10deg"></div><div class="vintage-meter"><div class="vintage-needle"></div></div></div>
+                  <div class="analog-strip"><div class="analog-label">release</div><div class="analog-knob" style="--analog:38deg"></div><div class="vintage-meter"><div class="vintage-needle"></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="step-skills">
+          <div class="skill-item">• LUFS 响度控制达到各平台标准，限制器防削波同时保留动态</div>
+          <div class="skill-item">• 完整跑通录音→混音→母带→导出可发布成品全流程</div>
+          <div class="skill-item">• 12首作品均经过完整母带处理后对外发布</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="product-stage" id="productStage">
     <div class="systems-intro">
       <div class="systems-kicker">产品 / 应用开发</div>
       <h2>做过真正跑起来的东西</h2>
-      <p>软件应用从零开发到上架，完整独立交付；精通 AI 工具辅助产品设计与原型搭建，具备产品需求分析与用户调研能力。</p>
+      <p>独立完成从需求分析到可运行产品的完整开发流程；熟练使用 AI 工具辅助编程与原型设计，具备独立拆解复杂需求并落地的能力。</p>
     </div>
     <div class="product-cards">
     <div class="product-card">
@@ -2997,13 +4183,13 @@
           </div>
         </div>
         <div class="product-copy">
-          <div class="product-note">iOS / macOS 应用</div>
+          <div class="product-note">Flutter 跨平台 · 测试阶段</div>
           <h3 class="product-title">VocalSmart 视唱练耳</h3>
-          <p class="product-desc">帮学生检测自己唱得准不准、节奏对不对的软件。实时分析音高，对照五线谱显示偏差，让视唱练习有具体反馈而不是光靠耳朵判断。</p>
+          <p class="product-desc">帮学生检测自己唱得准不准、节奏对不对的工具。实时分析音高，可视化显示偏差，让视唱练习有具体反馈而不是光靠耳朵判断。Flutter 开发，跨 iOS / Android / macOS / Windows / Web 五端。</p>
           <div class="product-meta">
             <div class="product-row"><span>核心功能</span><span>音准 / 节奏实时检测</span></div>
-            <div class="product-row"><span>展示方式</span><span>五线谱 + 偏差标注</span></div>
-            <div class="product-row"><span>适用对象</span><span>音乐专业学生 / 初学者</span></div>
+            <div class="product-row"><span>技术栈</span><span>Flutter · Dart · FFT 音高算法</span></div>
+            <div class="product-row"><span>平台覆盖</span><span>iOS / Android / macOS / Windows / Web</span></div>
           </div>
           <div class="vs-tag-row">
             <span class="vs-tag">音高识别</span>
@@ -3017,229 +4203,6 @@
 
     </div><!-- /.product-cards -->
   </div><!-- /.product-stage -->
-
-  <div class="systems-stage" id="musicStage">
-    <div class="systems-intro">
-      <div class="systems-kicker">音乐制作</div>
-      <h2>录音、混音、成品——Logic Pro 全流程</h2>
-      <p>Logic Pro 专业级录音混音，输出过87份商业制谱作品；12首原创作品；掌握即兴伴奏与数字音乐创作体系，从进棚到交付全流程独立完成。</p>
-    </div>
-    <div class="music-flow">
-      <div class="flow-step">
-        <div class="step-tag">01 · recording</div>
-        <div class="step-body">
-          <div class="daw-window recording-window">
-            <div class="window-topbar">
-              <div class="window-dots"><span></span><span></span><span></span></div>
-              <div class="window-label">recording lane</div>
-              <div class="transport-time" id="transportTime">00:00:00</div>
-            </div>
-            <div class="recording-body">
-              <div class="transport-bar">
-                <div class="rec-pill"><span class="rec-led"></span><span>rec</span></div>
-                <div class="progress-lane">
-                  <div class="progress-fill" id="recordProgress"></div>
-                  <div class="playhead" id="recordPlayhead"></div>
-                </div>
-                <div class="transport-time" id="transportBars">bar 001</div>
-              </div>
-              <div class="tape-row">
-                <div class="reel reel-left" id="reelLeft"><div class="reel-spokes"></div></div>
-                <div class="tape-track"><div class="tape-flow" id="tapeFlow"></div></div>
-                <div class="reel reel-right" id="reelRight"><div class="reel-spokes"></div></div>
-              </div>
-              <div class="record-tracks">
-                <div class="track-row">
-                  <div class="track-name">Lead Vox</div>
-                  <div class="clip-lane">
-                    <div class="clip-block">
-                      <div class="clip-wave"></div>
-                    </div>
-                    <div class="record-cursor"></div>
-                  </div>
-                </div>
-                <div class="track-row">
-                  <div class="track-name">Double</div>
-                  <div class="clip-lane">
-                    <div class="clip-block">
-                      <div class="clip-wave" style="opacity:.75"></div>
-                    </div>
-                    <div class="record-cursor"></div>
-                  </div>
-                </div>
-                <div class="track-row">
-                  <div class="track-name">Adlib</div>
-                  <div class="clip-lane">
-                    <div class="clip-block">
-                      <div class="clip-wave" style="opacity:.58"></div>
-                    </div>
-                    <div class="record-cursor"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="step-skills">
-          <div class="skill-item">• 掌握麦克风摆位技巧，进振截断、足迹响处理、多条轨分层录制</div>
-          <div class="skill-item">• 知道怎么摆麦克风、如何避免干扰和底噪</div>
-          <div class="skill-item">• 使用 Logic Pro 进行 DAW 录制工作流</div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="step-tag">02 · mixing</div>
-        <div class="step-body">
-          <div class="mix-window">
-            <div class="window-topbar">
-              <div class="window-dots"><span></span><span></span><span></span></div>
-              <div class="window-label">mixing console</div>
-              <div class="transport-time">bus a / stereo out</div>
-            </div>
-            <div class="mix-grid">
-              <div class="channel-strip">
-                <div class="channel-label">kick</div>
-                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
-                <div class="eq-knobs"><div class="eq-knob" style="--knob:-28deg"></div><div class="eq-knob" style="--knob:30deg"></div></div>
-                <div class="fader-slot"><div class="fader-cap"></div></div>
-                <div class="channel-footer"></div>
-              </div>
-              <div class="channel-strip">
-                <div class="channel-label">snr</div>
-                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
-                <div class="eq-knobs"><div class="eq-knob" style="--knob:-18deg"></div><div class="eq-knob" style="--knob:18deg"></div></div>
-                <div class="fader-slot"><div class="fader-cap"></div></div>
-                <div class="channel-footer"></div>
-              </div>
-              <div class="channel-strip">
-                <div class="channel-label">bass</div>
-                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
-                <div class="eq-knobs"><div class="eq-knob" style="--knob:-12deg"></div><div class="eq-knob" style="--knob:34deg"></div></div>
-                <div class="fader-slot"><div class="fader-cap"></div></div>
-                <div class="channel-footer"></div>
-              </div>
-              <div class="channel-strip">
-                <div class="channel-label">syn</div>
-                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
-                <div class="eq-knobs"><div class="eq-knob" style="--knob:-36deg"></div><div class="eq-knob" style="--knob:10deg"></div></div>
-                <div class="fader-slot"><div class="fader-cap"></div></div>
-                <div class="channel-footer"></div>
-              </div>
-              <div class="channel-strip">
-                <div class="channel-label">fx</div>
-                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
-                <div class="eq-knobs"><div class="eq-knob" style="--knob:-20deg"></div><div class="eq-knob" style="--knob:24deg"></div></div>
-                <div class="fader-slot"><div class="fader-cap"></div></div>
-                <div class="channel-footer"></div>
-              </div>
-              <div class="channel-strip">
-                <div class="channel-label">vox</div>
-                <div class="mini-meter"><div class="mini-meter-fill"></div></div>
-                <div class="eq-knobs"><div class="eq-knob" style="--knob:-8deg"></div><div class="eq-knob" style="--knob:38deg"></div></div>
-                <div class="fader-slot"><div class="fader-cap"></div></div>
-                <div class="channel-footer"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="step-skills">
-          <div class="skill-item">• 各轨道音量平衡、EQ 频段处理、动态压缩控制</div>
-          <div class="skill-item">• 人声突出、底鼓清晰、各乐器层次分明</div>
-          <div class="skill-item">• 知道什么叫"听感舒服"，并能主动调整到那个状态</div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="step-tag">03 · mastering</div>
-        <div class="step-body">
-          <div class="mastering-body">
-            <div class="window-topbar">
-              <div class="plugin-tabs">
-                <div class="plugin-tab active">eq</div>
-                <div class="plugin-tab">comp</div>
-                <div class="plugin-tab">limit</div>
-              </div>
-              <div class="transport-time">master chain</div>
-            </div>
-            <div class="plugin-stack">
-              <div class="plugin-window active">
-                <div class="plugin-header">
-                  <div class="plugin-title">digital eq</div>
-                  <div class="transport-time">linear phase</div>
-                </div>
-                <div class="plugin-content eq-digital">
-                  <div class="eq-screen">
-                    <svg class="eq-line" viewBox="0 0 100 100" preserveAspectRatio="none">
-                      <path id="eqCurvePath" d="M0,58 C12,58 18,46 28,42 C40,36 48,64 60,64 C72,64 78,26 100,26" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.8" vector-effect="non-scaling-stroke"></path>
-                    </svg>
-                    <div class="eq-curve">
-                      <div class="eq-band" id="eqBandLow" style="left:30%; top:54%"></div>
-                      <div class="eq-band" id="eqBandMid" style="left:58%; top:56%"></div>
-                      <div class="eq-band" id="eqBandHigh" style="left:80%; top:36%"></div>
-                    </div>
-                  </div>
-                  <div class="eq-readout">
-                    <div class="readout-box"><span>low</span><span id="eqLowVal">+2.4 dB</span></div>
-                    <div class="readout-box"><span>mid</span><span id="eqMidVal">-1.2 dB</span></div>
-                    <div class="readout-box"><span>air</span><span id="eqHighVal">+3.8 dB</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="plugin-window">
-                <div class="plugin-header">
-                  <div class="plugin-title">vintage compressor</div>
-                  <div class="transport-time">glue / opto</div>
-                </div>
-                <div class="plugin-content analog-panel">
-                  <div class="analog-strip">
-                    <div class="analog-label">threshold</div>
-                    <div class="analog-knob" style="--analog:-26deg"></div>
-                    <div class="vintage-meter"><div class="vintage-needle"></div></div>
-                  </div>
-                  <div class="analog-strip">
-                    <div class="analog-label">ratio</div>
-                    <div class="analog-knob" style="--analog:18deg"></div>
-                    <div class="vintage-meter"><div class="vintage-needle"></div></div>
-                  </div>
-                  <div class="analog-strip">
-                    <div class="analog-label">make up</div>
-                    <div class="analog-knob" style="--analog:34deg"></div>
-                    <div class="vintage-meter"><div class="vintage-needle"></div></div>
-                  </div>
-                </div>
-              </div>
-              <div class="plugin-window">
-                <div class="plugin-header">
-                  <div class="plugin-title">vintage limiter</div>
-                  <div class="transport-time">ceiling / drive</div>
-                </div>
-                <div class="plugin-content analog-panel">
-                  <div class="analog-strip">
-                    <div class="analog-label">input</div>
-                    <div class="analog-knob" style="--analog:-14deg"></div>
-                    <div class="vintage-meter"><div class="vintage-needle"></div></div>
-                  </div>
-                  <div class="analog-strip">
-                    <div class="analog-label">ceiling</div>
-                    <div class="analog-knob" style="--analog:10deg"></div>
-                    <div class="vintage-meter"><div class="vintage-needle"></div></div>
-                  </div>
-                  <div class="analog-strip">
-                    <div class="analog-label">release</div>
-                    <div class="analog-knob" style="--analog:38deg"></div>
-                    <div class="vintage-meter"><div class="vintage-needle"></div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="step-skills">
-          <div class="skill-item">• 整体响度控制（LUFS 标准）、限制器防止削波</div>
-          <div class="skill-item">• 让最终文件在平台上听起来音量合格、不刺耳</div>
-          <div class="skill-item">• 完整跑过从素材录制到可发布成品的全流程</div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <script>
     const editorText = document.getElementById('editorText');
@@ -3444,6 +4407,34 @@
     renderAll(0);
     tick();
 
+    // ── 明暗切换 ──────────────────────────────────
+    const themeToggle = document.getElementById('themeToggle');
+    const LIGHT_KEY = 'resume-theme';
+    function applyTheme(light) {
+      document.body.classList.toggle('light-mode', light);
+      themeToggle.textContent = light ? '🌕' : '🌙';
+      themeToggle.setAttribute('aria-pressed', light ? 'true' : 'false');
+      localStorage.setItem(LIGHT_KEY, light ? 'light' : 'dark');
+    }
+    function toggleTheme() { applyTheme(!document.body.classList.contains('light-mode')); }
+    // 记住上次选择
+    applyTheme(localStorage.getItem(LIGHT_KEY) === 'light');
+
+    // ── 打印 / 导出 PDF ──────────────────────────
+    function printResume() {
+      // 打印前切换为亮色（省墨）
+      const wasLight = document.body.classList.contains('light-mode');
+      if (!wasLight) applyTheme(true);
+      // 等一帧让样式生效再打印
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          window.print();
+          // 打印对话框关闭后恢复原模式
+          if (!wasLight) applyTheme(false);
+        }, 80);
+      });
+    }
+
     // 舞台演唱模块入场动画
     const vsStage = document.getElementById('vocalStage');
     function triggerVocal() {
@@ -3476,9 +4467,103 @@
       });
     }
 
+    // ── 工作经历 / 项目 / AI工具 入场动画 ──────────────
+    function revealOnScroll(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { el.classList.add('show'); obs.disconnect(); } });
+      }, { threshold: 0.12 });
+      obs.observe(el);
+    }
+    ['workStage', 'projectStage', 'aiToolsStage'].forEach(revealOnScroll);
+
+    // ── AI 节点网络 Canvas ──────────────────────────
+    (function() {
+      const canvas = document.getElementById('aiNodesCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let nodes = [];
+      let rafId = null;
+      const N = 28;
+      let dpr = 1;
+
+      function resize() {
+        dpr = window.devicePixelRatio || 1;
+        const w = canvas.offsetWidth;
+        const h = canvas.offsetHeight;
+        canvas.width  = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width  = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.scale(dpr, dpr);
+      }
+      function logicalW() { return canvas.width / dpr; }
+      function logicalH() { return canvas.height / dpr; }
+
+      function initNodes() {
+        nodes = Array.from({length: N}, () => ({
+          x: Math.random() * logicalW(),
+          y: Math.random() * logicalH(),
+          vx: (Math.random() - .5) * .35,
+          vy: (Math.random() - .5) * .35,
+          r: 2 + Math.random() * 2
+        }));
+      }
+      function draw() {
+        // Stop loop when canvas is not laid out (hidden / print)
+        if (!canvas.offsetParent) { rafId = null; return; }
+        const W = logicalW(), H = logicalH();
+        ctx.clearRect(0, 0, W, H);
+        const isDark = !document.body.classList.contains('light-mode');
+        const nodeColor = isDark ? 'rgba(255,159,10,' : 'rgba(180,120,0,';
+        const lineColor = isDark ? 'rgba(255,159,10,' : 'rgba(180,120,0,';
+        nodes.forEach(n => {
+          n.x += n.vx; n.y += n.vy;
+          if (n.x < 0 || n.x > W) n.vx *= -1;
+          if (n.y < 0 || n.y > H) n.vy *= -1;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+          ctx.fillStyle = nodeColor + '.5)';
+          ctx.fill();
+        });
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i+1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const d = Math.sqrt(dx*dx + dy*dy);
+            if (d < 130) {
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.strokeStyle = lineColor + (0.18 * (1 - d/130)) + ')';
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        }
+        rafId = requestAnimationFrame(draw);
+      }
+      function start() { if (!rafId) draw(); }
+
+      resize();
+      initNodes();
+      start();
+      window.addEventListener('resize', () => { resize(); initNodes(); });
+
+      // Restart loop when section scrolls back into view (was stopped when hidden)
+      const aiStageEl = document.getElementById('aiToolsStage');
+      if (aiStageEl) {
+        new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) start(); });
+        }, { threshold: 0.05 }).observe(aiStageEl);
+      }
+    })();
+
     // 需要监听的板块列表
     const sectionsToWatch = [
-      'newMediaStage', 'systemsStage', 'productStage', 'musicStage', 'vocalStage', 'heroBio'
+      'newMediaStage', 'systemsStage', 'productStage', 'musicStage', 'vocalStage', 'heroBio',
+      'workStage', 'projectStage', 'aiToolsStage'
     ].map(id => document.getElementById(id)).filter(Boolean);
 
     const sectionObs = new IntersectionObserver((entries) => {
